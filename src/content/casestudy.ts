@@ -42,7 +42,7 @@ export const caseStudy = {
   period: "May – Aug 2026",
 
   intro:
-    "Four end-to-end initiatives, from system architecture and API design through front-end and back-end implementation to production handoff. Designs presented to the Director and VP of Customer Experience; the platform demoed to the CEO.",
+    "Embedded with the Customer Experience team on a CEO-sponsored AI initiative. Four end-to-end initiatives, from system architecture and API design through front-end and back-end implementation to production handoff. Designs presented to the Director and VP of Customer Experience; the platform demoed to the CEO.",
 
   headline: [
     { value: "170+", label: "engineering & product hours saved" },
