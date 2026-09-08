@@ -89,14 +89,6 @@ export const caseStudy = {
           title: "Why the response is checked twice",
           body: "Filtering the request is not the same as trusting the response. The input pass rejects prompt attacks and sensitive data before anything reaches the model. The output pass verifies the answer is actually supported by the retrieved passages. Anything ungrounded becomes a handoff, not a response.",
         },
-        {
-          title: "Why it shipped with adversarial tests, not just unit tests",
-          body: "Unit tests prove the happy path returns the right shape. They say nothing about what happens when someone tries to talk the system into ignoring its instructions. I validated end to end with both: unit suites for the request pipeline, and an adversarial suite for injection, PII leakage, and off-domain questions.",
-        },
-        {
-          title: "Why building the pipeline was only half the job",
-          body: "A RAG system that runs is not the same as one that helps. Retrieval and grounding are scored against a fixed evaluation set, so a regression shows up as a failing number rather than a user complaint. And a feedback-analytics dashboard is part of the design, not an afterthought — what people ask, where answers fall short, whether the thing is actually saving anyone time. The point was never just to ship it; it was to be able to prove it was worth keeping.",
-        },
       ],
       aside:
         "One embedding space instead of one index per language. That single choice is why adding a language here is a content problem, not a project.",
@@ -181,20 +173,12 @@ export const caseStudy = {
           title: "Why PII is removed from the schema, not filtered from the output",
           body: "A filter is something you can forget to apply. Sensitive customer fields were excluded from the schema the model can see at all, and the remaining sensitive fields were restricted to aggregate use only. The model cannot select a column it was never shown.",
         },
-        {
-          title: "Why I verified against production instead of mocks",
-          body: "I checked the schema column by column against real production data and found seven column-name mismatches that mock-based testing had never surfaced. Every one would have been a runtime failure in front of a user. I also proved the composite join across the two source tables end to end on real matched cases rather than assuming the key held.",
-        },
-        {
-          title: "Why I built a scored question set before trusting it",
-          body: "A text-to-SQL system that is right most of the time is not usable, because you cannot tell which time you are in. I built a gold set of business questions covering every major table category and scored the engine against it — 44 of 44 correct. That number is the reason anyone was willing to rely on the tool.",
-        },
       ],
       aside:
         "Seven column-name mismatches. Mock data would have let every one of them ship, and each would have failed in front of a user.",
       outcomes: [
         "Reduced data turnaround from days to seconds",
-        "Scored 100% (44/44) on a gold-question evaluation set",
+        "Validated against a gold-question evaluation set covering every business domain",
         "Scoped the schema to business tables only — lower token cost, faster plans, no coverage lost",
         "Shipped a KPI dashboard so the team reads regular metrics without a query",
         "Saved 50 engineering and 20 product hours",
