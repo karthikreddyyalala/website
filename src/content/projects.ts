@@ -13,6 +13,17 @@ export type Project = {
 
 export const projects: Project[] = [
   {
+    id: "mcp-knowledge-base",
+    title: "MCP Knowledge Base",
+    year: "2026",
+    tagline: "Private docs, inside Claude — no uploads, no cloud, exact citations.",
+    body: "An MCP server that indexes a company's internal markdown files locally and gives Claude Desktop semantic search over them via two registered tools: search_docs and list_docs. Every answer includes a line-range citation so engineers can verify the source. The entire knowledge base stays on disk — only the retrieved chunk (typically 400 tokens) enters the conversation, never the full corpus. Benchmarked on MS MARCO: MRR@10 = 0.585 on 1.1M passages against 6,980 official dev queries, 3.5× above the BM25 keyword-search baseline. Built because the only alternative — uploading docs to Claude — sends your entire filing cabinet to a third-party server upfront. This sends one page at a time, only when Claude asks for it.",
+    tech: ["MCP", "Python", "ChromaDB", "FAISS", "all-MiniLM-L6-v2", "SentenceTransformers", "Arize Phoenix"],
+    github: "https://github.com/karthikreddyyalala/MCP_Base",
+    live: "https://mcp-kb-site.vercel.app",
+    featured: true,
+  },
+  {
     id: "crucible",
     title: "Crucible",
     year: "2026",
