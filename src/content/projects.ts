@@ -39,7 +39,6 @@ export const projects: Project[] = [
     tagline: "A planner, executor, and validator loop that does the reading for you.",
     body: "A modular multi-agent research system where a planner decomposes a topic, executors gather sources, and a validator checks the synthesis before it is returned. Built with retry logic, exponential backoff, and output caching so a single failed tool call does not sink an entire run. Cut manual research effort by 70%.",
     tech: ["CrewAI", "LangGraph", "OpenAI APIs", "Pinecone", "Python"],
-    github: "https://github.com/karthikreddyyalala/Deep-Research-Agent-Team-",
     featured: true,
   },
   {
@@ -58,7 +57,6 @@ export const projects: Project[] = [
     tagline: "Four agents that argue about a trade before making it.",
     body: "A simulated trading desk where an analyst, a trader, a risk manager, and a critic evaluate the same position and have to reach a decision. Wired across six MCP servers exposing 44 tools, which made the interesting problem tool routing rather than prompting.",
     tech: ["MCP", "CrewAI", "Docker", "OpenAI APIs", "Python"],
-    github: "https://github.com/karthikreddyyalala/Autonomous-Trading-Floor",
     featured: true,
   },
   {
@@ -69,7 +67,6 @@ export const projects: Project[] = [
     body: "A full-stack messaging application with bi-directional event-based communication over Socket.io, on a Node and Express backend. Built to understand connection lifecycle, room state, and reconnection handling rather than to reinvent a chat app.",
     tech: ["Node.js", "Express", "Socket.io", "MongoDB"],
     image: "/images/projects/chatify.webp",
-    github: "https://github.com/karthikreddyyalala",
     featured: false,
   },
   {
@@ -79,7 +76,6 @@ export const projects: Project[] = [
     tagline: "An LSTM that beat the linear baseline by 12%.",
     body: "A sequence model for price forecasting over 50k+ data points, with normalization, windowing, and hyperparameter tuning. The useful lesson was in the evaluation: a model that looks good on a chart can still be worse than the baseline you didn't bother to run.",
     tech: ["Python", "TensorFlow", "Pandas", "Matplotlib"],
-    github: "https://github.com/karthikreddyyalala/Stock-Price-Predictor",
     featured: false,
   },
 ];

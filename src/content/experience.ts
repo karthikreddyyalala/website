@@ -57,11 +57,11 @@ export const timeline: TimelineEntry[] = [
     location: "Hyderabad, India",
     kind: "work",
     points: [
-      "Designed and coded a responsive customer-facing interface with AI chat agents that resolved property inquiries end to end.",
-      "Developed a Python and SendGrid automation script for personalized outreach at scale, removing hours of manual work weekly.",
-      "Built an internal lead management dashboard with automated follow-up logic and real-time status tracking, improving team response time by 40%.",
+      "Built and deployed a React/Node.js platform with a conversational AI agent using LangChain, OpenAI API, and Pinecone vector search for natural-language listing queries and 24/7 tour scheduling.",
+      "Engineered an AWS Textract document processing pipeline to parse deeds, leases, and contracts, extract metadata, and flag compliance risks and financial exposures before closing.",
+      "Automated backend workflows using S3 and SendGrid to streamline contract ingestion, secure document storage, and customer communications, improving team response time by 40%.",
     ],
-    tech: ["React", "Python", "SendGrid API"],
+    tech: ["React", "Node.js", "LangChain", "OpenAI API", "Pinecone", "AWS Textract", "S3", "SendGrid"],
   },
   {
     id: "asu",
