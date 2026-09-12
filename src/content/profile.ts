@@ -34,7 +34,6 @@ export const profile = {
     email: "karthikreddyy386@gmail.com",
     phone: "+1 (623) 888-4033",
     linkedin: "https://linkedin.com/in/kyalala",
-    github: "https://github.com/karthikreddyyalala",
     resume: "/Karthik-Reddy-Yalala-Resume.pdf",
   },
 

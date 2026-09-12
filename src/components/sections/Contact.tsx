@@ -6,7 +6,6 @@ const { contact, availability } = profile;
 const CHANNELS = [
   { label: "Email", value: contact.email, href: `mailto:${contact.email}` },
   { label: "LinkedIn", value: "in/kyalala", href: contact.linkedin },
-  { label: "GitHub", value: "karthikreddyyalala", href: contact.github },
   {
     label: "Phone",
     value: contact.phone,
