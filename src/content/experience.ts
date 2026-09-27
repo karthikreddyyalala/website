@@ -13,6 +13,22 @@ export type TimelineEntry = {
 
 export const timeline: TimelineEntry[] = [
   {
+    id: "professordm",
+    period: "Sep 2026 – Apr 2027",
+    title: "AI Systems Architect & Guardrails Lead",
+    org: "ProfessorDM Technologies Inc.",
+    location: "ASU Capstone · Remote (New Brunswick, CA)",
+    kind: "work",
+    points: [
+      "Leading technical architecture for a seven-person capstone team building a production AI SaaS platform that converts Instagram DM traffic into monetized, searchable expert knowledge for a creator with 165K+ followers.",
+      "Owning cloud infrastructure, CI/CD pipelines, data architecture, authentication/RBAC, secrets management, observability and release gates across five integrated technical workstreams.",
+      "Co-designing AI guardrails, prompt/model change controls and evaluation gates to ensure no AI-generated response reaches consumers without creator review and multi-stage safety filtering.",
+      "Defining interface contracts, security standards, and architecture decision records that five workstream leads build against, coordinating cross-service integration from Instagram webhooks through AI classification, semantic retrieval, creator review and answer delivery.",
+      "Accountable for security hardening, regression testing strategy, performance reviews and operational readiness ahead of controlled live trials with real users on the Sweetlife Flora Instagram account.",
+    ],
+    tech: ["AWS", "Supabase", "pgvector", "Vercel", "Stripe", "Meta Graph API", "CI/CD", "RBAC", "Observability"],
+  },
+  {
     id: "avis",
     period: "May – Aug 2026",
     title: "AI Enablement Intern",
