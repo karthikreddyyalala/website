@@ -43,12 +43,17 @@ export function CountUp({ value, duration = 1600, className }: CountUpProps) {
         const start = performance.now();
         const { prefix, num, suffix, decimals } = parsed;
 
+        const animDecimals = num <= 10 && decimals === 0 ? 1 : decimals;
+
         function tick(now: number) {
           const elapsed = now - start;
           const progress = Math.min(elapsed / duration, 1);
           const eased = 1 - Math.pow(1 - progress, 3);
           const current = eased * num;
-          setDisplay(prefix + current.toFixed(decimals) + suffix);
+          const shown = progress === 1
+            ? current.toFixed(decimals)
+            : current.toFixed(animDecimals);
+          setDisplay(prefix + shown + suffix);
           if (progress < 1) requestAnimationFrame(tick);
         }
 
