@@ -1,5 +1,6 @@
 import Image from "next/image";
 import { Reveal } from "../ui/Reveal";
+import { CountUp } from "../ui/CountUp";
 import { profile } from "@/content/profile";
 
 export function Hero() {
@@ -99,7 +100,7 @@ export function Hero() {
                 className="border-b border-[var(--line)] py-5 pr-6 md:border-b-0"
               >
                 <dt className="mono text-[22px] text-[var(--text)] md:text-[26px]">
-                  {p.value}
+                  <CountUp value={p.value} />
                 </dt>
                 <dd className="mt-1.5 text-[12.5px] leading-snug text-[var(--faint)]">
                   {p.label}
