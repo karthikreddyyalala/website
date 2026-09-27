@@ -1,4 +1,5 @@
 import { Reveal } from "../ui/Reveal";
+import { CountUp } from "../ui/CountUp";
 import { Pipeline } from "../ui/Pipeline";
 import { Aside } from "../ui/Aside";
 import { caseStudy } from "@/content/casestudy";
@@ -41,7 +42,7 @@ export function CaseStudy() {
                   className="mono text-[28px] md:text-[34px]"
                   style={{ color: "var(--accent)" }}
                 >
-                  {m.value}
+                  <CountUp value={m.value} />
                 </dt>
                 <dd className="mt-1.5 text-[12.5px] leading-snug text-[var(--muted)]">
                   {m.label}

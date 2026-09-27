@@ -9,18 +9,19 @@ type CountUpProps = {
 };
 
 function parse(value: string) {
-  const match = value.match(/^(\d+(?:\.\d+)?)(.*)$/);
+  const match = value.match(/^([^0-9]*)(\d+(?:\.\d+)?)(.*)$/);
   if (!match) return null;
-  const num = parseFloat(match[1]);
-  const suffix = match[2];
-  const decimals = match[1].includes(".") ? match[1].split(".")[1].length : 0;
-  return { num, suffix, decimals };
+  const prefix = match[1];
+  const num = parseFloat(match[2]);
+  const suffix = match[3];
+  const decimals = match[2].includes(".") ? match[2].split(".")[1].length : 0;
+  return { prefix, num, suffix, decimals };
 }
 
 export function CountUp({ value, duration = 1600, className }: CountUpProps) {
   const parsed = parse(value);
   const ref = useRef<HTMLSpanElement>(null);
-  const [display, setDisplay] = useState(parsed ? `0${parsed.decimals > 0 ? "." + "0".repeat(parsed.decimals) : ""}${parsed.suffix}` : value);
+  const [display, setDisplay] = useState(parsed ? `${parsed.prefix}0${parsed.decimals > 0 ? "." + "0".repeat(parsed.decimals) : ""}${parsed.suffix}` : value);
   const hasRun = useRef(false);
 
   useEffect(() => {
@@ -40,14 +41,14 @@ export function CountUp({ value, duration = 1600, className }: CountUpProps) {
         observer.disconnect();
 
         const start = performance.now();
-        const { num, suffix, decimals } = parsed;
+        const { prefix, num, suffix, decimals } = parsed;
 
         function tick(now: number) {
           const elapsed = now - start;
           const progress = Math.min(elapsed / duration, 1);
           const eased = 1 - Math.pow(1 - progress, 3);
           const current = eased * num;
-          setDisplay(current.toFixed(decimals) + suffix);
+          setDisplay(prefix + current.toFixed(decimals) + suffix);
           if (progress < 1) requestAnimationFrame(tick);
         }
 
