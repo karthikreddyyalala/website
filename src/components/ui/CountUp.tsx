@@ -8,6 +8,8 @@ type CountUpProps = {
   className?: string;
 };
 
+const MULTIPLIERS: Record<string, number> = { K: 1_000, M: 1_000_000, B: 1_000_000_000 };
+
 function parse(value: string) {
   const match = value.match(/^([^0-9]*)(\d+(?:\.\d+)?)(.*)$/);
   if (!match) return null;
@@ -15,13 +17,22 @@ function parse(value: string) {
   const num = parseFloat(match[2]);
   const suffix = match[3];
   const decimals = match[2].includes(".") ? match[2].split(".")[1].length : 0;
-  return { prefix, num, suffix, decimals };
+
+  const suffixLetter = suffix.match(/^([KMB])/i)?.[1]?.toUpperCase() ?? "";
+  const multiplier = MULTIPLIERS[suffixLetter] ?? 1;
+  const fullNum = num * multiplier;
+
+  return { prefix, num, suffix, decimals, fullNum, hasMagnitude: multiplier > 1 };
+}
+
+function formatWithCommas(n: number): string {
+  return Math.floor(n).toLocaleString("en-US");
 }
 
 export function CountUp({ value, duration = 1600, className }: CountUpProps) {
   const parsed = parse(value);
   const ref = useRef<HTMLSpanElement>(null);
-  const [display, setDisplay] = useState(parsed ? `${parsed.prefix}0${parsed.decimals > 0 ? "." + "0".repeat(parsed.decimals) : ""}${parsed.suffix}` : value);
+  const [display, setDisplay] = useState(parsed ? `${parsed.prefix}0${parsed.suffix}` : value);
   const hasRun = useRef(false);
 
   useEffect(() => {
@@ -41,19 +52,23 @@ export function CountUp({ value, duration = 1600, className }: CountUpProps) {
         observer.disconnect();
 
         const start = performance.now();
-        const { prefix, num, suffix, decimals } = parsed;
-
-        const animDecimals = num <= 10 && decimals === 0 ? 1 : decimals;
+        const { prefix, num, suffix, decimals, fullNum, hasMagnitude } = parsed;
 
         function tick(now: number) {
           const elapsed = now - start;
           const progress = Math.min(elapsed / duration, 1);
           const eased = 1 - Math.pow(1 - progress, 3);
-          const current = eased * num;
-          const shown = progress === 1
-            ? current.toFixed(decimals)
-            : current.toFixed(animDecimals);
-          setDisplay(prefix + shown + suffix);
+
+          if (progress === 1) {
+            setDisplay(prefix + num.toFixed(decimals) + suffix);
+          } else if (hasMagnitude) {
+            const current = eased * fullNum;
+            setDisplay(prefix + formatWithCommas(current));
+          } else {
+            const current = eased * num;
+            setDisplay(prefix + current.toFixed(decimals) + suffix);
+          }
+
           if (progress < 1) requestAnimationFrame(tick);
         }
 
