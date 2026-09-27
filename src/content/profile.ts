@@ -15,14 +15,14 @@ export const profile = {
   ],
 
   /**
-   * Dated on purpose. A "currently" line with no date is decoration; with a
+   * Dated on purpose. A \"currently\" line with no date is decoration; with a
    * date it is a signal the page is tended. Update it or delete it — a stale
    * one is worse than none.
    */
   currently: {
-    updated: "August 2026",
+    updated: "September 2026",
     text:
-      "Back at ASU for senior year, and rebuilding Interviewer.ai's evaluator agent after the first version graded too generously to be useful.",
+      "Back at ASU for senior year. Leading the technical architecture for ProfessorDM, a seven-person capstone building a production AI platform against a 165K-follower Instagram account. Owning cloud, data, security, AI guardrails and cross-workstream integration.",
   },
 
   availability: {
