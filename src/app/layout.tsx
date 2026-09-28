@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import { Outfit, JetBrains_Mono } from "next/font/google";
+import { Analytics } from "@vercel/analytics/react";
 import "./globals.css";
 
 // Two families, trimmed weights. Every extra weight is render-blocking payload.
@@ -65,6 +66,7 @@ export default function RootLayout({
     <html lang="en">
       <body className={`${outfit.variable} ${jetbrainsMono.variable}`}>
         {children}
+        <Analytics />
       </body>
     </html>
   );
