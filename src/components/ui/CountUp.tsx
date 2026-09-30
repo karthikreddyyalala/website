@@ -22,11 +22,18 @@ function parse(value: string) {
   const multiplier = MULTIPLIERS[suffixLetter] ?? 1;
   const fullNum = num * multiplier;
 
-  return { prefix, num, suffix, decimals, fullNum, hasMagnitude: multiplier > 1 };
+  return { prefix, num, suffix, decimals, fullNum, multiplier };
 }
 
-function formatWithCommas(n: number): string {
-  return Math.floor(n).toLocaleString("en-US");
+function formatMidAnimation(prefix: string, current: number, multiplier: number, suffix: string): string {
+  if (multiplier >= 1_000_000) {
+    const inK = current / 1_000;
+    return `${prefix}${Math.floor(inK).toLocaleString("en-US")}K`;
+  }
+  if (multiplier >= 1_000) {
+    return `${prefix}${Math.floor(current).toLocaleString("en-US")}`;
+  }
+  return `${prefix}${Math.floor(current)}${suffix}`;
 }
 
 export function CountUp({ value, duration = 1600, className }: CountUpProps) {
@@ -52,21 +59,18 @@ export function CountUp({ value, duration = 1600, className }: CountUpProps) {
         observer.disconnect();
 
         const start = performance.now();
-        const { prefix, num, suffix, decimals, fullNum, hasMagnitude } = parsed;
+        const { prefix, num, suffix, decimals, fullNum, multiplier } = parsed;
 
         function tick(now: number) {
           const elapsed = now - start;
           const progress = Math.min(elapsed / duration, 1);
           const eased = 1 - Math.pow(1 - progress, 3);
+          const current = eased * fullNum;
 
           if (progress === 1) {
             setDisplay(prefix + num.toFixed(decimals) + suffix);
-          } else if (hasMagnitude) {
-            const current = eased * fullNum;
-            setDisplay(prefix + formatWithCommas(current));
           } else {
-            const current = eased * num;
-            setDisplay(prefix + current.toFixed(decimals) + suffix);
+            setDisplay(formatMidAnimation(prefix, current, multiplier, suffix));
           }
 
           if (progress < 1) requestAnimationFrame(tick);

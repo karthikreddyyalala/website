@@ -25,7 +25,7 @@ const DESCRIPTION =
 export const metadata: Metadata = {
   metadataBase: new URL(SITE),
   title: {
-    default: "Karthik Reddy Yalala — Software Engineer",
+    default: "Karthik Reddy Yalala | Software Engineer",
     template: "%s · Karthik Reddy Yalala",
   },
   description: DESCRIPTION,
@@ -42,13 +42,13 @@ export const metadata: Metadata = {
   openGraph: {
     type: "website",
     url: SITE,
-    title: "Karthik Reddy Yalala — Software Engineer",
+    title: "Karthik Reddy Yalala | Software Engineer",
     description: DESCRIPTION,
     siteName: "Karthik Reddy Yalala",
   },
   twitter: {
     card: "summary_large_image",
-    title: "Karthik Reddy Yalala — Software Engineer",
+    title: "Karthik Reddy Yalala | Software Engineer",
     description: DESCRIPTION,
   },
   robots: { index: true, follow: true },
