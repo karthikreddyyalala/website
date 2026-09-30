@@ -26,11 +26,7 @@ function parse(value: string) {
 }
 
 function formatMidAnimation(prefix: string, current: number, multiplier: number, suffix: string): string {
-  if (multiplier >= 1_000_000) {
-    const inK = current / 1_000;
-    return `${prefix}${Math.floor(inK).toLocaleString("en-US")}K`;
-  }
-  if (multiplier >= 1_000) {
+  if (multiplier > 1) {
     return `${prefix}${Math.floor(current).toLocaleString("en-US")}`;
   }
   return `${prefix}${Math.floor(current)}${suffix}`;
