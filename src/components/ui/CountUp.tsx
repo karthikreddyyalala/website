@@ -63,7 +63,9 @@ export function CountUp({ value, duration = 1600, className }: CountUpProps) {
           const eased = 1 - Math.pow(1 - progress, 3);
           const current = eased * fullNum;
 
-          if (progress === 1) {
+          if (progress === 1 && multiplier > 1) {
+            setDisplay(`${prefix}${Math.floor(fullNum).toLocaleString("en-US")}+`);
+          } else if (progress === 1) {
             setDisplay(prefix + num.toFixed(decimals) + suffix);
           } else {
             setDisplay(formatMidAnimation(prefix, current, multiplier, suffix));
