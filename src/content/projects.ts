@@ -13,6 +13,17 @@ export type Project = {
 
 export const projects: Project[] = [
   {
+    id: "open-autodata",
+    title: "Open AutoData",
+    year: "2026",
+    tagline: "Five local-model agents that manufacture fine-tuning datasets, not just generate them.",
+    body: "Built at Hack Day 2026 for the Best Open-Source AI Project and Snowflake tracks. Implements Meta FAIR's Agentic Self-Instruct methodology as a LangGraph state machine: a Challenger writes questions from raw documents, a Quality Verifier catches answer leakage, a Weak Solver (Llama 3.2 3B) and Strong Solver (DeepSeek V4.1 Flash) attempt answers independently, and a Rubric Judge grades everything. A question passes the acceptance gate only when the weak model scores 65% or below, the strong model lands between 60-95%, and the gap exceeds 20 points. Benchmarked results beat Meta's own paper: 56.5-point weak/strong gap vs. their 31.4, with a strong-solver average of 84.2% vs. 77.2%. Chunks process concurrently with independent failure isolation, optional Snowflake integration handles SEC filing ingestion and results writeback, and a Next.js dashboard shows pipeline progress in real time. All inference runs through OpenRouter on open-weight models, so the entire pipeline is reproducible without a single proprietary API key.",
+    tech: ["LangGraph", "OpenRouter", "Llama 3.2", "DeepSeek", "Nemotron", "Snowflake", "Next.js", "Tailwind", "pytest"],
+    github: "https://github.com/ritvikreddygangula/Open-AutoData",
+    live: "https://open-auto-data.vercel.app",
+    featured: true,
+  },
+  {
     id: "mcp-knowledge-base",
     title: "MCP Knowledge Base",
     year: "2026",
