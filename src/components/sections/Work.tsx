@@ -2,12 +2,8 @@ import Image from "next/image";
 import { Section } from "../ui/Section";
 import { Reveal } from "../ui/Reveal";
 import { projects } from "@/content/projects";
+import { TechIcon } from "../ui/TechIcon";
 
-/**
- * Row-based list, not a 3-up card grid. Each row is hairline-separated and the
- * featured entries carry a marker, so the section has hierarchy rather than
- * six identical tiles.
- */
 export function Work() {
   return (
     <Section
@@ -20,8 +16,23 @@ export function Work() {
       <div className="border-t border-[var(--line)]">
         {projects.map((p, i) => (
           <Reveal key={p.id} delay={Math.min(i, 4) * 50}>
-            <article className="grid gap-5 border-b border-[var(--line)] py-9 md:grid-cols-12 md:gap-8 md:py-11">
-              <div className="md:col-span-3">
+            <article
+              className={`grid gap-5 border-b border-[var(--line)] py-9 md:grid-cols-12 md:gap-8 md:py-11 ${
+                p.badge ? "relative overflow-hidden" : ""
+              }`}
+            >
+              {p.badge && (
+                <div
+                  aria-hidden
+                  className="pointer-events-none absolute inset-0"
+                  style={{
+                    background:
+                      "radial-gradient(600px 300px at 0% 0%, rgba(200,135,62,0.06), transparent 70%)",
+                  }}
+                />
+              )}
+
+              <div className="relative md:col-span-3">
                 <div className="flex items-baseline gap-3">
                   <h3 className="h-section text-[20px] md:text-[22px]">{p.title}</h3>
                   {p.featured && (
@@ -32,7 +43,21 @@ export function Work() {
                     />
                   )}
                 </div>
-                <p className="mono mt-2 text-[11px] text-[var(--faint)]">{p.year}</p>
+                <div className="mt-2 flex items-center gap-3">
+                  <p className="mono text-[11px] text-[var(--faint)]">{p.year}</p>
+                  {p.badge && (
+                    <span
+                      className="mono rounded-full px-2.5 py-0.5 text-[10px] font-medium"
+                      style={{
+                        background: "var(--accent-dim)",
+                        color: "var(--accent)",
+                        border: "1px solid rgba(200,135,62,0.25)",
+                      }}
+                    >
+                      {p.badge}
+                    </span>
+                  )}
+                </div>
 
                 {(p.github || p.live) && (
                   <div className="mt-4 flex gap-4">
@@ -60,7 +85,7 @@ export function Work() {
                 )}
               </div>
 
-              <div className={p.image ? "md:col-span-6" : "md:col-span-9"}>
+              <div className={`relative ${p.image ? "md:col-span-6" : "md:col-span-9"}`}>
                 <p className="text-[15.5px] leading-relaxed text-[var(--text)]">
                   {p.tagline}
                 </p>
@@ -69,8 +94,9 @@ export function Work() {
                   {p.tech.map((t) => (
                     <li
                       key={t}
-                      className="mono rounded-full border border-[var(--line)] px-2.5 py-1 text-[10.5px] text-[var(--faint)]"
+                      className="mono flex items-center gap-1.5 rounded-full border border-[var(--line)] px-2.5 py-1 text-[10.5px] text-[var(--faint)]"
                     >
+                      <TechIcon name={t} />
                       {t}
                     </li>
                   ))}

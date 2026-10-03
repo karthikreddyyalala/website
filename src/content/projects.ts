@@ -9,6 +9,7 @@ export type Project = {
   github?: string;
   live?: string;
   featured: boolean;
+  badge?: string;
 };
 
 export const projects: Project[] = [
@@ -22,6 +23,7 @@ export const projects: Project[] = [
     github: "https://github.com/ritvikreddygangula/Open-AutoData",
     live: "https://open-auto-data.vercel.app",
     featured: true,
+    badge: "Hack Day 2026",
   },
   {
     id: "mcp-knowledge-base",
