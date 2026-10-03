@@ -1,4 +1,6 @@
-const icons: Record<string, JSX.Element> = {
+import type { ReactNode } from "react";
+
+const icons: Record<string, ReactNode> = {
   LangGraph: (
     <svg viewBox="0 0 24 24" fill="none" className="h-3.5 w-3.5">
       <circle cx="6" cy="6" r="2.5" stroke="currentColor" strokeWidth="1.5" />
