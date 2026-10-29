@@ -69,9 +69,7 @@ export function Work() {
               )}
 
               <div className="relative md:col-span-3">
-                <div className="flex items-baseline gap-3">
-                  <h3 className="h-section text-[20px] md:text-[22px]">{p.title}</h3>
-                </div>
+                <h3 className="h-section text-[20px] md:text-[22px]">{p.title}</h3>
                 <div className="mt-2 flex items-center gap-3">
                   <p className="mono text-[11px] text-[var(--faint)]">{p.year}</p>
                   {p.badge && (
