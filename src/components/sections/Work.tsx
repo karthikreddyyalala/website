@@ -69,16 +69,7 @@ export function Work() {
               )}
 
               <div className="relative md:col-span-3">
-                <div className="flex items-baseline gap-3">
-                  <h3 className="h-section text-[20px] md:text-[22px]">{p.title}</h3>
-                  {p.featured && (
-                    <span
-                      aria-hidden
-                      className="h-1.5 w-1.5 rounded-full"
-                      style={{ background: "var(--accent)" }}
-                    />
-                  )}
-                </div>
+                <h3 className="h-section text-[20px] md:text-[22px]">{p.title}</h3>
                 <div className="mt-2 flex items-center gap-3">
                   <p className="mono text-[11px] text-[var(--faint)]">{p.year}</p>
                   {p.badge && (
@@ -134,12 +125,12 @@ export function Work() {
                 <p className="text-[15.5px] leading-relaxed text-[var(--text)]">
                   {p.tagline}
                 </p>
-                <p className="prose-body mt-3 text-[14px]">{p.body}</p>
+                <p className="prose-body mt-3 text-[15px] md:text-[16px]">{p.body}</p>
                 <ul className="mt-5 flex flex-wrap gap-1.5">
                   {p.tech.map((t) => (
                     <li
                       key={t}
-                      className="mono flex items-center gap-1.5 rounded-full border border-[var(--line)] px-2.5 py-1 text-[10.5px] text-[var(--faint)]"
+                      className="mono flex items-center gap-1.5 rounded-full bg-[var(--surface-hi)] px-2.5 py-1 text-[11px] text-[var(--faint)]"
                     >
                       <TechIcon name={t} />
                       {t}

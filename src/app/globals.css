@@ -13,8 +13,8 @@
   --line-hi: rgba(255, 255, 255, 0.14);
 
   --text: #edede9;
-  --muted: #8f8f89;
-  --faint: #5f5f5b;
+  --muted: #a3a39d;
+  --faint: #8a8a84;
 
   --accent: #c8873e;
   --accent-hi: #e0a05a;
@@ -33,8 +33,8 @@
   --line: rgba(0, 0, 0, 0.08);
   --line-hi: rgba(0, 0, 0, 0.14);
   --text: #141412;
-  --muted: #6b6b66;
-  --faint: #9e9e98;
+  --muted: #585853;
+  --faint: #6a6a64;
   --accent: #b8762e;
   --accent-hi: #c8873e;
   --accent-dim: rgba(184, 118, 46, 0.12);
@@ -85,12 +85,14 @@ body {
   letter-spacing: -0.04em;
   line-height: 0.95;
   font-weight: 600;
+  text-wrap: balance;
 }
 
 .h-section {
   letter-spacing: -0.03em;
   line-height: 1.05;
   font-weight: 600;
+  text-wrap: balance;
 }
 
 .mono {
@@ -102,15 +104,16 @@ body {
 .eyebrow {
   font-family: var(--font-jetbrains-mono), monospace;
   font-size: 11px;
-  letter-spacing: 0.2em;
+  letter-spacing: 0.14em;
   text-transform: uppercase;
   color: var(--faint);
 }
 
 .prose-body {
   color: var(--muted);
-  line-height: 1.7;
-  max-width: 68ch;
+  line-height: 1.75;
+  max-width: 66ch;
+  text-wrap: pretty;
 }
 
 /* ---------- Layout ---------- */

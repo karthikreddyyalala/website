@@ -39,7 +39,7 @@ export function CaseStudy() {
                 className="border-b border-[var(--line)] py-6 pr-8 sm:border-b-0"
               >
                 <dt
-                  className="mono text-[28px] md:text-[34px]"
+                  className="mono tabular-nums text-[28px] md:text-[34px]"
                   style={{ color: "var(--accent)" }}
                 >
                   <CountUp value={m.value} />
