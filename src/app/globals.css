@@ -159,6 +159,33 @@ body {
   top: 12px;
 }
 
+/* ---------- Video dialog ----------
+   Solid scrim rather than blur, per the surfaces note above. */
+.video-dialog::backdrop {
+  background: rgba(5, 5, 6, 0.88);
+}
+
+.video-dialog[open] {
+  animation: video-in 0.28s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.video-dialog[open]::backdrop {
+  animation: video-fade 0.28s ease-out;
+}
+
+@keyframes video-in {
+  from {
+    opacity: 0;
+    transform: translate3d(0, 12px, 0) scale(0.98);
+  }
+}
+
+@keyframes video-fade {
+  from {
+    opacity: 0;
+  }
+}
+
 /* ---------- Entry reveal ----------
    CSS-driven so it costs nothing on the main thread. The IntersectionObserver
    only toggles a class; nothing animates per-frame in JS. */

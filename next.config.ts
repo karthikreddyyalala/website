@@ -5,6 +5,7 @@ const nextConfig: NextConfig = {
   // failures rather than fixing them. Both checks are on.
   images: {
     formats: ["image/avif", "image/webp"],
+    remotePatterns: [{ protocol: "https", hostname: "i.ytimg.com", pathname: "/vi/**" }],
   },
 };
 

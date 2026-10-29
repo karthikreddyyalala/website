@@ -7,6 +7,7 @@ import { Timeline } from "@/components/sections/Timeline";
 import { About } from "@/components/sections/About";
 import { Contact } from "@/components/sections/Contact";
 import { profile } from "@/content/profile";
+import { VideoDialog } from "@/components/ui/VideoDialog";
 
 export default function Home() {
   return (
@@ -41,6 +42,8 @@ export default function Home() {
 
         </div>
       </footer>
+
+      <VideoDialog />
 
     </>
   );
