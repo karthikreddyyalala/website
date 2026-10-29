@@ -118,7 +118,7 @@ export function Hero() {
                 key={p.label}
                 className="border-b border-[var(--line)] py-5 pr-6 md:border-b-0"
               >
-                <dt className="mono text-[22px] text-[var(--text)] md:text-[26px]">
+                <dt className="mono tabular-nums text-[22px] text-[var(--text)] md:text-[26px]">
                   <CountUp value={p.value} />
                 </dt>
                 <dd className="mt-1.5 text-[12.5px] leading-snug text-[var(--faint)]">

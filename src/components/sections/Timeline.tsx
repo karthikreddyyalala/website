@@ -46,7 +46,7 @@ export function Timeline() {
                   {entry.points.length > 0 && (
                     <ul className="mt-4 space-y-2">
                       {entry.points.map((pt) => (
-                        <li key={pt} className="prose-body text-[14px]">
+                        <li key={pt} className="prose-body text-[15px]">
                           {pt}
                         </li>
                       ))}
@@ -68,7 +68,7 @@ export function Timeline() {
                       {entry.tech.map((t) => (
                         <li
                           key={t}
-                          className="mono rounded-full border border-[var(--line)] px-2.5 py-1 text-[10.5px] text-[var(--faint)]"
+                          className="mono rounded-full bg-[var(--surface-hi)] px-2.5 py-1 text-[11px] text-[var(--faint)]"
                         >
                           {t}
                         </li>
