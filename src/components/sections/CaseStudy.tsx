@@ -87,22 +87,6 @@ export function CaseStudy() {
                       </div>
                     )}
 
-                    {/* The decisions. This is the differentiating content. */}
-                    <div className="mt-9 space-y-7">
-                      {init.decisions.map((d) => (
-                        <div
-                          key={d.title}
-                          className="border-l pl-5"
-                          style={{ borderColor: "var(--accent-dim)" }}
-                        >
-                          <h4 className="text-[15px] font-medium text-[var(--text)]">
-                            {d.title}
-                          </h4>
-                          <p className="prose-body mt-2 text-[15px]">{d.body}</p>
-                        </div>
-                      ))}
-                    </div>
-
                     {init.outcomes && init.outcomes.length > 0 && (
                       <ul className="mt-8 space-y-2">
                         {init.outcomes.map((o) => (
@@ -118,6 +102,34 @@ export function CaseStudy() {
                         ))}
                       </ul>
                     )}
+                    <details className="group mt-8">
+                      <summary className="mono inline-flex cursor-pointer list-none items-center gap-1.5 text-[12px] text-[var(--accent)] transition-opacity hover:opacity-75 focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-[var(--accent)] [&::-webkit-details-marker]:hidden">
+                        <span className="group-open:hidden">Read the engineering decisions</span>
+                        <span className="hidden group-open:inline">Hide details</span>
+                        <span
+                          aria-hidden
+                          className="inline-block transition-transform duration-200 group-open:rotate-180 motion-reduce:transition-none"
+                        >
+                          ↓
+                        </span>
+                      </summary>
+                    {/* The decisions. This is the differentiating content. */}
+                    <div className="mt-7 space-y-7">
+                      {init.decisions.map((d) => (
+                        <div
+                          key={d.title}
+                          className="border-l pl-5"
+                          style={{ borderColor: "var(--accent-dim)" }}
+                        >
+                          <h4 className="text-[15px] font-medium text-[var(--text)]">
+                            {d.title}
+                          </h4>
+                          <p className="prose-body mt-2 text-[15px]">{d.body}</p>
+                        </div>
+                      ))}
+                    </div>
+
+                    </details>
                   </div>
                 </div>
               </article>
