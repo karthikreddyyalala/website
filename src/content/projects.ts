@@ -36,6 +36,7 @@ export const projects: Project[] = [
     tech: ["LangGraph", "OpenRouter", "Llama 3.2", "DeepSeek", "Nemotron", "Snowflake", "Next.js", "Tailwind", "pytest"],
     github: "https://github.com/ritvikreddygangula/Open-AutoData",
     live: "https://open-auto-data.vercel.app",
+    image: "/images/projects/open-autodata.webp",
     featured: true,
     badge: "Hack Day 2026",
   },
@@ -48,6 +49,7 @@ export const projects: Project[] = [
     tech: ["MCP", "Python", "ChromaDB", "FAISS", "all-MiniLM-L6-v2", "SentenceTransformers", "Arize Phoenix"],
     github: "https://github.com/karthikreddyyalala/MCP_Base",
     live: "https://mcp-kb-site.vercel.app",
+    image: "/images/projects/mcp-knowledge-base.webp",
     featured: true,
   },
   {
@@ -66,6 +68,9 @@ export const projects: Project[] = [
     tagline: "Cited financial intelligence over 500+ SEC filings, served through an MCP server.",
     body: "A production MCP server targeting the Anthropic registry that answers financial questions with source citations across 500+ SEC filings from 50 companies. The EDGAR ingestion pipeline handles table-aware document extraction and hierarchical chunking with weekly refresh via EventBridge. Retrieval runs four stages: query rewriting with Claude Haiku, parallel BM25 and dense hybrid search via Bedrock Knowledge Bases, neural reranking, and a custom numerical grounding verifier to eliminate hallucinated figures. Benchmarked against a 300-question FinanceBench dataset with ragas metrics wired into GitHub Actions as regression gates. Serverless on AWS with Cognito OAuth 2.1/PKCE and a public dashboard tracking faithfulness, numerical accuracy, and cost per query.",
     tech: ["Amazon Bedrock", "MCP SDK", "Python", "FastAPI", "ragas", "AWS Lambda", "DynamoDB", "CloudWatch"],
+    github: "https://github.com/karthikreddyyalala/FinRAG",
+    live: "https://dashboard-weld-nine-28.vercel.app",
+    image: "/images/projects/finrag-mcp.webp",
     featured: true,
   },
   {
