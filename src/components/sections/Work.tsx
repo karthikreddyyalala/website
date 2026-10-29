@@ -5,6 +5,41 @@ import { projects } from "@/content/projects";
 import { TechIcon } from "../ui/TechIcon";
 import { VideoPreview, VideoTrigger } from "../ui/VideoDialog";
 
+/** Product screenshot, styled to match the video preview. Links to the live site when there is one. */
+function Shot({ src, title, href }: { src: string; title: string; href?: string }) {
+  const img = (
+    <Image
+      src={src}
+      alt={`${title} screenshot`}
+      fill
+      sizes="(max-width: 768px) 100vw, 720px"
+      className="object-cover object-top transition-transform duration-500 ease-out group-hover:scale-[1.02]"
+    />
+  );
+  const box =
+    "group relative mt-7 block aspect-video w-full max-w-[720px] overflow-hidden rounded-[12px] border border-[var(--line)] bg-[var(--surface)]";
+
+  if (!href) return <div className={box}>{img}</div>;
+
+  return (
+    <a
+      href={href}
+      target="_blank"
+      rel="noopener noreferrer"
+      className={`${box} transition-colors duration-300 hover:border-[var(--line-hi)]`}
+    >
+      {img}
+      <span
+        aria-hidden
+        className="mono absolute bottom-3 right-3 rounded-full px-3 py-1.5 text-[11px] opacity-0 transition-opacity duration-300 group-hover:opacity-100 group-focus-visible:opacity-100"
+        style={{ background: "rgba(0,0,0,0.75)", color: "#fff" }}
+      >
+        Visit live site ↗
+      </span>
+    </a>
+  );
+}
+
 export function Work() {
   return (
     <Section
@@ -95,7 +130,7 @@ export function Work() {
                 )}
               </div>
 
-              <div className={`relative ${p.image ? "md:col-span-6" : "md:col-span-9"}`}>
+              <div className="relative md:col-span-9">
                 <p className="text-[15.5px] leading-relaxed text-[var(--text)]">
                   {p.tagline}
                 </p>
@@ -111,28 +146,15 @@ export function Work() {
                     </li>
                   ))}
                 </ul>
-                {p.video && (
+                {p.video ? (
                   <div className="mt-7 max-w-[720px]">
                     <VideoPreview {...p.video} title={`${p.title} demo`} />
                   </div>
+                ) : (
+                  p.image && <Shot src={p.image} title={p.title} href={p.live} />
                 )}
               </div>
 
-              {p.image && (
-                <div className="md:col-span-3">
-                  <div className="overflow-hidden rounded-[10px] border border-[var(--line)]">
-                    <Image
-                      src={p.image}
-                      alt=""
-                      width={520}
-                      height={340}
-                      loading="lazy"
-                      sizes="(max-width: 768px) 100vw, 260px"
-                      className="h-full w-full object-cover"
-                    />
-                  </div>
-                </div>
-              )}
             </article>
           </Reveal>
         ))}
