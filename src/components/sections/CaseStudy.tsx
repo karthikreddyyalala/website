@@ -87,6 +87,21 @@ export function CaseStudy() {
                       </div>
                     )}
 
+                    {init.outcomes && init.outcomes.length > 0 && (
+                      <ul className="mt-8 space-y-2">
+                        {init.outcomes.map((o) => (
+                          <li
+                            key={o}
+                            className="flex gap-3 text-[14.5px] text-[var(--muted)]"
+                          >
+                            <span aria-hidden className="mono mt-px text-[var(--accent)]">
+                              ·
+                            </span>
+                            {o}
+                          </li>
+                        ))}
+                      </ul>
+                    )}
                     <details className="group mt-8">
                       <summary className="mono inline-flex cursor-pointer list-none items-center gap-1.5 text-[12px] text-[var(--accent)] transition-opacity hover:opacity-75 focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-[var(--accent)] [&::-webkit-details-marker]:hidden">
                         <span className="group-open:hidden">Read the engineering decisions</span>
@@ -114,21 +129,6 @@ export function CaseStudy() {
                       ))}
                     </div>
 
-                    {init.outcomes && init.outcomes.length > 0 && (
-                      <ul className="mt-8 space-y-2">
-                        {init.outcomes.map((o) => (
-                          <li
-                            key={o}
-                            className="flex gap-3 text-[14.5px] text-[var(--muted)]"
-                          >
-                            <span aria-hidden className="mono mt-px text-[var(--accent)]">
-                              ·
-                            </span>
-                            {o}
-                          </li>
-                        ))}
-                      </ul>
-                    )}
                     </details>
                   </div>
                 </div>
