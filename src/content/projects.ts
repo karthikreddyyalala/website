@@ -10,9 +10,23 @@ export type Project = {
   live?: string;
   featured: boolean;
   badge?: string;
+  /** YouTube video ID. Plays in an on-page dialog. */
+  video?: string;
 };
 
 export const projects: Project[] = [
+  {
+    id: "crucible",
+    title: "Crucible",
+    year: "2026",
+    tagline: "A multi-stage interview agent that rewrites the next session around where you struggled last time.",
+    body: "A LangGraph pipeline across six stages (intake, planning, live interview, evaluation, cross-session memory, coaching) where each session's question plan is rewritten around the candidate's persisted weak spots. Verified by end-to-end tests that assert on actual generated prompt text, proving real adaptation rather than schema conformance. Golden-dataset eval harness covers adversarial cases: buzzword-padded answers, length-bias traps, subtly wrong Big-O buried in fluent prose. Claude Haiku handles structured extraction; Sonnet handles reasoning. A concurrent-write data-loss bug in cross-session memory was caught and fixed via optimistic locking with conditional writes. Full serverless stack with 100+ backend tests and CI.",
+    tech: ["LangGraph", "Amazon Bedrock", "FastAPI", "React", "DynamoDB", "AWS Lambda", "Cognito"],
+    github: "https://github.com/karthikreddyyalala/Crucible",
+    live: "https://dvbk879zy1q2l.cloudfront.net",
+    video: "BLeKX64la3o",
+    featured: true,
+  },
   {
     id: "open-autodata",
     title: "Open AutoData",
@@ -34,15 +48,6 @@ export const projects: Project[] = [
     tech: ["MCP", "Python", "ChromaDB", "FAISS", "all-MiniLM-L6-v2", "SentenceTransformers", "Arize Phoenix"],
     github: "https://github.com/karthikreddyyalala/MCP_Base",
     live: "https://mcp-kb-site.vercel.app",
-    featured: true,
-  },
-  {
-    id: "crucible",
-    title: "Crucible",
-    year: "2026",
-    tagline: "A multi-stage interview agent that rewrites the next session around where you struggled last time.",
-    body: "A LangGraph pipeline across six stages (intake, planning, live interview, evaluation, cross-session memory, coaching) where each session's question plan is rewritten around the candidate's persisted weak spots. Verified by end-to-end tests that assert on actual generated prompt text, proving real adaptation rather than schema conformance. Golden-dataset eval harness covers adversarial cases: buzzword-padded answers, length-bias traps, subtly wrong Big-O buried in fluent prose. Claude Haiku handles structured extraction; Sonnet handles reasoning. A concurrent-write data-loss bug in cross-session memory was caught and fixed via optimistic locking with conditional writes. Full serverless stack with 100+ backend tests and CI.",
-    tech: ["LangGraph", "Amazon Bedrock", "FastAPI", "React", "DynamoDB", "AWS Lambda", "Cognito"],
     featured: true,
   },
   {

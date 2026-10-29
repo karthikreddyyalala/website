@@ -2,6 +2,10 @@ import Image from "next/image";
 import { Reveal } from "../ui/Reveal";
 import { CountUp } from "../ui/CountUp";
 import { profile } from "@/content/profile";
+import { projects } from "@/content/projects";
+import { VideoTrigger } from "../ui/VideoDialog";
+
+const demo = projects.find((p) => p.video);
 
 export function Hero() {
   return (
@@ -62,6 +66,21 @@ export function Hero() {
                 >
                   Résumé
                 </a>
+                {demo?.video && (
+                  <VideoTrigger
+                    id={demo.video}
+                    title={`${demo.title} demo`}
+                    className="group flex items-center gap-2.5 px-3 py-3 text-[14px] text-[var(--muted)] transition-colors duration-200 hover:text-[var(--text)]"
+                  >
+                    <span
+                      aria-hidden
+                      className="flex h-7 w-7 items-center justify-center rounded-full border border-[var(--line-hi)] text-[10px] transition-colors duration-200 group-hover:border-[var(--accent)] group-hover:text-[var(--accent)]"
+                    >
+                      ▶
+                    </span>
+                    Watch the {demo.title} demo
+                  </VideoTrigger>
+                )}
               </div>
             </Reveal>
           </div>

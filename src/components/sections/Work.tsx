@@ -3,6 +3,7 @@ import { Section } from "../ui/Section";
 import { Reveal } from "../ui/Reveal";
 import { projects } from "@/content/projects";
 import { TechIcon } from "../ui/TechIcon";
+import { VideoPreview, VideoTrigger } from "../ui/VideoDialog";
 
 export function Work() {
   return (
@@ -59,7 +60,7 @@ export function Work() {
                   )}
                 </div>
 
-                {(p.github || p.live) && (
+                {(p.github || p.live || p.video) && (
                   <div className="mt-4 flex gap-4">
                     {p.github && (
                       <a
@@ -81,6 +82,15 @@ export function Work() {
                         Live ↗
                       </a>
                     )}
+                    {p.video && (
+                      <VideoTrigger
+                        id={p.video}
+                        title={`${p.title} demo`}
+                        className="mono text-[11px] text-[var(--accent)] transition-colors hover:text-[var(--accent-hi)]"
+                      >
+                        Demo ▶
+                      </VideoTrigger>
+                    )}
                   </div>
                 )}
               </div>
@@ -101,6 +111,11 @@ export function Work() {
                     </li>
                   ))}
                 </ul>
+                {p.video && (
+                  <div className="mt-7 max-w-[720px]">
+                    <VideoPreview id={p.video} title={`${p.title} demo`} />
+                  </div>
+                )}
               </div>
 
               {p.image && (
