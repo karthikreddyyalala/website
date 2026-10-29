@@ -107,7 +107,7 @@ export const caseStudy = {
       index: "02",
       title: "Internal AI assistant",
       summary:
-        "An employee-facing assistant for company policy and compliance questions, built on AWS with AWS AgentCore at the core. AgentCore is kept on a short leash: retrieval pulls the top-ranked chunks from the Knowledge Base based on the live config and passes them to AgentCore, which wraps the Claude call, enforces guardrails, handles multi-turn session memory, and formats the response. Admins manage everything through a web console. Uploads go straight to S3, a Lambda triggers KB resync, and new content is live without a deploy. Employees log in with SSO and chat. Admins get the pipeline. Users get the interface.",
+        "An employee-facing assistant for company policy and compliance questions, built on AWS with AWS AgentCore at the core. AgentCore is deliberately constrained: retrieval pulls the top-ranked chunks from the Knowledge Base based on the live config and passes them to AgentCore, which wraps the Claude call, enforces guardrails, handles multi-turn session memory, and formats the response. Admins manage everything through a web console. Uploads go straight to S3, a Lambda triggers KB resync, and new content is live without a deploy. Employees log in with SSO and chat. Admins get the pipeline. Users get the interface.",
       tech: [
         "Bedrock AgentCore",
         "Azure AD SSO/MFA",

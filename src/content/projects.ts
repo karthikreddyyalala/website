@@ -32,7 +32,7 @@ export const projects: Project[] = [
     title: "Open AutoData",
     year: "2026",
     tagline: "Five local-model agents that write, filter, and grade fine-tuning datasets.",
-    body: "Built at Hack Day 2026 on Meta FAIR's Agentic Self-Instruct method: agents write questions from raw documents, check for answer leakage, have a weak (Llama 3.2 3B) and a strong (DeepSeek V4.1 Flash) model answer, and grade the results. A question is kept only when the weak model scores 65% or below, the strong model lands between 60-95%, and the gap exceeds 20 points. Against Meta's paper: a 56.5-point weak/strong gap vs. 31.4, and a strong-solver average of 84.2% vs. 77.2%, all on open-weight models.",
+    body: "Built at Hack Day 2026 on Meta FAIR's Agentic Self-Instruct method: agents write questions from documents, check for leakage, and grade answers from a weak (Llama 3.2 3B) and a strong (DeepSeek V4.1 Flash) model. A question is kept only when the weak model scores 65% or below, the strong model scores 60-95%, and the gap exceeds 20 points. Against Meta's paper: a 56.5-point weak/strong gap vs. 31.4, and an 84.2% vs. 77.2% strong-solver average.",
     tech: ["LangGraph", "OpenRouter", "Llama 3.2", "DeepSeek", "Nemotron", "Snowflake", "Next.js", "Tailwind", "pytest"],
     github: "https://github.com/ritvikreddygangula/Open-AutoData",
     live: "https://open-auto-data.vercel.app",
