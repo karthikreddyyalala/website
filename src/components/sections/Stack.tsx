@@ -9,7 +9,7 @@ export function Stack() {
       index="03"
       label="Stack"
       title="What I actually use."
-      lede="Grouped by what it's for. No proficiency bars — a number I assign to my own skill isn't evidence of anything."
+      lede="Grouped by what it's for. No proficiency bars, because a number I assign to my own skill isn't evidence of anything."
     >
       <div className="grid md:grid-cols-2">
         {stack.map((group, i) => (

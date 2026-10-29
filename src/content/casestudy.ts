@@ -26,7 +26,7 @@ export type Initiative = {
   decisions: { title: string; body: string }[];
   /**
    * A margin note in Karthik's own voice.
-   * DRAFT — written from what he described, and the one place on the site where
+   * DRAFT: written from what he described, and the one place on the site where
    * the copy is opinion rather than record. Needs his sign-off or rewrite
    * before this goes public.
    */
@@ -56,7 +56,7 @@ export const caseStudy = {
       index: "01",
       title: "Multilingual knowledge search service",
       summary:
-        "A production RAG service over brand documentation, built end to end — retrieval and generation through guardrails, caching, and the analytics to prove it earns its place. Ask a question in English, French, or Spanish and it returns a grounded answer with source citations. A two-layer cache — exact-match and semantic — sits in front of retrieval on DynamoDB: an identical or reworded question comes back in a fraction of the time and skips the model call entirely, cutting cost and latency. Rate limiting and request guardrails protect the entry point, CloudWatch instruments the whole path, and a feedback-analytics dashboard gives the team a live read on whether answers are actually helping people — not just that the service is up. I owned the architecture, the API, and both ends of the stack.",
+        "A production RAG service over brand documentation, built end to end: retrieval, generation, guardrails, caching, and the analytics to prove it earns its place. Ask a question in English, French, or Spanish and it returns a grounded answer with source citations. A two-layer cache (exact-match and semantic) on DynamoDB sits in front of retrieval, so an identical or reworded question comes back in a fraction of the time and skips the model call entirely, which cuts cost and latency. Rate limiting and request guardrails protect the entry point, CloudWatch instruments the whole path, and a feedback-analytics dashboard gives the team a live read on whether answers are actually helping people. I owned the architecture, the API, and both ends of the stack.",
       tech: [
         "AWS Lambda",
         "API Gateway",
@@ -79,15 +79,15 @@ export const caseStudy = {
       decisions: [
         {
           title: "How one index serves three languages",
-          body: "The embedding model is multilingual, so a question asked in French and a passage written in English land close together in the same vector space. That means no translation step, no separate index per language, and one retrieval call regardless of what was asked. The model answers in whatever language the question arrived in. Expanding coverage to any new language is a content question, not a systems one.",
+          body: "The embedding model is multilingual, so a question asked in French and a passage written in English land close together in the same vector space. That means no translation step, no separate index per language, and one retrieval call regardless of what was asked. The model answers in whatever language the question arrived in. Adding a language means adding content; the system stays the same.",
         },
         {
           title: "How answers stay scoped to the right brand",
-          body: "Brand is derived from the request origin, not accepted from the client. A caller cannot reach another brand's content by changing a parameter. Every document carries its brand as metadata set at ingestion time, and retrieval filters on that tag. One index serves all brands, and onboarding a new one is a data change rather than a new deployment.",
+          body: "Brand comes from the request origin; the client never gets to set it. A caller cannot reach another brand's content by changing a parameter. Every document carries its brand as metadata set at ingestion time, and retrieval filters on that tag. One index serves all brands, and onboarding a new one is a data change with no new deployment.",
         },
         {
           title: "Why the response is checked twice",
-          body: "Filtering the request is not the same as trusting the response. The input pass rejects prompt attacks and sensitive data before anything reaches the model. The output pass verifies the answer is actually supported by the retrieved passages. Anything ungrounded becomes a handoff, not a response.",
+          body: "Filtering the request is not the same as trusting the response. The input pass rejects prompt attacks and sensitive data before anything reaches the model. The output pass verifies the answer is actually supported by the retrieved passages. Anything ungrounded becomes a handoff.",
         },
       ],
       aside:
@@ -95,8 +95,8 @@ export const caseStudy = {
       outcomes: [
         "Cut repeat-query cost and latency with a two-layer cache that skips the model call",
         "Scored retrieval and grounding on a fixed evaluation set to catch regressions early",
-        "Hardened end to end with unit and adversarial suites — injection, PII, off-domain",
-        "Built a feedback-analytics dashboard to measure real impact, not just uptime",
+        "Hardened end to end with unit and adversarial suites covering injection, PII, and off-domain queries",
+        "Built a feedback-analytics dashboard to measure real impact on users",
         "Projected 100 engineering hours saved once live",
         "Projected $1M+ annual savings; architected to serve millions of customers",
       ],
@@ -107,7 +107,7 @@ export const caseStudy = {
       index: "02",
       title: "Internal AI assistant",
       summary:
-        "An employee-facing assistant for company policy and compliance questions, built on AWS with AWS AgentCore at the core. Rather than giving AgentCore full control, the architecture keeps it constrained: retrieval pulls the top-ranked chunks from the Knowledge Base based on the live config, then passes them to AgentCore — which wraps the Claude call, enforces guardrails, handles multi-turn session memory, and formats the response. Admins manage everything through a web console. Uploads go straight to S3, a Lambda triggers KB resync, and new content is live without a deploy. Employees log in with SSO and chat. Admins get the pipeline. Users get the interface.",
+        "An employee-facing assistant for company policy and compliance questions, built on AWS with AWS AgentCore at the core. AgentCore is kept on a short leash: retrieval pulls the top-ranked chunks from the Knowledge Base based on the live config and passes them to AgentCore, which wraps the Claude call, enforces guardrails, handles multi-turn session memory, and formats the response. Admins manage everything through a web console. Uploads go straight to S3, a Lambda triggers KB resync, and new content is live without a deploy. Employees log in with SSO and chat. Admins get the pipeline. Users get the interface.",
       tech: [
         "Bedrock AgentCore",
         "Azure AD SSO/MFA",
@@ -123,11 +123,11 @@ export const caseStudy = {
       decisions: [
         {
           title: "Why a system prompt is treated as executable code",
-          body: "It is attack surface. Anything an admin writes passes two independent scans before it is stored — a pattern denylist for known jailbreak shapes, and a model-based review for what the patterns miss. If either objects, nothing is written at all.",
+          body: "It is attack surface. Anything an admin writes passes two independent scans before it is stored: a pattern denylist for known jailbreak shapes, and a model-based review for what the patterns miss. If either objects, nothing is written at all.",
         },
         {
           title: "Why you cannot approve what you have not tested",
-          body: "The console gates each step on the previous one: save, then test against the draft, then approve, then publish. Approval is re-verified at publish time rather than trusted from earlier, and editing after approval resets the gate. Config changes go live without a restart, and if the config store is unreachable the service falls back to a known-good default with a visible warning instead of failing.",
+          body: "The console gates each step on the previous one: save, then test against the draft, then approve, then publish. Approval is re-verified at publish time, and editing after approval resets the gate. Config changes go live without a restart, and if the config store is unreachable the service falls back to a known-good default with a visible warning instead of failing.",
         },
         {
           title: "Why follow-up questions get rewritten before search",
@@ -138,10 +138,10 @@ export const caseStudy = {
         "Gating publish behind a test felt like friction until you imagine the alternative: an untested prompt going live to the whole company.",
       outcomes: [
         "Passed a 6-phase test suite: 100% faithfulness, 0 hallucinations, 5/5 injection attempts blocked",
-        "Constrained the model with AgentCore — guardrails, memory, and formatting on every call",
+        "Constrained the model with AgentCore: guardrails, memory, and formatting on every call",
         "Shipped a zero-downtime config pipeline: draft → test → approve → publish, versioned",
         "Delivered real-time streaming answers with multi-turn session memory",
-        "Replaced a third-party LLM SaaS dependency with an in-house AWS stack — keeping employee and compliance data in the company's own environment",
+        "Replaced a third-party LLM SaaS dependency with an in-house AWS stack, keeping employee and compliance data in the company's own environment",
       ],
     },
 
@@ -150,7 +150,7 @@ export const caseStudy = {
       index: "03",
       title: "Natural-language-to-SQL analytics engine",
       summary:
-        "A self-correcting agent loop that turns a plain-English question into a table, a summary, and a chart — no SQL, no data-team ticket, no waiting a day for someone to pull it. It runs as a tool-use loop on the Vercel AI SDK over Bedrock Claude: the agent plans its approach, pulls only the schema it needs, writes the SQL, guards and executes it, then presents the result — and if a query fails, it reads the error and corrects itself instead of giving up. I analyzed the full database and deliberately scoped the agent to the business-relevant tables rather than the entire operational schema, which cut token cost and latency sharply with nothing lost in coverage. Verified against a gold question set before anyone relied on it. Customer PII is structurally incapable of reaching the output.",
+        "A self-correcting agent loop that turns a plain-English question into a table, a summary, and a chart. No SQL, no data-team ticket, no waiting a day for someone to pull it. It runs as a tool-use loop on the Vercel AI SDK over Bedrock Claude: the agent plans its approach, pulls only the schema it needs, writes the SQL, guards and executes it, then presents the result. If a query fails, it reads the error and corrects itself. I analyzed the full database and scoped the agent to the business-relevant tables only, which cut token cost and latency sharply with nothing lost in coverage. Verified against a gold question set before anyone relied on it. Customer PII is structurally incapable of reaching the output.",
       tech: ["Amazon Bedrock", "Claude Sonnet", "Vercel AI SDK", "Tool-use agent", "Next.js", "PGlite", "SQL"],
       pipeline: [
         { label: "Question", detail: "plain English", branch: "" },
@@ -162,12 +162,12 @@ export const caseStudy = {
       ],
       decisions: [
         {
-          title: "Why it's an agent loop and not a single prompt",
-          body: "One prompt writing SQL in a single shot fails silently the moment a column name is off or a join doesn't hold. Instead the model works as an agent with a small set of tools — plan, read schema, execute, present — and a hard stop once an answer is produced. Every query passes a guard before it touches the database: SELECT-only, no restricted columns, no PII. If execution fails, the error goes back to the agent and it tries again rather than returning nothing. That loop is what makes it reliable enough to hand to a non-technical team.",
+          title: "Why it's an agent loop",
+          body: "One prompt writing SQL in a single shot fails silently the moment a column name is off or a join doesn't hold. Instead the model works as an agent with a small set of tools (plan, read schema, execute, present) and a hard stop once an answer is produced. Every query passes a guard before it touches the database: SELECT-only, no restricted columns, no PII. If execution fails, the error goes back to the agent and it tries again. That loop is what makes it reliable enough to hand to a non-technical team.",
         },
         {
-          title: "Why the agent sees a scoped schema, not the whole database",
-          body: "I analyzed the entire database and found most of it was operational tables the questions never needed. Handing all of that to the model would have meant more tokens, slower plans, and more ways to write a wrong join. So I scoped the agent to the business-relevant tables only — smaller prompts, lower cost, faster answers, and no loss of coverage on the questions people actually ask.",
+          title: "Why the agent sees only a scoped schema",
+          body: "I analyzed the entire database and found most of it was operational tables the questions never needed. Handing all of that to the model would have meant more tokens, slower plans, and more ways to write a wrong join. So I scoped the agent to the business-relevant tables only. That meant smaller prompts, lower cost, faster answers, and no loss of coverage on the questions people actually ask.",
         },
         {
           title: "Why PII is removed from the schema, not filtered from the output",
@@ -179,7 +179,7 @@ export const caseStudy = {
       outcomes: [
         "Reduced data turnaround from days to seconds",
         "Validated against a gold-question evaluation set covering every business domain",
-        "Scoped the schema to business tables only — lower token cost, faster plans, no coverage lost",
+        "Scoped the schema to business tables only for lower token cost and faster plans, with no coverage lost",
         "Shipped a KPI dashboard so the team reads regular metrics without a query",
         "Saved 50 engineering and 20 product hours",
         "Handed off production-ready with docs, schema, and runbook",
@@ -201,8 +201,8 @@ export const caseStudy = {
       ],
       decisions: [
         {
-          title: "Why the report is pushed, not published",
-          body: "A dashboard only helps the people who remember to open it. Routing each engineer only their own items, in their inbox, before the day starts, is what actually changed behaviour — the live dashboard exists for drill-down, not as the primary surface.",
+          title: "Why the report goes to the inbox",
+          body: "A dashboard only helps the people who remember to open it. Routing each engineer only their own items, in their inbox, before the day starts, is what actually changed behaviour. The live dashboard is there for drill-down.",
         },
       ],
       aside:
@@ -217,7 +217,7 @@ export const caseStudy = {
   research: {
     title: "AI visibility research",
     forWhom: "Delivered to the VP of Customer Experience",
-    body: "Alongside the engineering work, I joined the weekly Customer Experience meetings. I took the initiative to investigate how AI is reshaping the way customers choose a car rental provider — ran a competitive analysis across the company and its competitors using public customer data, and delivered a written report with findings and recommendations. I also thought a real-time view of public customer sentiment would be useful for the team, so I built a prototype social listening dashboard that aggregates reviews across Google, Trustpilot, the App Store, Google Play, and Reddit — surfacing sentiment trends and billing dispute patterns in one place.",
+    body: "Alongside the engineering work, I joined the weekly Customer Experience meetings. I took the initiative to investigate how AI is reshaping the way customers choose a car rental provider. I ran a competitive analysis across the company and its competitors using public customer data, and delivered a written report with findings and recommendations. I also thought a real-time view of public customer sentiment would be useful for the team, so I built a prototype social listening dashboard that aggregates reviews across Google, Trustpilot, the App Store, Google Play, and Reddit, surfacing sentiment trends and billing dispute patterns in one place.",
     note: "",
     liveLink: "https://cx-dashboard-backend-production.up.railway.app/",
     liveLinkLabel: "View the prototype dashboard",

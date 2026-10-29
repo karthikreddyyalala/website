@@ -47,7 +47,7 @@ export function Work() {
       index="02"
       label="Selected work"
       title="Things I built to find out if they'd work."
-      lede="Agent systems, mostly. A few are experiments that taught me something specific; those are here because the lesson mattered, not because the repo is impressive."
+      lede="Agent systems, mostly. A few are experiments I kept because of what they taught me."
     >
       <div className="border-t border-[var(--line)]">
         {projects.map((p, i) => (

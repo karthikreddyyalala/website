@@ -16,7 +16,7 @@ export const profile = {
 
   /**
    * Dated on purpose. A \"currently\" line with no date is decoration; with a
-   * date it is a signal the page is tended. Update it or delete it — a stale
+   * date it is a signal the page is tended. Update it or delete it; a stale
    * one is worse than none.
    */
   currently: {
@@ -26,7 +26,7 @@ export const profile = {
   },
 
   availability: {
-    status: "Open to New Grad Software / AI Engineering roles — May 2027",
+    status: "Open to New Grad Software / AI Engineering roles · May 2027",
     active: true,
   },
 
@@ -39,7 +39,7 @@ export const profile = {
 
   about: [
     "I'm a senior at Arizona State studying computer science. Most of what I know about building software I learned by shipping things other people then had to rely on.",
-    "This summer at Avis Budget Group I took four initiatives from a blank architecture diagram to production handoff — a multilingual retrieval service, an internal assistant, a natural-language analytics engine, and a delivery automation. I owned the system design, the API surface, and both ends of the stack. I presented the designs to a Director and a VP, and demoed the platform to the CEO.",
+    "This summer at Avis Budget Group I took four initiatives from a blank architecture diagram to production handoff: a multilingual retrieval service, an internal assistant, a natural-language analytics engine, and a delivery automation. I owned the system design, the API surface, and both ends of the stack. I presented the designs to a Director and a VP, and demoed the platform to the CEO.",
     "The part I care about most is making sure the thing actually works before anyone else has to rely on it. End-to-end testing, finding the edge cases before users do, and making sure the code is solid enough to ship. That's usually where the difference between a demo and a product lives.",
   ],
 } as const;

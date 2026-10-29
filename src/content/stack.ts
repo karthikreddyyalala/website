@@ -1,6 +1,6 @@
 /**
  * Grouped by what it's for, not by proficiency.
- * Deliberately no percentage levels — a number I assign to my own skill
+ * Deliberately no percentage levels; a number I assign to my own skill
  * isn't evidence of anything.
  */
 export type StackGroup = {
