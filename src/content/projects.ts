@@ -10,8 +10,8 @@ export type Project = {
   live?: string;
   featured: boolean;
   badge?: string;
-  /** YouTube video ID. Plays in an on-page dialog. */
-  video?: string;
+  /** Self-hosted demo. Plays in an on-page dialog. */
+  video?: { src: string; poster: string };
 };
 
 export const projects: Project[] = [
@@ -24,7 +24,7 @@ export const projects: Project[] = [
     tech: ["LangGraph", "Amazon Bedrock", "FastAPI", "React", "DynamoDB", "AWS Lambda", "Cognito"],
     github: "https://github.com/karthikreddyyalala/Crucible",
     live: "https://dvbk879zy1q2l.cloudfront.net",
-    video: "BLeKX64la3o",
+    video: { src: "/videos/crucible-demo.mp4", poster: "/images/projects/crucible-poster.webp" },
     featured: true,
   },
   {

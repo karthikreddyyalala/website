@@ -68,7 +68,7 @@ export function Hero() {
                 </a>
                 {demo?.video && (
                   <VideoTrigger
-                    id={demo.video}
+                    {...demo.video}
                     title={`${demo.title} demo`}
                     className="group flex items-center gap-2.5 px-3 py-3 text-[14px] text-[var(--muted)] transition-colors duration-200 hover:text-[var(--text)]"
                   >

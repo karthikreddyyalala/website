@@ -4,54 +4,47 @@ import Image from "next/image";
 import { useEffect, useRef, useState, type ReactNode } from "react";
 import { Play, X } from "lucide-react";
 
-type Video = { id: string; title: string };
+type Video = { src: string; poster: string; title: string };
 
 // One dialog for the whole page; any trigger opens it with this event.
 const OPEN_EVENT = "video-dialog:open";
 
-const thumb = (id: string) => `https://i.ytimg.com/vi/${id}/hqdefault.jpg`;
-
 export function VideoTrigger({
-  id,
-  title,
   className,
   children,
+  ...video
 }: Video & { className?: string; children: ReactNode }) {
   return (
     <button
       type="button"
       aria-haspopup="dialog"
       className={className}
-      onClick={() =>
-        window.dispatchEvent(new CustomEvent<Video>(OPEN_EVENT, { detail: { id, title } }))
-      }
+      onClick={() => window.dispatchEvent(new CustomEvent<Video>(OPEN_EVENT, { detail: video }))}
     >
       {children}
     </button>
   );
 }
 
-/** Inline thumbnail. Clicking opens the player in the dialog, never YouTube. */
-export function VideoPreview({ id, title }: Video) {
+/** Inline poster. Clicking opens the player in the dialog on this page. */
+export function VideoPreview(video: Video) {
   return (
     <VideoTrigger
-      id={id}
-      title={title}
+      {...video}
       className="group relative block aspect-video w-full overflow-hidden rounded-[12px] border border-[var(--line)] bg-[var(--surface)] text-left transition-colors duration-300 hover:border-[var(--line-hi)]"
     >
       <Image
-        src={thumb(id)}
+        src={video.poster}
         alt=""
         fill
         sizes="(max-width: 768px) 100vw, 720px"
-        onError={(e) => (e.currentTarget.style.display = "none")}
-        className="object-cover opacity-80 transition-[opacity,transform] duration-500 ease-out group-hover:scale-[1.02] group-hover:opacity-100"
+        className="object-cover opacity-90 transition-[opacity,transform] duration-500 ease-out group-hover:scale-[1.02] group-hover:opacity-100"
       />
       {/* Bottom scrim keeps the label legible on any frame. */}
       <span
         aria-hidden
         className="absolute inset-0"
-        style={{ background: "linear-gradient(to top, rgba(0,0,0,0.75), transparent 55%)" }}
+        style={{ background: "linear-gradient(to top, rgba(0,0,0,0.75), transparent 45%)" }}
       />
       <span
         aria-hidden
@@ -67,7 +60,7 @@ export function VideoPreview({ id, title }: Video) {
             Plays right here · no redirect
           </span>
         </span>
-        <span className="mono hidden text-[10.5px] text-white/70 sm:block">{title}</span>
+        <span className="mono hidden text-[10.5px] text-white/70 sm:block">{video.title}</span>
       </span>
     </VideoTrigger>
   );
@@ -88,7 +81,7 @@ export function VideoDialog() {
   }, []);
 
   // Fires for Esc, the close button and backdrop clicks alike.
-  // Unmounting the iframe is what stops playback.
+  // Unmounting the <video> is what stops playback.
   const onClose = () => {
     setVideo(null);
     document.documentElement.style.overflow = "";
@@ -97,10 +90,10 @@ export function VideoDialog() {
   return (
     <dialog
       ref={ref}
-      aria-label={video ? `${video.title} video` : "Video"}
+      aria-label={video ? video.title : "Video"}
       onClose={onClose}
       onClick={(e) => e.target === e.currentTarget && ref.current?.close()}
-      className="video-dialog m-auto w-[min(1100px,calc(100vw-32px),calc((100dvh-140px)*16/9))] max-w-none bg-transparent p-0 text-[var(--text)]"
+      className="video-dialog m-auto w-[min(1100px,calc(100vw-32px),calc((100dvh-120px)*16/9))] max-w-none bg-transparent p-0 text-[var(--text)]"
     >
       {video && (
         <div>
@@ -121,26 +114,15 @@ export function VideoDialog() {
               </button>
             </div>
           </div>
-          <div
-            className="relative aspect-video w-full overflow-hidden rounded-[12px] border border-white/10 bg-black bg-cover bg-center"
-            style={{ backgroundImage: `url(${thumb(video.id)})` }}
-          >
-            <iframe
-              src={`https://www.youtube-nocookie.com/embed/${video.id}?autoplay=1&rel=0&playsinline=1&modestbranding=1`}
-              title={video.title}
-              allow="autoplay; encrypted-media; picture-in-picture; fullscreen"
-              allowFullScreen
-              className="absolute inset-0 h-full w-full"
-            />
-          </div>
-          <a
-            href={`https://www.youtube.com/watch?v=${video.id}`}
-            target="_blank"
-            rel="noopener noreferrer"
-            className="mono mt-3 inline-block text-[11px] text-white/60 transition-colors hover:text-[var(--accent)]"
-          >
-            Open on YouTube ↗
-          </a>
+          <video
+            src={video.src}
+            poster={video.poster}
+            controls
+            autoPlay
+            playsInline
+            preload="auto"
+            className="aspect-video w-full rounded-[12px] border border-white/10 bg-black"
+          />
         </div>
       )}
     </dialog>

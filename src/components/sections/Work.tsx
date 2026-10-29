@@ -84,7 +84,7 @@ export function Work() {
                     )}
                     {p.video && (
                       <VideoTrigger
-                        id={p.video}
+                        {...p.video}
                         title={`${p.title} demo`}
                         className="mono text-[11px] text-[var(--accent)] transition-colors hover:text-[var(--accent-hi)]"
                       >
@@ -113,7 +113,7 @@ export function Work() {
                 </ul>
                 {p.video && (
                   <div className="mt-7 max-w-[720px]">
-                    <VideoPreview id={p.video} title={`${p.title} demo`} />
+                    <VideoPreview {...p.video} title={`${p.title} demo`} />
                   </div>
                 )}
               </div>
