@@ -11,7 +11,7 @@ export type Project = {
   featured: boolean;
   badge?: string;
   /** Self-hosted demo. Plays in an on-page dialog. */
-  video?: { src: string; poster: string };
+  video?: { src: string; poster?: string };
 };
 
 export const projects: Project[] = [
@@ -22,9 +22,8 @@ export const projects: Project[] = [
     tagline: "A multi-stage interview agent that rewrites the next session around where you struggled last time.",
     body: "A six-stage LangGraph pipeline (intake, planning, live interview, evaluation, cross-session memory, coaching) that rewrites each session's question plan around the candidate's saved weak spots. End-to-end tests assert on the generated prompt text itself, and a golden-dataset eval harness covers adversarial answers like buzzword padding and subtly wrong Big-O. Serverless on AWS with 100+ backend tests, CI, and optimistic locking that fixed a concurrent-write data-loss bug in session memory.",
     tech: ["LangGraph", "Amazon Bedrock", "FastAPI", "React", "DynamoDB", "AWS Lambda", "Cognito"],
-    github: "https://github.com/karthikreddyyalala/Crucible",
     live: "https://dvbk879zy1q2l.cloudfront.net",
-    video: { src: "/videos/crucible-demo.mp4", poster: "/images/projects/crucible-poster.webp" },
+    video: { src: "/videos/crucible-launch.mp4" },
     featured: true,
   },
   {
