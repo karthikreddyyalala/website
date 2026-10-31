@@ -70,6 +70,7 @@ export const projects: Project[] = [
     github: "https://github.com/karthikreddyyalala/FinRAG",
     live: "https://dashboard-weld-nine-28.vercel.app",
     image: "/images/projects/finrag-mcp.webp",
+    video: { src: "/videos/finrag-demo.mp4", poster: "/images/projects/finrag-poster.webp" },
     featured: true,
   },
   {
