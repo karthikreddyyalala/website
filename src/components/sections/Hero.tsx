@@ -4,7 +4,6 @@ import { CountUp } from "../ui/CountUp";
 import { profile } from "@/content/profile";
 import { projects } from "@/content/projects";
 import { VideoTrigger } from "../ui/VideoDialog";
-import { Scramble } from "../ui/Scramble";
 
 const demo = projects.find((p) => p.video);
 
@@ -37,15 +36,10 @@ export function Hero() {
             </Reveal>
 
             <Reveal delay={80}>
-              <h1
-                aria-label="Karthik Reddy Yalala"
-                className="h-display mt-6 text-[clamp(2.8rem,8vw,5.5rem)]"
-              >
-                <Scramble text="Karthik Reddy" />
+              <h1 className="h-display mt-6 text-[clamp(2.8rem,8vw,5.5rem)]">
+                Karthik Reddy
                 <br />
-                <span className="text-[var(--muted)]">
-                  <Scramble text="Yalala" offset={"Karthik Reddy".length} />
-                </span>
+                <span className="text-[var(--muted)]">Yalala</span>
               </h1>
             </Reveal>
 
