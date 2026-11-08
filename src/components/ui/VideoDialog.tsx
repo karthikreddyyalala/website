@@ -26,43 +26,95 @@ export function VideoTrigger({
   );
 }
 
-/** Inline poster. Clicking opens the player in the dialog on this page. */
-export function VideoPreview(video: Video) {
+/** Mouse users without reduced motion get a muted hover preview. Touch keeps tap-to-open. */
+function canPreview() {
   return (
-    <VideoTrigger
-      {...video}
-      className="group relative block aspect-video w-full overflow-hidden rounded-[12px] border border-[var(--line)] bg-[var(--surface)] text-left transition-colors duration-300 hover:border-[var(--line-hi)]"
-    >
-      <Image
-        src={video.poster}
-        alt=""
-        fill
-        sizes="(max-width: 768px) 100vw, 720px"
-        className="object-cover opacity-90 transition-[opacity,transform] duration-500 ease-out group-hover:scale-[1.02] group-hover:opacity-100"
-      />
-      {/* Bottom scrim keeps the label legible on any frame. */}
-      <span
-        aria-hidden
-        className="absolute inset-0"
-        style={{ background: "linear-gradient(to top, rgba(0,0,0,0.75), transparent 45%)" }}
-      />
-      <span
-        aria-hidden
-        className="absolute left-1/2 top-1/2 flex h-16 w-16 -translate-x-1/2 -translate-y-1/2 items-center justify-center rounded-full transition-transform duration-300 ease-out group-hover:scale-110 group-active:scale-95 md:h-[72px] md:w-[72px]"
-        style={{ background: "var(--accent)", color: "#14100a", boxShadow: "0 8px 30px rgba(0,0,0,0.35)" }}
+    window.matchMedia("(hover: hover)").matches &&
+    !window.matchMedia("(prefers-reduced-motion: reduce)").matches
+  );
+}
+
+/**
+ * Inline poster. Hovering plays a muted loop in place; clicking opens the
+ * player in the dialog on this page. The <video> is only mounted on the
+ * first hover, so the file is never requested for visitors who don't.
+ */
+export function VideoPreview(video: Video) {
+  const ref = useRef<HTMLVideoElement>(null);
+  const [armed, setArmed] = useState(false);
+  const [playing, setPlaying] = useState(false);
+
+  const start = () => {
+    if (!canPreview()) return;
+    setArmed(true); // first hover mounts the <video>; autoPlay starts it
+    ref.current?.play().catch(() => {}); // later hovers; rejects harmlessly if paused mid-load
+  };
+
+  // Back to the poster frame: pause, rewind and hide the video layer.
+  const stop = () => {
+    const v = ref.current;
+    if (!v) return;
+    v.pause();
+    v.currentTime = 0;
+    setPlaying(false);
+  };
+
+  return (
+    <div onPointerEnter={start} onPointerLeave={stop} onClickCapture={stop}>
+      <VideoTrigger
+        {...video}
+        className="group relative block aspect-video w-full overflow-hidden rounded-[12px] border border-[var(--line)] bg-[var(--surface)] text-left transition-colors duration-300 hover:border-[var(--line-hi)]"
       >
-        <Play className="ml-1 h-6 w-6" fill="currentColor" strokeWidth={0} />
-      </span>
-      <span className="absolute inset-x-0 bottom-0 flex items-end justify-between gap-4 p-4 md:p-5">
-        <span>
-          <span className="block text-[14px] font-medium text-white">Watch the demo</span>
-          <span className="mono mt-0.5 block text-[10.5px] text-white/70">
-            Plays right here · no redirect
-          </span>
+        <Image
+          src={video.poster}
+          alt=""
+          fill
+          sizes="(max-width: 768px) 100vw, 720px"
+          className="object-cover opacity-90 transition-[opacity,transform] duration-500 ease-out group-hover:scale-[1.02] group-hover:opacity-100"
+        />
+        {armed && (
+          <video
+            ref={ref}
+            src={video.src}
+            muted
+            playsInline
+            loop
+            autoPlay
+            preload="none"
+            aria-hidden
+            tabIndex={-1}
+            onPlaying={() => setPlaying(true)}
+            className={`absolute inset-0 h-full w-full object-cover transition-[opacity,transform] duration-500 ease-out group-hover:scale-[1.02] ${
+              playing ? "opacity-100" : "opacity-0"
+            }`}
+          />
+        )}
+        {/* Bottom scrim keeps the label legible on any frame. */}
+        <span
+          aria-hidden
+          className="absolute inset-0"
+          style={{ background: "linear-gradient(to top, rgba(0,0,0,0.75), transparent 45%)" }}
+        />
+        <span
+          aria-hidden
+          className={`absolute left-1/2 top-1/2 flex h-16 w-16 -translate-x-1/2 -translate-y-1/2 items-center justify-center rounded-full transition-[transform,opacity] duration-300 ease-out group-hover:scale-110 group-active:scale-95 md:h-[72px] md:w-[72px] ${
+            playing ? "opacity-0" : "opacity-100"
+          }`}
+          style={{ background: "var(--accent)", color: "#14100a", boxShadow: "0 8px 30px rgba(0,0,0,0.35)" }}
+        >
+          <Play className="ml-1 h-6 w-6" fill="currentColor" strokeWidth={0} />
         </span>
-        <span className="mono hidden text-[10.5px] text-white/70 sm:block">{video.title}</span>
-      </span>
-    </VideoTrigger>
+        <span className="absolute inset-x-0 bottom-0 flex items-end justify-between gap-4 p-4 md:p-5">
+          <span>
+            <span className="block text-[14px] font-medium text-white">Watch the demo</span>
+            <span className="mono mt-0.5 block text-[10.5px] text-white/70">
+              Plays right here · no redirect
+            </span>
+          </span>
+          <span className="mono hidden text-[10.5px] text-white/70 sm:block">{video.title}</span>
+        </span>
+      </VideoTrigger>
+    </div>
   );
 }
 
