@@ -148,7 +148,7 @@ export function Nav() {
                   setCameraMsg("");
                   setHandsFree((v) => !v);
                 }}
-                title="Scroll with hand gestures through your camera"
+                title="Control the page with hand gestures through your camera"
                 className="mr-1.5 flex h-7 items-center gap-1.5 rounded-full border px-3 text-[12px] transition-colors duration-300 hover:border-[var(--accent)] hover:text-[var(--accent)]"
                 style={{
                   borderColor: handsFree ? "var(--accent)" : "var(--line-hi)",
