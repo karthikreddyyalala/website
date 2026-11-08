@@ -26,7 +26,7 @@ export function VideoTrigger({
   );
 }
 
-/** Mouse users without reduced motion get a muted hover preview. Touch keeps tap-to-open. */
+/** Mouse users without reduced motion get a hover preview. Touch keeps tap-to-open. */
 function canPreview() {
   return (
     window.matchMedia("(hover: hover)").matches &&
@@ -35,7 +35,7 @@ function canPreview() {
 }
 
 /**
- * Inline poster. Hovering plays a muted loop in place; clicking opens the
+ * Inline poster. Hovering plays a loop in place, with sound once the visitor has interacted; clicking opens the
  * player in the dialog on this page. The <video> is only mounted on the
  * first hover, so the file is never requested for visitors who don't.
  */
@@ -43,15 +43,34 @@ export function VideoPreview(video: Video) {
   const ref = useRef<HTMLVideoElement>(null);
   const [armed, setArmed] = useState(false);
   const [playing, setPlaying] = useState(false);
+  const hovering = useRef(false);
+
+  // Browsers only allow sound after the visitor has clicked, tapped or pressed a key
+  // somewhere on the page (a hover doesn't count). Until then the preview plays muted.
+  const play = (v: HTMLVideoElement) => {
+    v.muted = navigator.userActivation ? !navigator.userActivation.hasBeenActive : false;
+    v.play().catch((e: DOMException) => {
+      if (e.name !== "NotAllowedError" || !hovering.current) return; // paused mid-load: fine
+      v.muted = true;
+      v.play().catch(() => {});
+    });
+  };
+
+  // The first hover mounts the <video>; start it once it exists.
+  useEffect(() => {
+    if (armed && hovering.current && ref.current) play(ref.current);
+  }, [armed]);
 
   const start = () => {
     if (!canPreview()) return;
-    setArmed(true); // first hover mounts the <video>; autoPlay starts it
-    ref.current?.play().catch(() => {}); // later hovers; rejects harmlessly if paused mid-load
+    hovering.current = true;
+    if (ref.current) play(ref.current);
+    else setArmed(true);
   };
 
   // Back to the poster frame: pause, rewind and hide the video layer.
   const stop = () => {
+    hovering.current = false;
     const v = ref.current;
     if (!v) return;
     v.pause();
@@ -76,10 +95,8 @@ export function VideoPreview(video: Video) {
           <video
             ref={ref}
             src={video.src}
-            muted
             playsInline
             loop
-            autoPlay
             preload="none"
             aria-hidden
             tabIndex={-1}
