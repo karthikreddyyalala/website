@@ -1,7 +1,14 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
+import dynamic from "next/dynamic";
+import { Hand } from "lucide-react";
 import { profile } from "@/content/profile";
+
+// MediaPipe only downloads once a visitor turns hands-free on.
+const HandScroll = dynamic(() => import("./HandScroll").then((m) => m.HandScroll), {
+  ssr: false,
+});
 
 const LINKS = [
   { id: "work-avis", label: "Avis" },
@@ -16,6 +23,23 @@ export function Nav() {
   const [lifted, setLifted] = useState(false);
   const [open, setOpen] = useState(false);
   const [theme, setTheme] = useState<"dark" | "light">("dark");
+  const [hasCamera, setHasCamera] = useState(false);
+  const [handsFree, setHandsFree] = useState(false);
+  const [cameraMsg, setCameraMsg] = useState("");
+
+  // Checked after mount: navigator doesn't exist during the server render.
+  useEffect(() => setHasCamera(Boolean(navigator.mediaDevices?.getUserMedia)), []);
+
+  const stopHandsFree = useCallback((error?: string) => {
+    setHandsFree(false);
+    if (error) setCameraMsg(error);
+  }, []);
+
+  useEffect(() => {
+    if (!cameraMsg) return;
+    const t = window.setTimeout(() => setCameraMsg(""), 4000);
+    return () => window.clearTimeout(t);
+  }, [cameraMsg]);
 
   function toggleTheme() {
     const next = theme === "dark" ? "light" : "dark";
@@ -112,6 +136,30 @@ export function Nav() {
               </a>
             </li>
           ))}
+          {hasCamera && (
+            <li className="flex items-center">
+              <span role="status" className="mono mr-2 text-[11px] text-[var(--faint)] empty:hidden">
+                {cameraMsg}
+              </span>
+              <button
+                type="button"
+                aria-pressed={handsFree}
+                onClick={() => {
+                  setCameraMsg("");
+                  setHandsFree((v) => !v);
+                }}
+                title="Scroll with hand gestures through your camera"
+                className="mr-1.5 flex h-7 items-center gap-1.5 rounded-full border px-3 text-[12px] transition-colors duration-300 hover:border-[var(--accent)] hover:text-[var(--accent)]"
+                style={{
+                  borderColor: handsFree ? "var(--accent)" : "var(--line-hi)",
+                  color: handsFree ? "var(--accent)" : "var(--muted)",
+                }}
+              >
+                <Hand className="h-3 w-3" />
+                Hands-free
+              </button>
+            </li>
+          )}
           <li>
             <button
               type="button"
@@ -209,6 +257,8 @@ export function Nav() {
           </ul>
         </div>
       )}
+
+      {handsFree && <HandScroll onClose={stopHandsFree} />}
     </header>
   );
 }
