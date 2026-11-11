@@ -1,0 +1,521 @@
+{
+  "schemaVersion": 2,
+  "generatedAt": "2026-11-11T22:04:55.095Z",
+  "title": "Design System: Karthik Reddy Yalala",
+  "extensions": {
+    "colorMeta": {
+      "l-avis": {
+        "role": "primary",
+        "displayName": "Avis Red",
+        "canonical": "oklch(55.0% 0.209 25)",
+        "tonalRamp": [
+          "#220000",
+          "#500006",
+          "#800513",
+          "#b81222",
+          "#ec383d",
+          "#ff7e77",
+          "#ffbab3",
+          "#ffe9e6"
+        ]
+      },
+      "accent": {
+        "role": "primary",
+        "displayName": "Signal Red",
+        "canonical": "oklch(53.6% 0.201 25)",
+        "tonalRamp": [
+          "#210000",
+          "#4f0007",
+          "#820010",
+          "#bb031f",
+          "#e64243",
+          "#fe7f78",
+          "#febab4",
+          "#fee9e6"
+        ]
+      },
+      "accent-hi": {
+        "role": "primary",
+        "displayName": "Signal Red Deep",
+        "canonical": "oklch(46.5% 0.174 24)",
+        "tonalRamp": [
+          "#1f0001",
+          "#4f0007",
+          "#7f0614",
+          "#b1272c",
+          "#db514f",
+          "#ff7e78",
+          "#ffbab4",
+          "#ffe9e6"
+        ]
+      },
+      "l-work": {
+        "role": "secondary",
+        "displayName": "Work Blue",
+        "canonical": "oklch(50.5% 0.212 263)",
+        "tonalRamp": [
+          "#00062a",
+          "#00176d",
+          "#0031a5",
+          "#1854d9",
+          "#407dfd",
+          "#7da9ff",
+          "#b5cefe",
+          "#e6effe"
+        ]
+      },
+      "l-stack": {
+        "role": "secondary",
+        "displayName": "Stack Yellow",
+        "canonical": "oklch(80.8% 0.166 83)",
+        "tonalRamp": [
+          "#140800",
+          "#342300",
+          "#563e02",
+          "#7f5d0a",
+          "#aa7e14",
+          "#d9a00e",
+          "#f3c770",
+          "#feeccb"
+        ]
+      },
+      "l-path": {
+        "role": "secondary",
+        "displayName": "Path Green",
+        "canonical": "oklch(51.0% 0.127 154)",
+        "tonalRamp": [
+          "#001103",
+          "#003015",
+          "#045029",
+          "#0f7740",
+          "#299e5b",
+          "#56c57f",
+          "#9ae1af",
+          "#d6f9df"
+        ]
+      },
+      "l-contact": {
+        "role": "secondary",
+        "displayName": "Terminus Ink",
+        "canonical": "oklch(19.5% 0.016 262)",
+        "tonalRamp": [
+          "#0a0b0d",
+          "#23272c",
+          "#3e434b",
+          "#5e636c",
+          "#818690",
+          "#a5abb5",
+          "#caced5",
+          "#eceef2"
+        ]
+      },
+      "branch": {
+        "role": "tertiary",
+        "displayName": "Branch Orange",
+        "canonical": "oklch(64.4% 0.192 42)",
+        "tonalRamp": [
+          "#200000",
+          "#461300",
+          "#722701",
+          "#a53d07",
+          "#dc5510",
+          "#ff8351",
+          "#febca3",
+          "#fee9e2"
+        ]
+      },
+      "bg": {
+        "role": "neutral",
+        "displayName": "Map Paper",
+        "canonical": "oklch(97.2% 0.003 128)",
+        "tonalRamp": [
+          "#0b0b0b",
+          "#262726",
+          "#424341",
+          "#636362",
+          "#858685",
+          "#aaaba9",
+          "#cdcecc",
+          "#eeeeee"
+        ]
+      },
+      "bg-deep": {
+        "role": "neutral",
+        "displayName": "Paper Shade",
+        "canonical": "oklch(94.4% 0.004 122)",
+        "tonalRamp": [
+          "#0b0b0b",
+          "#262725",
+          "#424340",
+          "#636461",
+          "#868684",
+          "#aaaba8",
+          "#cdcecc",
+          "#eeeeed"
+        ]
+      },
+      "surface": {
+        "role": "neutral",
+        "displayName": "Sheet White",
+        "canonical": "oklch(100.0% 0.000 90)",
+        "tonalRamp": [
+          "#0b0b0b",
+          "#262626",
+          "#424242",
+          "#636363",
+          "#868686",
+          "#ababab",
+          "#cecece",
+          "#eeeeee"
+        ]
+      },
+      "surface-hi": {
+        "role": "neutral",
+        "displayName": "Sheet Grey",
+        "canonical": "oklch(93.7% 0.006 129)",
+        "tonalRamp": [
+          "#0b0b0a",
+          "#262725",
+          "#414340",
+          "#626460",
+          "#858783",
+          "#aaaba8",
+          "#cdcecb",
+          "#eeefed"
+        ]
+      },
+      "text": {
+        "role": "neutral",
+        "displayName": "Ink",
+        "canonical": "oklch(19.5% 0.016 262)",
+        "tonalRamp": [
+          "#0a0b0d",
+          "#23272c",
+          "#3e434b",
+          "#5e636c",
+          "#818690",
+          "#a5abb5",
+          "#caced5",
+          "#eceef2"
+        ]
+      },
+      "muted": {
+        "role": "neutral",
+        "displayName": "Ink Soft",
+        "canonical": "oklch(40.8% 0.024 263)",
+        "tonalRamp": [
+          "#090b0f",
+          "#22272f",
+          "#3c434f",
+          "#5c6371",
+          "#7f8695",
+          "#a3abba",
+          "#c8ced9",
+          "#ebeff4"
+        ]
+      },
+      "faint": {
+        "role": "neutral",
+        "displayName": "Ink Faint",
+        "canonical": "oklch(52.2% 0.024 262)",
+        "tonalRamp": [
+          "#090b0f",
+          "#22272f",
+          "#3b4350",
+          "#5c6471",
+          "#7e8795",
+          "#a3abbb",
+          "#c8ced9",
+          "#ebeff4"
+        ]
+      },
+      "on-line": {
+        "role": "neutral",
+        "displayName": "On Line",
+        "canonical": "oklch(100.0% 0.000 90)",
+        "tonalRamp": [
+          "#0b0b0b",
+          "#262626",
+          "#424242",
+          "#636363",
+          "#868686",
+          "#ababab",
+          "#cecece",
+          "#eeeeee"
+        ]
+      },
+      "line": {
+        "role": "neutral",
+        "displayName": "Hairline",
+        "canonical": "rgba(17, 21, 28, 0.12)",
+        "tonalRamp": [
+          "#0a0b0d",
+          "#23272c",
+          "#3e434b",
+          "#5e636c",
+          "#818690",
+          "#a5abb5",
+          "#caced5",
+          "#eceef2"
+        ]
+      },
+      "line-hi": {
+        "role": "neutral",
+        "displayName": "Hairline Strong",
+        "canonical": "rgba(17, 21, 28, 0.24)",
+        "tonalRamp": [
+          "#0a0b0d",
+          "#23272c",
+          "#3e434b",
+          "#5e636c",
+          "#818690",
+          "#a5abb5",
+          "#caced5",
+          "#eceef2"
+        ]
+      }
+    },
+    "typographyMeta": {
+      "display": {
+        "displayName": "Display",
+        "purpose": "The name as the map title; reused smaller for the Contact heading."
+      },
+      "headline": {
+        "displayName": "Headline",
+        "purpose": "Section headings on the station sign."
+      },
+      "title": {
+        "displayName": "Title",
+        "purpose": "Stop names: initiatives, projects, timeline entries, stack groups (19 to 28px)."
+      },
+      "body": {
+        "displayName": "Body",
+        "purpose": "Running copy in Ink Soft, max 66ch."
+      },
+      "label": {
+        "displayName": "Label",
+        "purpose": "Buttons, nav stops, text links, line names. Sentence case."
+      },
+      "data": {
+        "displayName": "Data (mono)",
+        "purpose": "Years, dates, technology chips, badges, bullet numerals."
+      }
+    },
+    "shadows": [
+      {
+        "name": "glass-badge",
+        "value": "inset 0 1px 0 var(--glass-hi), 0 2px 4px -1px rgba(8, 10, 14, 0.22)",
+        "purpose": "The only shadow in the system: the 44px glass icon badge."
+      }
+    ],
+    "motion": [
+      {
+        "name": "ease-out-expo",
+        "value": "cubic-bezier(0.16, 1, 0.3, 1)",
+        "purpose": "State changes (200ms), hero name rise (900ms), station pop-in (500ms)."
+      },
+      {
+        "name": "ease-draw",
+        "value": "cubic-bezier(0.65, 0, 0.35, 1)",
+        "purpose": "Hero map lines drawing in (1.5s, 140ms stagger)."
+      },
+      {
+        "name": "reveal",
+        "value": "opacity 0.5s ease-out",
+        "purpose": "Entrance fade toggled by an IntersectionObserver."
+      },
+      {
+        "name": "scroll-fill",
+        "value": "animation-timeline: view(); animation-range: cover 45vh cover calc(100% - 55vh)",
+        "purpose": "Rail, train and pipeline track fill level with mid-screen."
+      }
+    ],
+    "breakpoints": [
+      {
+        "name": "sm",
+        "value": "640px"
+      },
+      {
+        "name": "md",
+        "value": "768px"
+      },
+      {
+        "name": "lg",
+        "value": "1024px"
+      }
+    ],
+    "themes": {
+      "night": {
+        "selector": "[data-theme=\"dark\"]",
+        "colors": {
+          "bg": "#0e1118",
+          "bg-deep": "#090b10",
+          "surface": "#161b25",
+          "surface-hi": "#1f2532",
+          "line": "rgba(238, 241, 246, 0.12)",
+          "line-hi": "rgba(238, 241, 246, 0.24)",
+          "text": "#eef1f6",
+          "muted": "#b3bac6",
+          "faint": "#8d96a5",
+          "l-avis": "#ff5a5f",
+          "l-work": "#5b9bff",
+          "l-stack": "#ffcb2e",
+          "l-path": "#3ddc84",
+          "branch": "#ff8a3d",
+          "l-contact": "#eef1f6",
+          "on-line": "#0e1118",
+          "accent": "#ff6b70",
+          "accent-hi": "#ff8f93"
+        }
+      }
+    }
+  },
+  "components": [
+    {
+      "name": "Line Button",
+      "kind": "button",
+      "refersTo": "button-line",
+      "description": "Primary action, filled with the line color. Hero only, on Avis Red.",
+      "html": "<a href=\"#\" class=\"ds-btn-line\">See the production work <svg width=\"16\" height=\"16\" viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"2.5\" stroke-linecap=\"round\" stroke-linejoin=\"round\"><path d=\"M12 5v14\"/><path d=\"m19 12-7 7-7-7\"/></svg></a>",
+      "css": ".ds-btn-line { display: inline-flex; align-items: center; gap: 8px; font-family: var(--font-display), Overpass, ui-sans-serif, system-ui, sans-serif; font-size: 14.5px; font-weight: 700; text-decoration: none; background: var(--l-avis); color: var(--on-line); padding: 12px 24px; border-radius: 999px; transition: transform 0.2s; } .ds-btn-line:hover { transform: translateY(-2px); } .ds-btn-line:active { transform: none; } .ds-btn-line:focus-visible { outline: 2px solid var(--accent); outline-offset: 3px; }"
+    },
+    {
+      "name": "Ink Button",
+      "kind": "button",
+      "refersTo": "button-ink",
+      "description": "Primary action at the terminus: ink fill, paper text.",
+      "html": "<a href=\"#\" class=\"ds-btn-ink\">Send an email</a>",
+      "css": ".ds-btn-ink { display: inline-block; font-family: var(--font-display), Overpass, ui-sans-serif, system-ui, sans-serif; font-size: 14.5px; font-weight: 700; text-decoration: none; background: var(--text); color: var(--bg); padding: 12px 24px; border-radius: 999px; transition: transform 0.2s; } .ds-btn-ink:hover { transform: translateY(-2px); } .ds-btn-ink:active { transform: none; } .ds-btn-ink:focus-visible { outline: 2px solid var(--accent); outline-offset: 3px; }"
+    },
+    {
+      "name": "Outline Button",
+      "kind": "button",
+      "refersTo": "button-outline",
+      "description": "Secondary action (résumé). Inverts to ink on hover.",
+      "html": "<a href=\"#\" class=\"ds-btn-outline\">Résumé</a>",
+      "css": ".ds-btn-outline { display: inline-block; font-family: var(--font-display), Overpass, ui-sans-serif, system-ui, sans-serif; font-size: 14.5px; font-weight: 700; text-decoration: none; color: var(--text); border: 2px solid var(--text); padding: 10px 24px; border-radius: 999px; transition: background-color 0.2s, color 0.2s; } .ds-btn-outline:hover { background: var(--text); color: var(--bg); } .ds-btn-outline:focus-visible { outline: 2px solid var(--accent); outline-offset: 3px; }"
+    },
+    {
+      "name": "Nav Stop",
+      "kind": "nav",
+      "description": "Navigation link with a station ring in its line color; the ring fills when the section is current.",
+      "html": "<nav class=\"ds-nav\"><a href=\"#\" aria-current=\"true\" style=\"--c: var(--l-avis)\"><span></span>Avis</a><a href=\"#\" style=\"--c: var(--l-work)\"><span></span>Work</a><a href=\"#\" style=\"--c: var(--l-stack)\"><span></span>Stack</a><a href=\"#\" style=\"--c: var(--l-path)\"><span></span>Path</a><a href=\"#\" style=\"--c: var(--l-contact)\"><span></span>Contact</a></nav>",
+      "css": ".ds-nav { display: flex; gap: 4px; font-family: var(--font-display), Overpass, ui-sans-serif, system-ui, sans-serif; } .ds-nav a { display: flex; align-items: center; gap: 8px; padding: 8px 12px; font-size: 14px; font-weight: 700; color: var(--muted); text-decoration: none; transition: color 0.2s; } .ds-nav a:hover, .ds-nav a[aria-current] { color: var(--text); } .ds-nav span { width: 12px; height: 12px; box-sizing: border-box; border-radius: 999px; border: 3px solid var(--c); transition: background-color 0.3s; } .ds-nav a[aria-current] span { background: var(--c); } .ds-nav a:focus-visible { outline: 2px solid var(--accent); outline-offset: 3px; }"
+    },
+    {
+      "name": "Station Sign",
+      "kind": "custom",
+      "refersTo": "line-bullet",
+      "description": "Section heading: station on the rail, numbered line bullet, headline, and the line name at the far end.",
+      "html": "<div class=\"ds-sign\" style=\"--line-color: var(--l-work)\"><span class=\"ds-sign-rail\"></span><span class=\"ds-sign-station\"></span><span class=\"ds-sign-bullet\">02</span><h2>Things I built to find out if they'd work.</h2><p>Selected work</p></div>",
+      "css": ".ds-sign { position: relative; display: flex; flex-wrap: wrap; align-items: flex-start; gap: 8px 20px; padding: 24px 0 24px 34px; font-size: 40px; font-family: var(--font-display), Overpass, ui-sans-serif, system-ui, sans-serif; color: var(--text); } .ds-sign-rail { position: absolute; left: 7px; top: 0; bottom: 0; width: 6px; background: var(--line-color); } .ds-sign-station { position: absolute; left: 0; top: calc(24px + 0.51em); width: 20px; height: 20px; margin-top: -10px; box-sizing: border-box; background: var(--bg); border: 5px solid var(--text); border-radius: 999px; } .ds-sign-bullet { display: inline-flex; flex: none; align-items: center; justify-content: center; width: 2.1em; height: 2.1em; margin-top: 0.07em; border-radius: 999px; background: var(--line-color); color: var(--on-line); font-family: var(--font-code), \"Overpass Mono\", ui-monospace, monospace; font-weight: 700; font-size: 0.42em; } .ds-sign h2 { margin: 0; flex: 1; font-size: 1em; font-weight: 800; line-height: 1.02; letter-spacing: -0.025em; text-wrap: balance; } .ds-sign p { margin: 0 0 0 auto; align-self: center; font-size: 15px; font-weight: 700; color: var(--muted); }"
+    },
+    {
+      "name": "Glass Badge on a Rule",
+      "kind": "custom",
+      "refersTo": "glass-badge",
+      "description": "Icon badge that straddles the 3px rule opening a group, so the line shows through.",
+      "html": "<div class=\"ds-group\" style=\"--line-color: var(--l-stack)\"><div class=\"ds-group-head\"><span class=\"ds-glass\"><svg viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"2\" stroke-linecap=\"round\" stroke-linejoin=\"round\"><path d=\"M17.5 19H9a7 7 0 1 1 6.71-9h1.79a4.5 4.5 0 1 1 0 9Z\"/></svg></span><h3>Cloud</h3></div></div>",
+      "css": ".ds-group { margin-top: 16px; border-top: 3px solid var(--line-color); font-family: var(--font-display), Overpass, ui-sans-serif, system-ui, sans-serif; } .ds-group-head { display: flex; align-items: flex-end; gap: 16px; margin-top: -13px; } .ds-group-head h3 { margin: 0; padding-bottom: 4px; font-size: 18px; font-weight: 800; color: var(--text); } .ds-glass { display: inline-flex; flex: none; align-items: center; justify-content: center; width: 44px; height: 44px; border-radius: 13px; color: var(--text); background: color-mix(in srgb, var(--surface) 55%, transparent); -webkit-backdrop-filter: blur(5px) saturate(1.5); backdrop-filter: blur(5px) saturate(1.5); border: 1px solid color-mix(in srgb, var(--text) 18%, transparent); box-shadow: inset 0 1px 0 var(--glass-hi), 0 2px 4px -1px rgba(8, 10, 14, 0.22); transition: transform 0.2s cubic-bezier(0.16, 1, 0.3, 1); } .ds-glass svg { width: 20px; height: 20px; } .ds-group-head:hover .ds-glass { transform: translateY(-2px); }"
+    },
+    {
+      "name": "Item Chip",
+      "kind": "chip",
+      "refersTo": "chip-item",
+      "description": "Outlined pill for stack items.",
+      "html": "<span class=\"ds-chip\">LangGraph</span>",
+      "css": ".ds-chip { display: inline-block; font-family: var(--font-display), Overpass, ui-sans-serif, system-ui, sans-serif; font-size: 13px; color: var(--text); background: var(--surface); border: 1px solid var(--line-hi); border-radius: 999px; padding: 6px 12px; transition: border-color 0.2s; } .ds-chip:hover { border-color: var(--text); }"
+    },
+    {
+      "name": "Code Chip and Badge",
+      "kind": "chip",
+      "refersTo": "chip-code",
+      "description": "Mono pills: technologies (grey fill) and a status badge in the line color.",
+      "html": "<span class=\"ds-chip-code\">Amazon Bedrock</span> <span class=\"ds-badge\" style=\"--line-color: var(--l-work)\">Live</span>",
+      "css": ".ds-chip-code { display: inline-block; font-family: var(--font-code), \"Overpass Mono\", ui-monospace, monospace; font-size: 11px; font-feature-settings: \"tnum\" 1; color: var(--muted); background: var(--surface-hi); border-radius: 999px; padding: 4px 10px; } .ds-badge { display: inline-block; font-family: var(--font-code), \"Overpass Mono\", ui-monospace, monospace; font-size: 10px; font-weight: 500; color: var(--on-line); background: var(--line-color); border-radius: 999px; padding: 2px 10px; }"
+    },
+    {
+      "name": "Pipeline Stage",
+      "kind": "custom",
+      "description": "Architecture as a line diagram: a station per stage, with a failure path as an orange branch line.",
+      "html": "<ol class=\"ds-pipe\" style=\"--line-color: var(--l-avis)\"><li><span class=\"ds-pipe-track\"></span><span class=\"ds-pipe-station\"></span><p><b>Retrieve</b> <span>Hybrid search over the index</span></p><p class=\"ds-pipe-branch\"><svg viewBox=\"0 0 62 30\"><path d=\"M0 0L22 22H46\" fill=\"none\" stroke=\"var(--branch)\" stroke-width=\"5\" stroke-linejoin=\"round\"/><circle cx=\"52\" cy=\"22\" r=\"5.5\" fill=\"var(--bg)\" stroke=\"var(--branch)\" stroke-width=\"3.5\"/></svg>No match: ask a clarifying question</p></li><li><span class=\"ds-pipe-station\"></span><p><b>Answer</b> <span>Grounded response with sources</span></p></li></ol>",
+      "css": ".ds-pipe { list-style: none; margin: 0; padding: 0; font-family: var(--font-display), Overpass, ui-sans-serif, system-ui, sans-serif; } .ds-pipe li { position: relative; padding: 0 0 24px 40px; } .ds-pipe li:last-child { padding-bottom: 0; } .ds-pipe-track { position: absolute; left: 7px; top: 8px; bottom: 0; width: 6px; background: var(--line-color); } .ds-pipe-station { position: absolute; left: 0; top: 2px; width: 20px; height: 20px; box-sizing: border-box; background: var(--bg); border: 5px solid var(--text); border-radius: 999px; } .ds-pipe p { margin: 0; } .ds-pipe b { font-size: 16px; font-weight: 800; color: var(--text); margin-right: 8px; } .ds-pipe p span { font-size: 14px; color: var(--muted); } .ds-pipe-branch { position: relative; display: flex; align-items: flex-end; height: 30px; margin-top: 6px !important; padding: 0 0 3px 34px; font-size: 13px; line-height: 1; color: var(--muted); } .ds-pipe-branch svg { position: absolute; left: -30px; bottom: -2px; width: 62px; height: 30px; }"
+    },
+    {
+      "name": "Map Key Entry",
+      "kind": "custom",
+      "description": "A proof point tagged with the line it belongs to.",
+      "html": "<div class=\"ds-key\"><span style=\"background: var(--l-avis)\"><i></i></span><b>4</b> production initiatives</div>",
+      "css": ".ds-key { display: flex; align-items: center; gap: 10px; font-family: var(--font-display), Overpass, ui-sans-serif, system-ui, sans-serif; font-size: 15px; color: var(--muted); } .ds-key b { font-weight: 800; font-variant-numeric: tabular-nums; color: var(--text); } .ds-key > span { position: relative; flex: none; width: 32px; height: 5px; border-radius: 999px; } .ds-key i { position: absolute; left: 50%; top: 50%; width: 12px; height: 12px; box-sizing: border-box; transform: translate(-50%, -50%); background: var(--bg); border: 3px solid var(--text); border-radius: 999px; }"
+    }
+  ],
+  "narrative": {
+    "northStar": "The System Map",
+    "overview": "The site is a transit map of one engineer's work, and it behaves like one. Each body of work is a line with its own color, each deliverable is a station on that line, and every failure path in an architecture diagram is a branch line that leaves the track at 45 degrees. The hero is a working map: four lines draw themselves, the stations are links, and all of them end at one terminus, Contact. Below the hero the map keeps going as a rail down the left edge of every section, filling with that section's line color as the page scrolls.\n\nThe paper is cool white and the type is ink. Color comes only from the lines, at full saturation, each doing one job. Structure comes from line weight: thick round-capped routes, 3px rules that content hangs from, hairlines between rows. There are no cards, no gradients on surfaces and no shadows carrying hierarchy. The same network runs after dark as a \"night service\" theme on blue-black.\n\nThe type is signage. Overpass descends from Highway Gothic, the lettering on US road signs, and it sets everything from the name at display scale to the body. Overpass Mono appears only where a value is a code or a datum.",
+    "keyCharacteristics": [
+      "Five route lines with fixed roles, plus one branch color reserved for failure paths.",
+      "Stations are paper-filled dots with a thick ink ring. Shared stops become capsules.",
+      "Content hangs from rules, not from boxes.",
+      "One type family at heavy weights; mono only for codes and data.",
+      "Flat. The single shadow in the system belongs to the glass icon badge.",
+      "Motion is route motion: lines draw, rails fill, a train rides the tip."
+    ],
+    "rules": [
+      {
+        "name": "The One Job Rule",
+        "body": "A line color means one body of work everywhere on the page: on the hero map, in the nav, on the rail, in rules and links inside its section. A section sets `--line-color` once and everything inside reads it. Never borrow a line color for a different section because it looks better there.",
+        "section": "colors"
+      },
+      {
+        "name": "The Branch Rule",
+        "body": "Orange is a failure path and nothing else. It appears only as the spur and its stop in a pipeline diagram.",
+        "section": "colors"
+      },
+      {
+        "name": "The Bullet Ink Rule",
+        "body": "Type on a line fill uses `on-line`, with two overrides the build makes by hand: ink on yellow, and paper on the ink line.",
+        "section": "colors"
+      },
+      {
+        "name": "The Small Type Rule",
+        "body": "As small text on day paper, Work Blue (5.7:1) and Signal Red (5.3:1) clear 4.5:1; Avis Red sits just under it (4.47:1) and Path Green does not reach it (3.8:1). Yellow never carries type. Use green as text at heading scale or on night service only; for small links on the green line, use ink.",
+        "section": "colors"
+      },
+      {
+        "name": "The Signage Rule",
+        "body": "One family sets everything. Mono is for values that are codes or data, never for atmosphere and never for headings.",
+        "section": "typography"
+      },
+      {
+        "name": "The Plain Label Rule",
+        "body": "Labels are sentence case at bold weight. No component in the build sets uppercase or wide tracking.",
+        "section": "typography"
+      },
+      {
+        "name": "The Bounded Glass Rule",
+        "body": "Blur and shadow exist only on the small glass badge, which must sit across a line so the line shows through it. Larger surfaces and anything inside a scrolling container stay solid: blur there was a measured source of scroll jank. The video dialog uses a solid scrim for the same reason.",
+        "section": "elevation"
+      }
+    ],
+    "dos": [
+      "**Do** give every new section one line: set `--line-color` on it and let the rail, station, bullet, rules and links read that variable.",
+      "**Do** make every station on a map a real, linked piece of content.",
+      "**Do** fill stations with Map Paper and ring them in Ink so the line passes behind them. The nav stop is the one variant ringed in its line color.",
+      "**Do** open content groups with a 3px rule and divide rows with 1px Hairline Strong.",
+      "**Do** bend routes at 45 degrees with round caps and joins.",
+      "**Do** set type on a line fill in `on-line`, ink on yellow, paper on the ink line.",
+      "**Do** keep icons to lucide at one stroke weight per context (2 in badges, 2.25 in links).",
+      "**Do** leave every animated element in its finished state by default, and give it a still fallback under reduced motion.",
+      "**Do** redefine every color token for night service when adding one."
+    ],
+    "donts": [
+      "**Don't** reuse a line color for a different body of work, or use Branch Orange for anything but a failure path.",
+      "**Don't** set type in Stack Yellow, or small day-service text in Path Green.",
+      "**Don't** put content in bordered or shadowed cards. Groups hang from rules.",
+      "**Don't** add shadows or blur beyond the glass badge, or blur anything inside a scrolling container.",
+      "**Don't** put gradients or glows on surfaces, lines or type. The legibility scrim over video is the only gradient.",
+      "**Don't** set headings or atmosphere in Overpass Mono, and don't add uppercase tracked labels.",
+      "**Don't** draw stations or lines that link to nothing."
+    ]
+  }
+}

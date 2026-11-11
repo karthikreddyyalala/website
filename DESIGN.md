@@ -2,10 +2,10 @@
 name: Karthik Reddy Yalala
 description: A portfolio drawn as a transit system map. Bodies of work are lines, deliverables are stations.
 colors:
-  l-avis: "#dc2430"
+  l-avis: "#d01d29"
   l-work: "#1a56db"
   l-stack: "#f4b400"
-  l-path: "#0b8f4d"
+  l-path: "#097a42"
   l-contact: "#11151c"
   branch: "#e8590c"
   accent: "#c81e2a"
@@ -191,7 +191,7 @@ The `[data-theme="dark"]` set redefines every token. The frontmatter holds the d
 
 **The Bullet Ink Rule.** Type on a line fill uses `on-line`, with two overrides the build makes by hand: ink on yellow, and paper on the ink line.
 
-**The Small Type Rule.** In day service only blue and Signal Red clear 4.5:1 as small text on paper. Yellow never carries type. Use red and green as text at heading scale or on night service; for small links on those lines, prefer ink.
+**The Small Type Rule.** As small text on day paper, Work Blue (5.7:1), Signal Red (5.3:1), Avis Red (5.0:1) and Path Green (5.0:1) all clear 4.5:1, and white type on each of those lines clears it too. Yellow never carries type.
 
 ## Typography
 
@@ -309,7 +309,7 @@ Entrances are a 500ms opacity fade toggled by an observer; the hero name rises l
 
 ### Don't:
 - **Don't** reuse a line color for a different body of work, or use Branch Orange for anything but a failure path.
-- **Don't** set type in Stack Yellow, or small day-service text in Path Green or Avis Red.
+- **Don't** set type in Stack Yellow.
 - **Don't** put content in bordered or shadowed cards. Groups hang from rules.
 - **Don't** add shadows or blur beyond the glass badge, or blur anything inside a scrolling container.
 - **Don't** put gradients or glows on surfaces, lines or type. The legibility scrim over video is the only gradient.

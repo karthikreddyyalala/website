@@ -2,5 +2,5 @@
   <clipPath id="k"><rect x="0" y="8" width="32" height="16"/></clipPath>
   <rect width="32" height="32" rx="8" fill="#11151c"/>
   <path clip-path="url(#k)" d="M9.6 8v16M22 6.5 11.2 16 22 25.5" fill="none" stroke="#f5f6f4" stroke-width="3.2"/>
-  <circle cx="25.4" cy="22.4" r="2.4" fill="#dc2430"/>
+  <circle cx="25.4" cy="22.4" r="2.4" fill="#d01d29"/>
 </svg>
