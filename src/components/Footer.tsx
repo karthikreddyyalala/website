@@ -1,10 +1,11 @@
+import { ArrowUp, Github, Linkedin, Mail } from "lucide-react";
 import { profile } from "@/content/profile";
 
 const LINKS = [
-  { label: "Email", href: `mailto:${profile.contact.email}` },
-  { label: "LinkedIn", href: profile.contact.linkedin },
-  { label: "GitHub", href: "https://github.com/karthikreddyyalala" },
-  { label: "Back to top ↑", href: "#top" },
+  { label: "Email", href: `mailto:${profile.contact.email}`, Icon: Mail },
+  { label: "LinkedIn", href: profile.contact.linkedin, Icon: Linkedin },
+  { label: "GitHub", href: "https://github.com/karthikreddyyalala", Icon: Github },
+  { label: "Back to top", href: "#top", Icon: ArrowUp },
 ];
 
 /**
@@ -19,10 +20,10 @@ function Wordmark({ text, width, className }: { text: string; width: number; cla
         y="71"
         textLength={width}
         fontSize="100"
-        fontWeight="600"
-        letterSpacing="-0.04em"
+        fontWeight="900"
+        letterSpacing="-0.035em"
         fill="currentColor"
-        style={{ fontFamily: "var(--font-outfit), sans-serif" }}
+        style={{ fontFamily: "var(--font-display), sans-serif" }}
       >
         {text}
         <tspan fill="var(--accent)">.</tspan>
@@ -34,7 +35,7 @@ function Wordmark({ text, width, className }: { text: string; width: number; cla
 /** Colophon. Says a person chose these things, which a template cannot. */
 export function Footer() {
   return (
-    <footer className="overflow-hidden border-t border-[var(--line)] pt-12">
+    <footer className="overflow-hidden border-t-[3px] border-[var(--text)] pt-12">
       <div className="shell flex flex-col gap-8 md:flex-row md:items-end md:justify-between">
         <div>
           <p className="mono text-[11px] text-[var(--faint)]">
@@ -52,8 +53,9 @@ export function Footer() {
                   href={l.href}
                   target={l.href.startsWith("http") ? "_blank" : undefined}
                   rel={l.href.startsWith("http") ? "noopener noreferrer" : undefined}
-                  className="mono text-[11px] text-[var(--muted)] transition-colors duration-200 hover:text-[var(--accent)]"
+                  className="icon-link text-[14px] font-bold text-[var(--text)] transition-colors duration-200 hover:text-[var(--accent)]"
                 >
+                  <l.Icon />
                   {l.label}
                 </a>
               </li>

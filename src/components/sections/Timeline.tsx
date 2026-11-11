@@ -1,6 +1,7 @@
 import { Section } from "../ui/Section";
 import { Reveal } from "../ui/Reveal";
 import { timeline } from "@/content/experience";
+import { ArrowUp } from "lucide-react";
 
 /**
  * Single-column timeline. The amber spine draws itself as you scroll through
@@ -10,28 +11,28 @@ import { timeline } from "@/content/experience";
  */
 export function Timeline() {
   return (
-    <Section id="path" index="04" label="Path" title="How I got here.">
+    <Section id="path" index="04" label="Path" line="path" title="How I got here.">
       <div className="relative">
         {/* Spine: static rule, with the scroll-drawn amber line over it */}
         <div
           aria-hidden
-          className="absolute bottom-0 left-0 top-2 w-px bg-[var(--line)] md:left-[164px]"
+          className="absolute bottom-0 top-2 hidden w-[6px] -translate-x-[3px] rounded-full bg-[var(--line)] md:left-[200px] md:block"
         />
         <div
           aria-hidden
-          className="spine-fill absolute bottom-0 left-0 top-2 w-px bg-[var(--accent)] md:left-[164px]"
+          className="spine-fill absolute bottom-0 top-2 hidden w-[6px] -translate-x-[3px] rounded-full bg-[var(--line-color)] md:left-[200px] md:block"
         />
 
         <div className="space-y-12 md:space-y-14">
           {timeline.map((entry, i) => (
             <Reveal key={entry.id} delay={Math.min(i, 4) * 60}>
-              <div className="relative grid gap-3 pl-8 md:grid-cols-[164px_1fr] md:gap-10 md:pl-0">
+              <div className="relative grid gap-3 md:grid-cols-[200px_1fr] md:gap-10">
                 <span
                   aria-hidden
-                  className="absolute left-0 top-2 h-1.5 w-1.5 -translate-x-[3px] rounded-full md:left-[164px]"
+                  className="absolute top-0.5 hidden h-[20px] w-[20px] -translate-x-[10px] rounded-full border-[5px] md:left-[200px] md:block"
                   style={{
-                    background:
-                      entry.kind === "work" ? "var(--accent)" : "var(--faint)",
+                    background: "var(--bg)",
+                    borderColor: entry.kind === "work" ? "var(--text)" : "var(--faint)",
                   }}
                 />
 
@@ -40,7 +41,7 @@ export function Timeline() {
                 </p>
 
                 <div className="md:pl-8">
-                  <h3 className="text-[16.5px] font-medium text-[var(--text)]">
+                  <h3 className="text-[19px] font-extrabold text-[var(--text)]">
                     {entry.title}
                   </h3>
                   <p className="mt-1 text-[13.5px] text-[var(--muted)]">
@@ -61,10 +62,10 @@ export function Timeline() {
                   {entry.caseStudyId && (
                     <a
                       href="#work-avis"
-                      className="mono mt-4 inline-block text-[11px] transition-colors hover:text-[var(--accent-hi)]"
-                      style={{ color: "var(--accent)" }}
+                      className="icon-link mt-4 text-[13.5px] font-bold text-[var(--line-color)]"
                     >
-                      Read the case study ↑
+                      Read the case study
+                      <ArrowUp />
                     </a>
                   )}
 

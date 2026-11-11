@@ -2,26 +2,24 @@ import { Reveal } from "../ui/Reveal";
 import { CountUp } from "../ui/CountUp";
 import { Pipeline } from "../ui/Pipeline";
 import { Aside } from "../ui/Aside";
+import { Rail, SectionHead, lineStyle } from "../ui/Section";
 import { caseStudy } from "@/content/casestudy";
+import { ArrowUpRight, ChevronDown } from "lucide-react";
 
 export function CaseStudy() {
   return (
-    <section id="work-avis" className="relative py-24 md:py-36">
-      <div className="shell">
+    <section id="work-avis" className="relative py-24 md:py-36" style={lineStyle("avis")}>
+      <Rail />
+      <div className="shell relative">
         <Reveal>
-          <p className="eyebrow flex items-center gap-3">
-            <span>01</span>
-            <span aria-hidden className="h-px w-8 bg-[var(--line-hi)]" />
-            <span>Production work</span>
-          </p>
+          <SectionHead index="01" label="Production work">
+            <h2 className="h-section">{caseStudy.company}</h2>
+          </SectionHead>
         </Reveal>
 
-        <div className="mt-5 grid gap-8 md:grid-cols-12 md:items-end">
+        <div className="mt-6 grid gap-8 md:grid-cols-12 md:items-start">
           <Reveal delay={60} className="md:col-span-7">
-            <h2 className="h-section text-[clamp(2rem,4.5vw,3.25rem)]">
-              {caseStudy.company}
-            </h2>
-            <p className="mt-3 text-[14px] text-[var(--muted)]">
+            <p className="text-[15px] text-[var(--muted)]">
               {caseStudy.role} · {caseStudy.qualifier} · {caseStudy.location}
               <span className="mono ml-3 text-[var(--faint)]">{caseStudy.period}</span>
             </p>
@@ -32,7 +30,7 @@ export function CaseStudy() {
         </div>
 
         <Reveal delay={160}>
-          <dl className="mt-12 grid grid-cols-1 border-t border-[var(--line)] sm:grid-cols-3">
+          <dl className="mt-12 grid grid-cols-1 border-t-[3px] border-[var(--line-color)] sm:grid-cols-3">
             {caseStudy.headline.map((m) => (
               <div
                 key={m.label}
@@ -58,10 +56,10 @@ export function CaseStudy() {
               <article>
                 <div className="grid gap-6 md:grid-cols-12">
                   <div className="md:col-span-4">
-                    <p className="mono text-[12px]" style={{ color: "var(--accent)" }}>
-                      {init.index}
-                    </p>
-                    <h3 className="h-section mt-2 text-[22px] md:text-[26px]">
+                    <h3 className="h-section flex items-start gap-3 text-[24px] md:text-[28px]">
+                      <span aria-hidden className="bullet mt-1">
+                        {init.index}
+                      </span>
                       {init.title}
                     </h3>
                     <ul className="mt-5 flex flex-wrap gap-1.5">
@@ -82,7 +80,7 @@ export function CaseStudy() {
                     <p className="prose-body text-[16.5px]">{init.summary}</p>
 
                     {init.pipeline && (
-                      <div className="mt-8 border-y border-[var(--line)]">
+                      <div className="mt-8 border-y border-[var(--line-hi)] py-6">
                         <Pipeline stages={init.pipeline} />
                       </div>
                     )}
@@ -94,24 +92,17 @@ export function CaseStudy() {
                             key={o}
                             className="flex gap-3 text-[14.5px] text-[var(--muted)]"
                           >
-                            <span aria-hidden className="mono mt-px text-[var(--accent)]">
-                              ·
-                            </span>
+                            <span aria-hidden className="mt-[9px] h-1.5 w-1.5 flex-none rounded-full bg-[var(--line-color)]" />
                             {o}
                           </li>
                         ))}
                       </ul>
                     )}
                     <details className="group mt-8">
-                      <summary className="mono inline-flex cursor-pointer list-none items-center gap-1.5 text-[12px] text-[var(--accent)] transition-opacity hover:opacity-75 focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-[var(--accent)] [&::-webkit-details-marker]:hidden">
+                      <summary className="inline-flex cursor-pointer list-none items-center gap-1.5 text-[13.5px] font-bold text-[var(--line-color)] transition-opacity hover:opacity-75 focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-[var(--accent)] [&::-webkit-details-marker]:hidden">
                         <span className="group-open:hidden">Read the engineering decisions</span>
                         <span className="hidden group-open:inline">Hide details</span>
-                        <span
-                          aria-hidden
-                          className="inline-block transition-transform duration-200 group-open:rotate-180 motion-reduce:transition-none"
-                        >
-                          ↓
-                        </span>
+<ChevronDown aria-hidden className="h-4 w-4 transition-transform duration-200 group-open:rotate-180 motion-reduce:transition-none" />
                       </summary>
                     {/* The decisions. This is the differentiating content. */}
                     <div className="mt-7 space-y-7">
@@ -139,14 +130,14 @@ export function CaseStudy() {
 
         {/* VP research — different shape so it reads as a different kind of work */}
         <Reveal>
-          <div className="panel mt-20 p-7 md:p-10">
+          <div className="mt-20 border-t-[3px] border-[var(--line-color)] pt-8">
             <div className="grid gap-6 md:grid-cols-12">
               <div className="md:col-span-4">
-                <p className="eyebrow">Beyond the build</p>
-                <h3 className="h-section mt-3 text-[20px] md:text-[23px]">
+                <h3 className="h-section text-[22px] md:text-[26px]">
                   {caseStudy.research.title}
                 </h3>
-                <p className="mt-2.5 text-[13px]" style={{ color: "var(--accent)" }}>
+                <p className="mono mt-2 text-[11px] uppercase tracking-[0.14em] text-[var(--faint)]">Beyond the build</p>
+                <p className="mt-2.5 text-[13px] font-bold text-[var(--line-color)]">
                   {caseStudy.research.forWhom}
                 </p>
               </div>
@@ -162,9 +153,10 @@ export function CaseStudy() {
                     href={caseStudy.research.liveLink}
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="mono mt-4 inline-flex items-center gap-1.5 text-[12px] text-[var(--accent)] hover:opacity-75 transition-opacity"
+                    className="icon-link mt-4 text-[13.5px] font-bold text-[var(--line-color)]"
                   >
-                    {caseStudy.research.liveLinkLabel} ↗
+                    {caseStudy.research.liveLinkLabel}
+                    <ArrowUpRight />
                   </a>
                 )}
               </div>

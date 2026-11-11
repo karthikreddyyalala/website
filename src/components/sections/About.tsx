@@ -1,22 +1,22 @@
 import Image from "next/image";
 import { Reveal } from "../ui/Reveal";
+import { Rail, SectionHead, lineStyle } from "../ui/Section";
 import { profile } from "@/content/profile";
 
 export function About() {
   return (
-    <section id="about" className="py-24 md:py-36">
-      <div className="shell">
-        <div className="grid gap-12 md:grid-cols-12 md:gap-16">
+    <section id="about" className="relative py-24 md:py-36" style={lineStyle("about")}>
+      <Rail />
+      <div className="shell relative">
+        <Reveal>
+          <SectionHead index="05">
+            <h2 className="h-section">About</h2>
+          </SectionHead>
+        </Reveal>
+        <div className="mt-12 grid gap-12 md:grid-cols-12 md:gap-16">
           <div className="md:col-span-4">
-            <Reveal>
-              <p className="eyebrow flex items-center gap-3">
-                <span>05</span>
-                <span aria-hidden className="h-px w-8 bg-[var(--line-hi)]" />
-                <span>About</span>
-              </p>
-            </Reveal>
             <Reveal delay={80}>
-              <div className="mt-7 overflow-hidden rounded-[16px] border border-[var(--line)]">
+              <div className="overflow-hidden rounded-[16px] border-2 border-[var(--text)]">
                 <Image
                   src="/images/about-photo.webp"
                   alt="Karthik Reddy Yalala"
@@ -30,7 +30,7 @@ export function About() {
             </Reveal>
           </div>
 
-          <div className="md:col-span-8 md:pt-14">
+          <div className="md:col-span-8">
             {profile.about.map((para, i) => (
               <Reveal key={i} delay={100 + i * 70}>
                 <p

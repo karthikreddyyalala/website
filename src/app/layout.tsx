@@ -1,21 +1,20 @@
 import type { Metadata } from "next";
-import { Outfit, JetBrains_Mono } from "next/font/google";
+import { Overpass, Overpass_Mono } from "next/font/google";
 import { Analytics } from "@vercel/analytics/react";
 import "./globals.css";
 
-// Two families, trimmed weights. Every extra weight is render-blocking payload.
-const outfit = Outfit({
-  variable: "--font-outfit",
+// Overpass descends from Highway Gothic, the lettering on US road signs:
+// signage type for a site drawn as a transit map. Variable fonts, one file each.
+const display = Overpass({
+  variable: "--font-display",
   subsets: ["latin"],
   display: "swap",
-  weight: ["300", "400", "500", "600"],
 });
 
-const jetbrainsMono = JetBrains_Mono({
-  variable: "--font-jetbrains-mono",
+const code = Overpass_Mono({
+  variable: "--font-code",
   subsets: ["latin"],
   display: "swap",
-  weight: ["400", "500"],
 });
 
 const SITE = "https://karthikreddyy.vercel.app";
@@ -64,7 +63,7 @@ export default function RootLayout({
 }: Readonly<{ children: React.ReactNode }>) {
   return (
     <html lang="en">
-      <body className={`${outfit.variable} ${jetbrainsMono.variable}`}>
+      <body className={`${display.variable} ${code.variable}`}>
         {children}
         <Analytics />
       </body>

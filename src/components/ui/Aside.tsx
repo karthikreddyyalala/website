@@ -11,9 +11,9 @@ import type { ReactNode } from "react";
 export function Aside({ children }: { children: ReactNode }) {
   return (
     <p
-      className="mt-7 max-w-[34ch] border-l pl-4 text-[13px] leading-relaxed md:-ml-2"
+      className="mt-7 max-w-[34ch] border-l-[3px] pl-4 text-[13.5px] leading-relaxed"
       style={{
-        borderColor: "var(--accent-dim)",
+        borderColor: "var(--l-stack)",
         color: "var(--muted)",
         transform: "rotate(-0.35deg)",
       }}
