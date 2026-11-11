@@ -1,5 +1,63 @@
-import type { ReactNode } from "react";
+import type { CSSProperties, ReactNode } from "react";
 import { Reveal } from "./Reveal";
+
+/** The route lines. Each section rides one; the token lives in globals.css. */
+export type Line = "avis" | "work" | "stack" | "path" | "contact";
+
+/** Sets `--line-color` for everything inside. Yellow and ink need their own bullet ink. */
+export function lineStyle(line: Line): CSSProperties {
+  return {
+    "--line-color": `var(--l-${line})`,
+    ...(line === "stack" && { "--bullet-ink": "#11151c" }),
+    ...(line === "contact" && { "--bullet-ink": "var(--bg)" }),
+  } as CSSProperties;
+}
+
+/**
+ * The trunk line down the left edge of a section. It fills with the section's
+ * line color as you scroll (CSS scroll-driven; a solid line without support).
+ * Stacked sections make one continuous route that changes color at each stop,
+ * and a small train marker rides the tip of the line.
+ */
+export function Rail() {
+  return (
+    <div aria-hidden className="shell pointer-events-none absolute inset-0">
+      <div className="rail">
+        <span className="rail-fill" />
+        <span className="rail-train" />
+      </div>
+    </div>
+  );
+}
+
+/**
+ * Section heading as a station sign: the stop on the rail, the numbered line
+ * bullet, the title, and the line's name in plain type at the far end.
+ */
+export function SectionHead({
+  index,
+  label,
+  children,
+}: {
+  index: string;
+  label?: string;
+  children: ReactNode;
+}) {
+  return (
+    <div className="relative text-[clamp(2rem,4.5vw,3.25rem)]">
+      <span aria-hidden className="station" />
+      <div className="flex flex-wrap items-start gap-x-5 gap-y-2">
+        <span aria-hidden className="bullet mt-[0.07em]">
+          {index}
+        </span>
+        {children}
+        {label && (
+          <p className="ml-auto self-center text-[15px] font-bold text-[var(--muted)]">{label}</p>
+        )}
+      </div>
+    </div>
+  );
+}
 
 type SectionProps = {
   id: string;
@@ -7,47 +65,29 @@ type SectionProps = {
   index: string;
   label: string;
   title: string;
+  line: Line;
   lede?: string;
   children: ReactNode;
   className?: string;
 };
 
-/**
- * Section shell. Server component — the only client code is the Reveal leaf.
- *
- * Headings are left-aligned rather than centered: a centered heading over
- * left-aligned body copy is the most common tell of a template.
- */
-export function Section({
-  id,
-  index,
-  label,
-  title,
-  lede,
-  children,
-  className = "",
-}: SectionProps) {
+/** Section shell. Server component: the only client code is the Reveal leaf. */
+export function Section({ id, index, label, title, line, lede, children, className = "" }: SectionProps) {
   return (
-    <section id={id} className={`py-24 md:py-36 ${className}`}>
-      <div className="shell">
+    <section id={id} className={`relative py-24 md:py-36 ${className}`} style={lineStyle(line)}>
+      <Rail />
+      <div className="shell relative">
         <Reveal>
-          <p className="eyebrow flex items-center gap-3">
-            <span>{index}</span>
-            <span aria-hidden className="h-px w-8 bg-[var(--line-hi)]" />
-            <span>{label}</span>
-          </p>
+          <SectionHead index={index} label={label}>
+            <h2 className="h-section">{title}</h2>
+          </SectionHead>
         </Reveal>
 
-        <div className="mt-5 grid gap-6 md:grid-cols-12 md:items-end">
-          <Reveal delay={60} className="md:col-span-7">
-            <h2 className="h-section text-[clamp(2rem,4.5vw,3.25rem)]">{title}</h2>
+        {lede ? (
+          <Reveal delay={90}>
+            <p className="prose-body mt-6 text-[16px]">{lede}</p>
           </Reveal>
-          {lede ? (
-            <Reveal delay={120} className="md:col-span-5">
-              <p className="prose-body text-[15px]">{lede}</p>
-            </Reveal>
-          ) : null}
-        </div>
+        ) : null}
 
         <div className="mt-14 md:mt-20">{children}</div>
       </div>

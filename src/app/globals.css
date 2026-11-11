@@ -5,39 +5,60 @@
    To reskin the site, change these values and nothing else.
    ============================================================ */
 :root {
-  --bg: #0b0b0c;
-  --bg-deep: #08080a;
-  --surface: #141416;
-  --surface-hi: #1b1b1e;
-  --line: rgba(255, 255, 255, 0.08);
-  --line-hi: rgba(255, 255, 255, 0.14);
+  /* Day map: cool white paper, ink type, saturated route lines. */
+  --bg: #f5f6f4;
+  --bg-deep: #ecedea;
+  --surface: #ffffff;
+  --surface-hi: #e9ebe7;
+  --line: rgba(17, 21, 28, 0.12);
+  --line-hi: rgba(17, 21, 28, 0.24);
 
-  --text: #edede9;
-  --muted: #a3a39d;
-  --faint: #8a8a84;
+  --text: #11151c;
+  --muted: #434a57;
+  --faint: #626a78;
 
-  --accent: #c8873e;
-  --accent-hi: #e0a05a;
-  --accent-dim: rgba(200, 135, 62, 0.14);
+  /* Route lines. Each has one job and keeps it everywhere on the page. */
+  --l-avis: #d01d29; /* Avis Budget Group: production work */
+  --l-work: #1a56db; /* selected work */
+  --l-stack: #f4b400; /* stack */
+  --l-path: #097a42; /* path */
+  --branch: #e8590c; /* failure paths: the branch lines in pipeline diagrams, nothing else */
+  --l-contact: #11151c; /* contact: the terminus */
+  --on-line: #ffffff; /* type set on a red, blue, green or orange line */
+  --glass-hi: rgba(255, 255, 255, 0.95);
+
+  --accent: #c81e2a;
+  --accent-hi: #a51722;
+  --accent-dim: rgba(208, 29, 41, 0.16);
+  --on-accent: #ffffff;
 
   --radius: 14px;
   --maxw: 1180px;
 }
 
-/* Light mode overrides */
-[data-theme="light"] {
-  --bg: #f7f6f3;
-  --bg-deep: #eeede9;
-  --surface: #ffffff;
-  --surface-hi: #f0efeb;
-  --line: rgba(0, 0, 0, 0.08);
-  --line-hi: rgba(0, 0, 0, 0.14);
-  --text: #141412;
-  --muted: #585853;
-  --faint: #6a6a64;
-  --accent: #b8762e;
-  --accent-hi: #c8873e;
-  --accent-dim: rgba(184, 118, 46, 0.12);
+/* Night service: the same network after dark. */
+[data-theme="dark"] {
+  --bg: #0e1118;
+  --bg-deep: #090b10;
+  --surface: #161b25;
+  --surface-hi: #1f2532;
+  --line: rgba(238, 241, 246, 0.12);
+  --line-hi: rgba(238, 241, 246, 0.24);
+  --text: #eef1f6;
+  --muted: #b3bac6;
+  --faint: #8d96a5;
+  --l-avis: #ff5a5f;
+  --l-work: #5b9bff;
+  --l-stack: #ffcb2e;
+  --l-path: #3ddc84;
+  --branch: #ff8a3d;
+  --l-contact: #eef1f6;
+  --on-line: #0e1118;
+  --glass-hi: rgba(255, 255, 255, 0.22);
+  --accent: #ff6b70;
+  --accent-hi: #ff8f93;
+  --accent-dim: rgba(255, 90, 95, 0.2);
+  --on-accent: #0e1118;
 }
 
 @theme inline {
@@ -49,13 +70,15 @@
   --color-faint: var(--faint);
   --color-accent: var(--accent);
 
-  --font-display: var(--font-outfit);
-  --font-sans: var(--font-outfit);
-  --font-mono: var(--font-jetbrains-mono);
+  --font-sans: var(--font-display);
+  --font-mono: var(--font-code);
 }
 
-* {
-  border-color: var(--line);
+/* In the base layer so Tailwind border-color utilities can override it. */
+@layer base {
+  * {
+    border-color: var(--line);
+  }
 }
 
 html {
@@ -65,10 +88,17 @@ html {
   background: var(--bg);
 }
 
+/* Overpass sets the middle dot off-centre. Borrow it from a system face. */
+@font-face {
+  font-family: "Interpunct";
+  src: local("Helvetica Neue"), local("Arial"), local("Liberation Sans"), local("DejaVu Sans");
+  unicode-range: U+00B7;
+}
+
 body {
   background: var(--bg);
   color: var(--text);
-  font-family: var(--font-outfit), ui-sans-serif, system-ui, sans-serif;
+  font-family: "Interpunct", var(--font-display), ui-sans-serif, system-ui, sans-serif;
   font-size: 17px;
   -webkit-font-smoothing: antialiased;
   text-rendering: optimizeLegibility;
@@ -77,36 +107,27 @@ body {
 
 ::selection {
   background: var(--accent);
-  color: #14100a;
+  color: var(--on-accent);
 }
 
 /* ---------- Typography primitives ---------- */
 .h-display {
-  letter-spacing: -0.04em;
-  line-height: 0.95;
-  font-weight: 600;
+  letter-spacing: -0.035em;
+  line-height: 0.92;
+  font-weight: 900;
   text-wrap: balance;
 }
 
 .h-section {
-  letter-spacing: -0.03em;
-  line-height: 1.05;
-  font-weight: 600;
+  letter-spacing: -0.025em;
+  line-height: 1.02;
+  font-weight: 800;
   text-wrap: balance;
 }
 
 .mono {
-  font-family: var(--font-jetbrains-mono), ui-monospace, monospace;
+  font-family: var(--font-code), ui-monospace, monospace;
   font-feature-settings: "tnum" 1;
-}
-
-/* Small uppercase section marker, e.g. "01 — SELECTED WORK" */
-.eyebrow {
-  font-family: var(--font-jetbrains-mono), monospace;
-  font-size: 11px;
-  letter-spacing: 0.14em;
-  text-transform: uppercase;
-  color: var(--faint);
 }
 
 .prose-body {
@@ -130,15 +151,6 @@ body {
   }
 }
 
-/* ---------- Surfaces ----------
-   Deliberately no backdrop-blur: blur inside scrolling containers forces
-   continuous GPU repaint and was a measured source of jank. */
-.panel {
-  background: var(--surface);
-  border: 1px solid var(--line);
-  border-radius: var(--radius);
-}
-
 /* ---------- Focus ---------- */
 :focus-visible {
   outline: 2px solid var(--accent);
@@ -153,7 +165,7 @@ body {
   z-index: 100;
   padding: 12px 20px;
   background: var(--accent);
-  color: #14100a;
+  color: var(--on-accent);
   font-weight: 600;
 }
 
@@ -194,21 +206,361 @@ body {
    only toggles a class; nothing animates per-frame in JS. */
 .reveal {
   opacity: 0;
-  transform: translate3d(0, 14px, 0);
-  transition: opacity 0.7s cubic-bezier(0.16, 1, 0.3, 1),
-    transform 0.7s cubic-bezier(0.16, 1, 0.3, 1);
+  transition: opacity 0.5s ease-out;
   transition-delay: var(--reveal-delay, 0ms);
-  will-change: transform, opacity;
 }
 
 .reveal.is-in {
   opacity: 1;
-  transform: translate3d(0, 0, 0);
 }
 
 /* Once revealed, stop promoting the layer. */
 .reveal.is-settled {
   will-change: auto;
+}
+
+/* ---------- The network ----------
+   Each section rides one line. `--line-color` is set on the section and read
+   by its rail, its station and its line bullet. */
+.rail {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: 6px;
+  width: 4px;
+  background: var(--line);
+}
+
+.rail-fill {
+  position: absolute;
+  inset: 0;
+  background: var(--line-color);
+  transform-origin: top;
+}
+
+/* The train: a marker that rides the tip of the fill. Hidden unless the
+   browser can drive it from scroll position. */
+.rail-train {
+  display: none;
+  position: absolute;
+  inset: 0 auto 0 50%;
+  width: 14px;
+  margin-left: -7px;
+}
+
+.rail-train::after {
+  content: "";
+  position: absolute;
+  bottom: -13px;
+  left: 0;
+  width: 14px;
+  height: 26px;
+  border-radius: 7px;
+  background: var(--text);
+  box-shadow: inset 0 0 0 3px var(--text), inset 0 0 0 5px var(--bg);
+}
+
+/* Station on the rail. In a section head it sits level with the first line of
+   the heading (the head sets the font size, so 0.51em is that line's middle). */
+.station {
+  position: absolute;
+  left: -20px;
+  top: 0.51em;
+  width: 16px;
+  height: 16px;
+  margin-top: -8px;
+  border-radius: 999px;
+  background: var(--bg);
+  border: 4px solid var(--text);
+}
+
+/* A smaller stop for each deliverable on the line: initiatives, projects, jobs. */
+.stop {
+  position: absolute;
+  left: -18px;
+  top: 0.6em;
+  width: 12px;
+  height: 12px;
+  margin-top: -6px;
+  border-radius: 999px;
+  background: var(--bg);
+  border: 3px solid var(--text);
+}
+
+@media (min-width: 768px) {
+  .rail {
+    left: 14px;
+    width: 6px;
+  }
+  .station {
+    left: -33px;
+    width: 20px;
+    height: 20px;
+    margin-top: -10px;
+    border-width: 5px;
+  }
+  .stop {
+    left: -31px;
+    width: 16px;
+    height: 16px;
+    margin-top: -8px;
+    border-width: 4px;
+  }
+}
+
+/* Where the hero map's red line turns down and becomes the page's trunk.
+   Sized in container units so it meets the SVG line at any width. */
+.map-frame {
+  container-type: inline-size;
+}
+
+.map-trunk {
+  display: none;
+}
+
+@media (min-width: 1024px) {
+  .map-trunk {
+    --u: calc(100cqw / 1200);
+    display: block;
+    position: absolute;
+    left: -26px;
+    top: calc(137.5 * var(--u));
+    width: calc(26px + 34 * var(--u));
+    height: 300vh;
+    border-left: 6px solid var(--l-avis);
+    border-top: calc(9 * var(--u)) solid var(--l-avis);
+    border-top-left-radius: 18px;
+  }
+}
+
+/* Line bullet: the numbered roundel that names a line. */
+.bullet {
+  display: inline-flex;
+  flex: none;
+  align-items: center;
+  justify-content: center;
+  width: 2.1em;
+  height: 2.1em;
+  border-radius: 999px;
+  background: var(--line-color);
+  color: var(--bullet-ink, var(--on-line));
+  font-family: var(--font-code), ui-monospace, monospace;
+  font-weight: 700;
+  font-size: 0.42em;
+  letter-spacing: 0;
+}
+
+/* Glass icon badge: a clear tile the line behind it shows through. One icon
+   set (lucide), one stroke weight. Blur is bounded to these small tiles. */
+.glass {
+  display: inline-flex;
+  flex: none;
+  align-items: center;
+  justify-content: center;
+  width: 44px;
+  height: 44px;
+  border-radius: 13px;
+  color: var(--text);
+  background: color-mix(in srgb, var(--surface) 55%, transparent);
+  -webkit-backdrop-filter: blur(5px) saturate(1.5);
+  backdrop-filter: blur(5px) saturate(1.5);
+  border: 1px solid color-mix(in srgb, var(--text) 18%, transparent);
+  box-shadow:
+    inset 0 1px 0 var(--glass-hi),
+    0 2px 4px -1px rgba(8, 10, 14, 0.22);
+  transition: transform 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.glass svg {
+  width: 20px;
+  height: 20px;
+  stroke-width: 2;
+}
+
+.group:hover .glass {
+  transform: translate3d(0, -2px, 0);
+}
+
+/* Text link with a trailing or leading icon. */
+.icon-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.icon-link svg {
+  width: 1.05em;
+  height: 1.05em;
+  flex: none;
+  stroke-width: 2.25;
+  transition: transform 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.icon-link:hover svg {
+  transform: translate3d(1px, -1px, 0);
+}
+
+/* System map in the hero. */
+.map-line path {
+  fill: none;
+  stroke-width: 9;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+  transition: stroke-width 0.2s ease-out;
+}
+
+.map-line {
+  transition: opacity 0.2s ease-out;
+}
+
+.system-map:has(.map-line:hover) .map-line:not(:hover),
+.system-map:has(.map-line:focus-within) .map-line:not(:focus-within) {
+  opacity: 0.28;
+}
+
+.map-line:hover path,
+.map-line:focus-within path {
+  stroke-width: 12;
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  .reveal.is-in .map-line path {
+    stroke-dasharray: 1;
+    animation: draw 1.5s cubic-bezier(0.65, 0, 0.35, 1) both;
+    animation-delay: calc(var(--n) * 140ms + 150ms);
+  }
+  .reveal.is-in .map-stop {
+    animation: stop-in 0.5s cubic-bezier(0.16, 1, 0.3, 1) both;
+    animation-delay: calc(var(--n) * 140ms + 350ms + var(--t) * 1100ms);
+  }
+}
+
+@keyframes draw {
+  from {
+    stroke-dashoffset: 1;
+  }
+}
+
+@keyframes stop-in {
+  from {
+    opacity: 0;
+    transform: scale(0.4);
+  }
+}
+
+/* ---------- Authored motion ----------
+   Everything here is transform-only and compositor-driven. The default state
+   of each element is its finished state, so nothing is hidden if a browser
+   lacks scroll-driven animations or the visitor prefers reduced motion. */
+
+/* Hero name size. Shorter laptop screens get a smaller title so the whole
+   map still fits in the first screen. */
+.hero-title {
+  font-size: clamp(3rem, 8.4vw, 5.25rem);
+}
+
+@media (min-width: 1024px) and (max-height: 860px) {
+  .hero-title {
+    font-size: 4.25rem;
+  }
+}
+
+/* Hero name: each line rises from behind its own mask once the hero reveals. */
+.line-rise {
+  display: block;
+  overflow: hidden;
+  /* Room for descenders, which the mask would otherwise clip. */
+  padding-bottom: 0.14em;
+  margin-bottom: -0.14em;
+}
+
+.reveal.is-in .line-rise > span {
+  display: block;
+  animation: line-rise 0.9s cubic-bezier(0.16, 1, 0.3, 1) both;
+  animation-delay: var(--rise-delay, 0ms);
+}
+
+@keyframes line-rise {
+  from {
+    transform: translate3d(0, 110%, 0);
+  }
+}
+
+@keyframes grow-x {
+  from {
+    transform: scaleX(0);
+  }
+}
+
+@keyframes grow-y {
+  from {
+    transform: scaleY(0);
+  }
+}
+
+/* Fades at both ends so parked trains don't pile up where two lines meet. */
+@keyframes ride {
+  0% {
+    transform: translate3d(0, -100%, 0);
+    opacity: 0;
+  }
+  3%,
+  97% {
+    opacity: 1;
+  }
+  100% {
+    opacity: 0;
+  }
+}
+
+@keyframes rise-in {
+  from {
+    transform: translate3d(0, 70%, 0);
+  }
+}
+
+.scroll-progress {
+  display: none;
+}
+
+@supports (animation-timeline: view()) {
+  @media (prefers-reduced-motion: no-preference) {
+    /* Nav hairline: how far down the page you are. */
+    .scroll-progress {
+      display: block;
+      transform-origin: left;
+      animation: grow-x linear both;
+      animation-timeline: scroll(root);
+    }
+
+    /* Section rails fill with their line color, tip level with mid-screen. */
+    .rail-fill {
+      animation: grow-y linear both;
+      animation-timeline: view();
+      animation-range: cover 45vh cover calc(100% - 55vh);
+    }
+
+    .rail-train {
+      display: block;
+      animation: ride linear both;
+      animation-timeline: view();
+      animation-range: cover 45vh cover calc(100% - 55vh);
+    }
+
+    /* Pipeline tracks fill downward the same way, stage after stage. */
+    .flow-fill {
+      animation: grow-y linear both;
+      animation-timeline: view();
+      animation-range: cover 45vh cover calc(100% - 55vh);
+    }
+
+    /* Footer wordmark: rises through the bottom edge as you reach the end. */
+    .wordmark-rise {
+      animation: rise-in linear both;
+      animation-timeline: view();
+      animation-range: entry 0% entry 100%;
+    }
+  }
 }
 
 @media (prefers-reduced-motion: reduce) {
@@ -230,6 +582,10 @@ body {
 }
 
 /* ---------- Scrollbar ---------- */
+html {
+  scrollbar-color: var(--line-hi) var(--bg-deep);
+}
+
 ::-webkit-scrollbar {
   width: 10px;
 }
@@ -237,10 +593,10 @@ body {
   background: var(--bg-deep);
 }
 ::-webkit-scrollbar-thumb {
-  background: #2a2a2e;
+  background: var(--line-hi);
   border-radius: 6px;
   border: 3px solid var(--bg-deep);
 }
 ::-webkit-scrollbar-thumb:hover {
-  background: #3a3a3f;
+  background: var(--faint);
 }

@@ -2,7 +2,7 @@
 
 import { useCallback, useEffect, useState } from "react";
 import dynamic from "next/dynamic";
-import { Hand } from "lucide-react";
+import { ArrowUpRight, Hand } from "lucide-react";
 import { profile } from "@/content/profile";
 
 // MediaPipe only downloads once a visitor turns hands-free on.
@@ -10,19 +10,20 @@ const HandScroll = dynamic(() => import("./HandScroll").then((m) => m.HandScroll
   ssr: false,
 });
 
+// Each stop on the strip map carries its line's color.
 const LINKS = [
-  { id: "work-avis", label: "Avis" },
-  { id: "work", label: "Work" },
-  { id: "stack", label: "Stack" },
-  { id: "path", label: "Path" },
-  { id: "contact", label: "Contact" },
+  { id: "work-avis", label: "Avis", line: "avis" },
+  { id: "work", label: "Work", line: "work" },
+  { id: "stack", label: "Stack", line: "stack" },
+  { id: "path", label: "Path", line: "path" },
+  { id: "contact", label: "Contact", line: "contact" },
 ];
 
 export function Nav() {
   const [active, setActive] = useState<string>("");
   const [lifted, setLifted] = useState(false);
   const [open, setOpen] = useState(false);
-  const [theme, setTheme] = useState<"dark" | "light">("dark");
+  const [theme, setTheme] = useState<"dark" | "light">("light");
   const [hasCamera, setHasCamera] = useState(false);
   const [handsFree, setHandsFree] = useState(false);
   const [cameraMsg, setCameraMsg] = useState("");
@@ -102,14 +103,18 @@ export function Nav() {
     <header
       className="fixed inset-x-0 top-0 z-50 transition-colors duration-300"
       style={{
-        background: lifted ? "rgba(11,11,12,0.92)" : "transparent",
+        background: lifted ? "var(--bg)" : "transparent",
         borderBottom: `1px solid ${lifted ? "var(--line)" : "transparent"}`,
       }}
     >
+      <span
+        aria-hidden
+        className="scroll-progress absolute inset-x-0 -bottom-[3px] h-[3px] bg-[var(--text)]"
+      />
       <nav className="shell flex h-[68px] items-center justify-between">
         <a
           href="#top"
-          className="mono text-[13px] tracking-tight text-[var(--text)] transition-colors hover:text-[var(--accent)]"
+          className="text-[17px] font-black tracking-tight text-[var(--text)]"
         >
           KRY<span className="text-[var(--accent)]">.</span>
         </a>
@@ -120,19 +125,19 @@ export function Nav() {
               <a
                 href={`#${link.id}`}
                 aria-current={active === link.id ? "true" : undefined}
-                className="relative block px-3.5 py-2 text-[13px] transition-colors duration-200"
-                style={{
-                  color: active === link.id ? "var(--text)" : "var(--muted)",
-                }}
+                className="flex items-center gap-2 px-3 py-2 text-[14px] font-bold transition-colors duration-200"
+                style={{ color: active === link.id ? "var(--text)" : "var(--muted)" }}
               >
+                {/* Station dot: fills with the line's color when you are at that stop. */}
+                <span
+                  aria-hidden
+                  className="h-3 w-3 rounded-full border-[3px] transition-colors duration-300"
+                  style={{
+                    borderColor: `var(--l-${link.line})`,
+                    background: active === link.id ? `var(--l-${link.line})` : "transparent",
+                  }}
+                />
                 {link.label}
-                {active === link.id && (
-                  <span
-                    aria-hidden
-                    className="absolute inset-x-3.5 -bottom-px h-px"
-                    style={{ background: "var(--accent)" }}
-                  />
-                )}
               </a>
             </li>
           ))}
@@ -183,7 +188,7 @@ export function Nav() {
               href={profile.contact.resume}
               target="_blank"
               rel="noopener noreferrer"
-              className="rounded-full border border-[var(--line-hi)] px-4 py-1.5 text-[13px] text-[var(--text)] transition-all duration-300 hover:border-[var(--accent)] hover:text-[var(--accent)] active:scale-[0.97]"
+              className="rounded-full border-2 border-[var(--text)] px-4 py-1 text-[13.5px] font-bold text-[var(--text)] transition-colors duration-200 hover:bg-[var(--text)] hover:text-[var(--bg)]"
             >
               Résumé
             </a>
@@ -251,7 +256,7 @@ export function Nav() {
                 onClick={() => setOpen(false)}
                 className="block py-3.5 text-[15px] text-[var(--accent)]"
               >
-                Résumé ↗
+                Résumé <ArrowUpRight className="inline h-4 w-4" />
               </a>
             </li>
           </ul>
