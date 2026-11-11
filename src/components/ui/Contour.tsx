@@ -15,7 +15,7 @@ void main() { gl_Position = vec4(p, 0.0, 1.0); }`;
 /*
  * Animated topographic map: isolines of a slowly shifting noise field, every
  * fifth line in the accent color. The terrain rises a little under the
- * pointer, so the lines bend around it.
+ * pointer, so the lines bend around it, and it shifts as the page scrolls.
  */
 const FRAG = `#version 300 es
 precision highp float;
@@ -118,7 +118,8 @@ export function Contour({ className = "" }: { className?: string }) {
       eased.y += (goal.y - eased.y) * 0.08;
       eased.on += (goal.on - eased.on) * 0.05;
       gl.uniform2f(uRes, canvas.width, canvas.height);
-      gl.uniform1f(uTime, ms / 1000);
+      // Scrolling pushes the terrain along too, so the page feels connected to it.
+      gl.uniform1f(uTime, ms / 1000 + window.scrollY * 0.012);
       gl.uniform3f(uPointer, eased.x, eased.y, eased.on);
       gl.drawArrays(gl.TRIANGLES, 0, 3);
     };

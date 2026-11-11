@@ -106,6 +106,10 @@ export function Nav() {
         borderBottom: `1px solid ${lifted ? "var(--line)" : "transparent"}`,
       }}
     >
+      <span
+        aria-hidden
+        className="scroll-progress absolute inset-x-0 -bottom-px h-px bg-[var(--accent)]"
+      />
       <nav className="shell flex h-[68px] items-center justify-between">
         <a
           href="#top"

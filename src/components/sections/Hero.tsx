@@ -46,9 +46,15 @@ export function Hero() {
 
             <Reveal delay={80}>
               <h1 className="h-display mt-6 text-[clamp(2.8rem,8vw,5.5rem)]">
-                Karthik Reddy
-                <br />
-                <span className="text-[var(--muted)]">Yalala</span>
+                <span className="line-rise">
+                  <span>Karthik Reddy</span>
+                </span>
+                <span
+                  className="line-rise text-[var(--muted)]"
+                  style={{ "--rise-delay": "90ms" } as React.CSSProperties}
+                >
+                  <span>Yalala</span>
+                </span>
               </h1>
             </Reveal>
 

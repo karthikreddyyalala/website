@@ -3,18 +3,23 @@ import { Reveal } from "../ui/Reveal";
 import { timeline } from "@/content/experience";
 
 /**
- * Single-column timeline with a static rule. No parallax, no perspective
- * transforms, no scroll-linked progress bar — those were the repaint cost in
- * the previous build and they added nothing a date column doesn't.
+ * Single-column timeline. The amber spine draws itself as you scroll through
+ * the years, using a CSS scroll-driven animation on transform only: no scroll
+ * listener and no repaint, which is what made the earlier JS version janky.
+ * Without support it is the plain static rule.
  */
 export function Timeline() {
   return (
     <Section id="path" index="04" label="Path" title="How I got here.">
       <div className="relative">
-        {/* Static spine */}
+        {/* Spine: static rule, with the scroll-drawn amber line over it */}
         <div
           aria-hidden
           className="absolute bottom-0 left-0 top-2 w-px bg-[var(--line)] md:left-[164px]"
+        />
+        <div
+          aria-hidden
+          className="spine-fill absolute bottom-0 left-0 top-2 w-px bg-[var(--accent)] md:left-[164px]"
         />
 
         <div className="space-y-12 md:space-y-14">

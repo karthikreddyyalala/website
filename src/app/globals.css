@@ -211,6 +211,93 @@ body {
   will-change: auto;
 }
 
+/* ---------- Authored motion ----------
+   Everything here is transform-only and compositor-driven. The default state
+   of each element is its finished state, so nothing is hidden if a browser
+   lacks scroll-driven animations or the visitor prefers reduced motion. */
+
+/* Hero name: each line rises from behind its own mask once the hero reveals. */
+.line-rise {
+  display: block;
+  overflow: hidden;
+  /* Room for descenders, which the mask would otherwise clip. */
+  padding-bottom: 0.14em;
+  margin-bottom: -0.14em;
+}
+
+.reveal.is-in .line-rise > span {
+  display: block;
+  animation: line-rise 0.9s cubic-bezier(0.16, 1, 0.3, 1) both;
+  animation-delay: var(--rise-delay, 0ms);
+}
+
+@keyframes line-rise {
+  from {
+    transform: translate3d(0, 110%, 0);
+  }
+}
+
+@keyframes grow-x {
+  from {
+    transform: scaleX(0);
+  }
+}
+
+@keyframes grow-y {
+  from {
+    transform: scaleY(0);
+  }
+}
+
+@keyframes rise-in {
+  from {
+    transform: translate3d(0, 70%, 0);
+  }
+}
+
+.scroll-progress,
+.spine-fill,
+.flow-fill {
+  display: none;
+}
+
+@supports (animation-timeline: view()) {
+  @media (prefers-reduced-motion: no-preference) {
+    /* Nav hairline: how far down the page you are. */
+    .scroll-progress {
+      display: block;
+      transform-origin: left;
+      animation: grow-x linear both;
+      animation-timeline: scroll(root);
+    }
+
+    /* Path spine: the amber line's tip stays level with the middle of the screen. */
+    .spine-fill {
+      display: block;
+      transform-origin: top;
+      animation: grow-y linear both;
+      animation-timeline: view();
+      animation-range: cover 45vh cover calc(100% - 55vh);
+    }
+
+    /* Pipeline connectors fill one after another as the diagram crosses the screen. */
+    .flow-fill {
+      display: block;
+      transform-origin: left;
+      animation: grow-x linear both;
+      animation-timeline: view();
+      animation-range: cover calc(28% + var(--i) * 4%) cover calc(36% + var(--i) * 4%);
+    }
+
+    /* Footer wordmark: rises through the bottom edge as you reach the end. */
+    .wordmark-rise {
+      animation: rise-in linear both;
+      animation-timeline: view();
+      animation-range: entry 0% entry 100%;
+    }
+  }
+}
+
 @media (prefers-reduced-motion: reduce) {
   html {
     scroll-behavior: auto;
