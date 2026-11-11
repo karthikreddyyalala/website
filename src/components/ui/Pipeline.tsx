@@ -1,47 +1,44 @@
-import type { CSSProperties } from "react";
 import type { DiagramStage } from "@/content/casestudy";
 
 /**
- * Architecture as a line diagram: each stage is a station, and each failure
- * path leaves its station as a branch line. Shows the pattern only, with no
- * infrastructure identifiers. Flow layout, so it wraps or scrolls on small
- * screens instead of shrinking. The track fills in stage order as it scrolls
- * into view (see .flow-fill).
+ * Architecture as a line diagram running down the page: each stage is a
+ * station, and each failure path is a branch line that leaves the track at
+ * 45 degrees and ends at its own small stop. Shows the pattern only, with no
+ * infrastructure identifiers. The track fills stage by stage as you scroll
+ * (see .flow-fill).
  */
 export function Pipeline({ stages }: { stages: readonly DiagramStage[] }) {
   return (
-    <div className="-mx-5 overflow-x-auto px-5 pb-2 md:mx-0 md:px-0">
-      <ol className="flex min-w-max md:min-w-0 md:flex-wrap md:gap-y-9">
-        {stages.map((stage, i) => (
-          <li key={stage.label} className="relative w-[164px] pr-5 pt-9">
-            {i < stages.length - 1 && (
-              <span aria-hidden className="absolute inset-x-0 top-[7px] h-[6px] bg-[var(--line-hi)]">
-                <span
-                  className="flow-fill absolute inset-0 origin-left bg-[var(--line-color)]"
-                  style={{ "--i": i } as CSSProperties}
-                />
-              </span>
-            )}
-            <span
-              aria-hidden
-              className="absolute left-0 top-0 h-5 w-5 rounded-full border-[5px] border-[var(--text)] bg-[var(--bg)]"
-            />
+    <ol>
+      {stages.map((stage, i) => (
+        <li key={stage.label} className="relative pb-6 pl-10 last:pb-0">
+          {i < stages.length - 1 && (
+            <span aria-hidden className="absolute bottom-0 left-[7px] top-2 w-[6px] bg-[var(--line-hi)]">
+              <span className="flow-fill absolute inset-0 origin-top bg-[var(--line-color)]" />
+            </span>
+          )}
+          <span
+            aria-hidden
+            className="absolute left-0 top-0.5 h-5 w-5 rounded-full border-[5px] border-[var(--text)] bg-[var(--bg)]"
+          />
 
-            <p className="mono text-[10.5px] text-[var(--faint)]">{String(i + 1).padStart(2, "0")}</p>
-            <p className="mt-1 text-[15px] font-extrabold leading-tight text-[var(--text)]">{stage.label}</p>
-            <p className="mt-1 text-[12.5px] leading-snug text-[var(--muted)]">{stage.detail}</p>
+          <p className="flex flex-wrap items-baseline gap-x-3 gap-y-0.5">
+            <span className="text-[16px] font-extrabold leading-tight text-[var(--text)]">{stage.label}</span>
+            <span className="text-[14px] leading-snug text-[var(--muted)]">{stage.detail}</span>
+          </p>
 
-            {stage.branch && (
-              <p className="mono mt-3 flex gap-1.5 text-[10.5px] leading-snug text-[var(--muted)]">
-                <svg aria-hidden viewBox="0 0 18 14" className="mt-px h-3.5 w-[18px] flex-none text-[var(--l-about)]">
-                  <path d="M2 0v4l7 7h9" fill="none" stroke="currentColor" strokeWidth="3" strokeLinejoin="round" />
-                </svg>
-                {stage.branch}
-              </p>
-            )}
-          </li>
-        ))}
-      </ol>
-    </div>
+          {stage.branch && (
+            <p className="relative mt-1.5 flex h-[30px] items-end pl-[34px] text-[13px] leading-none text-[var(--muted)]">
+              {/* The spur starts on the track and runs out to its own stop. */}
+              <svg aria-hidden viewBox="0 0 62 30" className="absolute -left-[30px] bottom-[-2px] h-[30px] w-[62px]">
+                <path d="M0 0L22 22H46" fill="none" stroke="var(--branch)" strokeWidth="5" strokeLinejoin="round" />
+                <circle cx="52" cy="22" r="5.5" fill="var(--bg)" stroke="var(--branch)" strokeWidth="3.5" />
+              </svg>
+              <span className="pb-[3px]">{stage.branch}</span>
+            </p>
+          )}
+        </li>
+      ))}
+    </ol>
   );
 }

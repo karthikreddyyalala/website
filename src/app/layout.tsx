@@ -64,6 +64,10 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body className={`${display.variable} ${code.variable}`}>
+        {/* Reveal starts hidden and is shown by JS; without JS, show everything. */}
+        <noscript>
+          <style>{".reveal{opacity:1}"}</style>
+        </noscript>
         {children}
         <Analytics />
       </body>

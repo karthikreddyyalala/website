@@ -6,21 +6,19 @@ import { profile } from "@/content/profile";
 const { contact, availability } = profile;
 
 const CHANNELS = [
-  { label: "Email", value: contact.email, href: `mailto:${contact.email}`, Icon: Mail, line: "avis" },
-  { label: "LinkedIn", value: "in/kyalala", href: contact.linkedin, Icon: Linkedin, line: "work" },
+  { label: "Email", value: contact.email, href: `mailto:${contact.email}`, Icon: Mail },
+  { label: "LinkedIn", value: "in/kyalala", href: contact.linkedin, Icon: Linkedin },
   {
     label: "GitHub",
     value: "karthikreddyyalala",
     href: "https://github.com/karthikreddyyalala",
     Icon: Github,
-    line: "about",
   },
   {
     label: "Phone",
     value: contact.phone,
     href: `tel:${contact.phone.replace(/[^+\d]/g, "")}`,
     Icon: Phone,
-    line: "path",
   },
 ];
 
@@ -40,8 +38,8 @@ export function Contact() {
 
         {availability.active && (
           <Reveal delay={130}>
-            <p className="mono mt-7 flex items-center gap-2.5 text-[12px] text-[var(--muted)]">
-              <span aria-hidden className="inline-block h-2 w-2 rounded-full bg-[var(--l-path)]" />
+            <p className="mt-7 flex items-center gap-2.5 text-[15px] text-[var(--muted)]">
+              <span aria-hidden className="inline-block h-2.5 w-2.5 rounded-full border-[2.5px] border-[var(--text)]" />
               {availability.status}
             </p>
           </Reveal>
@@ -56,15 +54,14 @@ export function Contact() {
                   target={c.href.startsWith("http") ? "_blank" : undefined}
                   rel={c.href.startsWith("http") ? "noopener noreferrer" : undefined}
                   className="group flex items-center gap-4 py-4 pr-2 sm:pr-8"
-                  style={{ "--line-color": `var(--l-${c.line})` } as React.CSSProperties}
                 >
                   <span aria-hidden className="glass">
                     <c.Icon />
                   </span>
-                  <span className="mono text-[11px] uppercase tracking-[0.18em] text-[var(--faint)]">
+                  <span className="text-[14px] text-[var(--muted)]">
                     {c.label}
                   </span>
-                  <span className="ml-auto text-right text-[16px] font-bold text-[var(--text)] transition-colors duration-200 group-hover:text-[var(--line-color)]">
+                  <span className="ml-auto text-right text-[16px] font-bold text-[var(--text)] transition-colors duration-200 group-hover:text-[var(--accent)]">
                     {c.value}
                   </span>
                 </a>

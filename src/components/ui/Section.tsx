@@ -2,13 +2,13 @@ import type { CSSProperties, ReactNode } from "react";
 import { Reveal } from "./Reveal";
 
 /** The route lines. Each section rides one; the token lives in globals.css. */
-export type Line = "avis" | "work" | "stack" | "path" | "about" | "contact";
+export type Line = "avis" | "work" | "stack" | "path" | "contact";
 
 /** Sets `--line-color` for everything inside. Yellow and ink need their own bullet ink. */
 export function lineStyle(line: Line): CSSProperties {
   return {
     "--line-color": `var(--l-${line})`,
-    ...(line === "stack" && { "--bullet-ink": "#11151c", "--glass-ink": "var(--text)" }),
+    ...(line === "stack" && { "--bullet-ink": "#11151c" }),
     ...(line === "contact" && { "--bullet-ink": "var(--bg)" }),
   } as CSSProperties;
 }
@@ -32,7 +32,7 @@ export function Rail() {
 
 /**
  * Section heading as a station sign: the stop on the rail, the numbered line
- * bullet, the title, and the line's name set to the side (never above).
+ * bullet, the title, and the line's name in plain type at the far end.
  */
 export function SectionHead({
   index,
@@ -44,17 +44,15 @@ export function SectionHead({
   children: ReactNode;
 }) {
   return (
-    <div className="relative">
+    <div className="relative text-[clamp(2rem,4.5vw,3.25rem)]">
       <span aria-hidden className="station" />
-      <div className="flex flex-wrap items-center gap-x-5 gap-y-3 text-[clamp(2rem,4.5vw,3.25rem)]">
-        <span aria-hidden className="bullet">
+      <div className="flex flex-wrap items-start gap-x-5 gap-y-2">
+        <span aria-hidden className="bullet mt-[0.07em]">
           {index}
         </span>
         {children}
         {label && (
-          <p className="mono ml-auto rounded-full border border-[var(--line-hi)] px-3 py-1 text-[11px] uppercase tracking-[0.14em] text-[var(--muted)]">
-            {label}
-          </p>
+          <p className="ml-auto self-center text-[15px] font-bold text-[var(--muted)]">{label}</p>
         )}
       </div>
     </div>

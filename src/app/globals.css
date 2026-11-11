@@ -22,7 +22,7 @@
   --l-work: #1a56db; /* selected work */
   --l-stack: #f4b400; /* stack */
   --l-path: #0b8f4d; /* path */
-  --l-about: #e8590c; /* about */
+  --branch: #e8590c; /* failure paths: the branch lines in pipeline diagrams, nothing else */
   --l-contact: #11151c; /* contact: the terminus */
   --on-line: #ffffff; /* type set on a red, blue, green or orange line */
   --glass-hi: rgba(255, 255, 255, 0.95);
@@ -51,7 +51,7 @@
   --l-work: #5b9bff;
   --l-stack: #ffcb2e;
   --l-path: #3ddc84;
-  --l-about: #ff8a3d;
+  --branch: #ff8a3d;
   --l-contact: #eef1f6;
   --on-line: #0e1118;
   --glass-hi: rgba(255, 255, 255, 0.22);
@@ -88,10 +88,17 @@ html {
   background: var(--bg);
 }
 
+/* Overpass sets the middle dot off-centre. Borrow it from a system face. */
+@font-face {
+  font-family: "Interpunct";
+  src: local("Helvetica Neue"), local("Arial"), local("Liberation Sans"), local("DejaVu Sans");
+  unicode-range: U+00B7;
+}
+
 body {
   background: var(--bg);
   color: var(--text);
-  font-family: var(--font-display), ui-sans-serif, system-ui, sans-serif;
+  font-family: "Interpunct", var(--font-display), ui-sans-serif, system-ui, sans-serif;
   font-size: 17px;
   -webkit-font-smoothing: antialiased;
   text-rendering: optimizeLegibility;
@@ -217,16 +224,12 @@ body {
    only toggles a class; nothing animates per-frame in JS. */
 .reveal {
   opacity: 0;
-  transform: translate3d(0, 14px, 0);
-  transition: opacity 0.7s cubic-bezier(0.16, 1, 0.3, 1),
-    transform 0.7s cubic-bezier(0.16, 1, 0.3, 1);
+  transition: opacity 0.5s ease-out;
   transition-delay: var(--reveal-delay, 0ms);
-  will-change: transform, opacity;
 }
 
 .reveal.is-in {
   opacity: 1;
-  transform: translate3d(0, 0, 0);
 }
 
 /* Once revealed, stop promoting the layer. */
@@ -275,17 +278,31 @@ body {
   box-shadow: inset 0 0 0 3px var(--text), inset 0 0 0 5px var(--bg);
 }
 
-/* Station on the rail, level with the section heading. */
+/* Station on the rail. In a section head it sits level with the first line of
+   the heading (the head sets the font size, so 0.51em is that line's middle). */
 .station {
   position: absolute;
   left: -20px;
-  top: 50%;
+  top: 0.51em;
   width: 16px;
   height: 16px;
   margin-top: -8px;
   border-radius: 999px;
   background: var(--bg);
   border: 4px solid var(--text);
+}
+
+/* A smaller stop for each deliverable on the line: initiatives, projects, jobs. */
+.stop {
+  position: absolute;
+  left: -18px;
+  top: 0.6em;
+  width: 12px;
+  height: 12px;
+  margin-top: -6px;
+  border-radius: 999px;
+  background: var(--bg);
+  border: 3px solid var(--text);
 }
 
 @media (min-width: 768px) {
@@ -299,6 +316,38 @@ body {
     height: 20px;
     margin-top: -10px;
     border-width: 5px;
+  }
+  .stop {
+    left: -31px;
+    width: 16px;
+    height: 16px;
+    margin-top: -8px;
+    border-width: 4px;
+  }
+}
+
+/* Where the hero map's red line turns down and becomes the page's trunk.
+   Sized in container units so it meets the SVG line at any width. */
+.map-frame {
+  container-type: inline-size;
+}
+
+.map-trunk {
+  display: none;
+}
+
+@media (min-width: 1024px) {
+  .map-trunk {
+    --u: calc(100cqw / 1200);
+    display: block;
+    position: absolute;
+    left: -26px;
+    top: calc(137.5 * var(--u));
+    width: calc(26px + 34 * var(--u));
+    height: 300vh;
+    border-left: 6px solid var(--l-avis);
+    border-top: calc(9 * var(--u)) solid var(--l-avis);
+    border-top-left-radius: 18px;
   }
 }
 
@@ -319,8 +368,8 @@ body {
   letter-spacing: 0;
 }
 
-/* Glass icon badge: a tinted enamel tile with a top highlight and a soft
-   drop in the line's color. One icon set (lucide), one stroke weight. */
+/* Glass icon badge: a clear tile the line behind it shows through. One icon
+   set (lucide), one stroke weight. Blur is bounded to these small tiles. */
 .glass {
   display: inline-flex;
   flex: none;
@@ -329,13 +378,14 @@ body {
   width: 44px;
   height: 44px;
   border-radius: 13px;
-  color: var(--glass-ink, var(--line-color));
-  background: color-mix(in srgb, var(--line-color) 13%, var(--surface));
-  border: 1px solid color-mix(in srgb, var(--line-color) 40%, transparent);
+  color: var(--text);
+  background: color-mix(in srgb, var(--surface) 55%, transparent);
+  -webkit-backdrop-filter: blur(5px) saturate(1.5);
+  backdrop-filter: blur(5px) saturate(1.5);
+  border: 1px solid color-mix(in srgb, var(--text) 18%, transparent);
   box-shadow:
     inset 0 1px 0 var(--glass-hi),
-    inset 0 -8px 12px -9px color-mix(in srgb, var(--line-color) 55%, transparent),
-    0 10px 18px -12px color-mix(in srgb, var(--line-color) 80%, transparent);
+    0 2px 4px -1px rgba(8, 10, 14, 0.22);
   transition: transform 0.2s cubic-bezier(0.16, 1, 0.3, 1);
 }
 
@@ -489,15 +539,6 @@ body {
       animation-timeline: scroll(root);
     }
 
-    /* Path spine: the line's tip stays level with the middle of the screen. */
-    .spine-fill {
-      display: block;
-      transform-origin: top;
-      animation: grow-y linear both;
-      animation-timeline: view();
-      animation-range: cover 45vh cover calc(100% - 55vh);
-    }
-
     /* Section rails fill with their line color, tip level with mid-screen. */
     .rail-fill {
       animation: grow-y linear both;
@@ -512,13 +553,11 @@ body {
       animation-range: cover 45vh cover calc(100% - 55vh);
     }
 
-    /* Pipeline connectors fill one after another as the diagram crosses the screen. */
+    /* Pipeline tracks fill downward the same way, stage after stage. */
     .flow-fill {
-      display: block;
-      transform-origin: left;
-      animation: grow-x linear both;
+      animation: grow-y linear both;
       animation-timeline: view();
-      animation-range: cover calc(28% + var(--i) * 4%) cover calc(36% + var(--i) * 4%);
+      animation-range: cover 45vh cover calc(100% - 55vh);
     }
 
     /* Footer wordmark: rises through the bottom edge as you reach the end. */
@@ -549,6 +588,10 @@ body {
 }
 
 /* ---------- Scrollbar ---------- */
+html {
+  scrollbar-color: var(--line-hi) var(--bg-deep);
+}
+
 ::-webkit-scrollbar {
   width: 10px;
 }
@@ -561,5 +604,5 @@ body {
   border: 3px solid var(--bg-deep);
 }
 ::-webkit-scrollbar-thumb:hover {
-  background: #3a3a3f;
+  background: var(--faint);
 }

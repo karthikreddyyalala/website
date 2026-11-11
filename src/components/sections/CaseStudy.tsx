@@ -21,52 +21,37 @@ export function CaseStudy() {
           <Reveal delay={60} className="md:col-span-7">
             <p className="text-[15px] text-[var(--muted)]">
               {caseStudy.role} · {caseStudy.qualifier} · {caseStudy.location}
-              <span className="mono ml-3 text-[var(--faint)]">{caseStudy.period}</span>
+              <span className="ml-3 text-[var(--faint)]">{caseStudy.period}</span>
             </p>
+            <dl className="mt-8 max-w-[440px]">
+              {caseStudy.headline.map((m) => (
+                <div key={m.label} className="flex items-baseline gap-5 border-t border-[var(--line-hi)] py-3.5">
+                  <dt className="w-[132px] flex-none text-[26px] font-black leading-none tabular-nums text-[var(--line-color)]">
+                    <CountUp value={m.value} />
+                  </dt>
+                  <dd className="text-[14px] leading-snug text-[var(--muted)]">{m.label}</dd>
+                </div>
+              ))}
+            </dl>
           </Reveal>
           <Reveal delay={120} className="md:col-span-5">
             <p className="prose-body text-[15px]">{caseStudy.intro}</p>
           </Reveal>
         </div>
 
-        <Reveal delay={160}>
-          <dl className="mt-12 grid grid-cols-1 border-t-[3px] border-[var(--line-color)] sm:grid-cols-3">
-            {caseStudy.headline.map((m) => (
-              <div
-                key={m.label}
-                className="border-b border-[var(--line)] py-6 pr-8 sm:border-b-0"
-              >
-                <dt
-                  className="mono tabular-nums text-[28px] md:text-[34px]"
-                  style={{ color: "var(--accent)" }}
-                >
-                  <CountUp value={m.value} />
-                </dt>
-                <dd className="mt-1.5 text-[12.5px] leading-snug text-[var(--muted)]">
-                  {m.label}
-                </dd>
-              </div>
-            ))}
-          </dl>
-        </Reveal>
-
         <div className="mt-20 space-y-20 md:space-y-28">
           {caseStudy.initiatives.map((init, idx) => (
             <Reveal key={init.id} delay={idx === 0 ? 0 : 40}>
-              <article>
+              <article id={`avis-${init.id}`} className="relative text-[24px] md:text-[28px]">
+                <span aria-hidden className="stop" />
                 <div className="grid gap-6 md:grid-cols-12">
                   <div className="md:col-span-4">
-                    <h3 className="h-section flex items-start gap-3 text-[24px] md:text-[28px]">
-                      <span aria-hidden className="bullet mt-1">
-                        {init.index}
-                      </span>
-                      {init.title}
-                    </h3>
+                    <h3 className="h-section">{init.title}</h3>
                     <ul className="mt-5 flex flex-wrap gap-1.5">
                       {init.tech.map((t) => (
                         <li
                           key={t}
-                          className="mono rounded-full border border-[var(--line)] px-2.5 py-1 text-[10.5px] text-[var(--faint)]"
+                          className="mono rounded-full border border-[var(--line-hi)] px-2.5 py-1 text-[11px] text-[var(--muted)]"
                         >
                           {t}
                         </li>
@@ -80,7 +65,7 @@ export function CaseStudy() {
                     <p className="prose-body text-[16.5px]">{init.summary}</p>
 
                     {init.pipeline && (
-                      <div className="mt-8 border-y border-[var(--line-hi)] py-6">
+                      <div className="mt-8 border-y border-[var(--line-hi)] py-7">
                         <Pipeline stages={init.pipeline} />
                       </div>
                     )}
@@ -130,13 +115,14 @@ export function CaseStudy() {
 
         {/* VP research — different shape so it reads as a different kind of work */}
         <Reveal>
-          <div className="mt-20 border-t-[3px] border-[var(--line-color)] pt-8">
+          <div id="avis-research" className="relative mt-20 border-t-[3px] border-[var(--line-color)] pt-8 text-[22px] md:text-[26px]">
+            <span aria-hidden className="stop" style={{ top: "calc(2rem + 0.6em)" }} />
             <div className="grid gap-6 md:grid-cols-12">
               <div className="md:col-span-4">
-                <h3 className="h-section text-[22px] md:text-[26px]">
+                <h3 className="h-section">
                   {caseStudy.research.title}
                 </h3>
-                <p className="mono mt-2 text-[11px] uppercase tracking-[0.14em] text-[var(--faint)]">Beyond the build</p>
+                <p className="mt-2 text-[14px] font-bold text-[var(--muted)]">Beyond the build</p>
                 <p className="mt-2.5 text-[13px] font-bold text-[var(--line-color)]">
                   {caseStudy.research.forWhom}
                 </p>
@@ -144,7 +130,7 @@ export function CaseStudy() {
               <div className="md:col-span-8">
                 <p className="prose-body text-[15px]">{caseStudy.research.body}</p>
                 {caseStudy.research.note && (
-                  <p className="mono mt-4 text-[11px] text-[var(--faint)]">
+                  <p className="mt-4 text-[13px] text-[var(--faint)]">
                     {caseStudy.research.note}
                   </p>
                 )}

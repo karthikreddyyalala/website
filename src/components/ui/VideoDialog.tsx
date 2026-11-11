@@ -124,11 +124,11 @@ export function VideoPreview(video: Video) {
         <span className="absolute inset-x-0 bottom-0 flex items-end justify-between gap-4 p-4 md:p-5">
           <span>
             <span className="block text-[14px] font-medium text-white">Watch the demo</span>
-            <span className="mono mt-0.5 block text-[10.5px] text-white/70">
+            <span className="mt-0.5 block text-[12.5px] text-white/75">
               Plays right here · no redirect
             </span>
           </span>
-          <span className="mono hidden text-[10.5px] text-white/70 sm:block">{video.title}</span>
+          <span className="hidden text-[12.5px] text-white/75 sm:block">{video.title}</span>
         </span>
       </VideoTrigger>
     </div>

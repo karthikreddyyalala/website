@@ -17,7 +17,7 @@ Memorable moment: a working metro map of his career in the first viewport, whose
 
 THESIS: The portfolio is a transit system map of one engineer's work. Bodies of work are lines, deliverables are stations, failure paths are branch lines. It refuses the dark developer portfolio with a split hero, a stat row and one neon accent.
 
-OWN-WORLD: Cool white map paper (night service: blue-black). Five saturated line colors with fixed roles: red Avis, blue Work, yellow Stack, green Path, ink Contact. Thick round-capped route lines with 45 degree bends, ringed station dots, interchange capsules, numbered line bullets, signage type (Overpass, Overpass Mono for codes and data). No gradients, glows or cards.
+OWN-WORLD: Cool white map paper (night service: blue-black). Five saturated line colors with fixed roles: red Avis, blue Work, yellow Stack, green Path, ink Contact and About. Orange is reserved for failure-path branch lines. Thick round-capped route lines with 45 degree bends, ringed station dots, interchange capsules, numbered line bullets, signage type (Overpass; Overpass Mono only for codes and data). Icons from one set (lucide); clear glass icon badges, added at the owner's request, that sit across a line so it shows through. No gradients, glows or cards.
 
 STORY: The visitor sees a real network, understands that this person ships connected systems, follows a line to proof, and reaches the terminus: contact.
 

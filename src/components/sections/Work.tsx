@@ -2,7 +2,6 @@ import Image from "next/image";
 import { Section } from "../ui/Section";
 import { Reveal } from "../ui/Reveal";
 import { projects } from "@/content/projects";
-import { TechIcon } from "../ui/TechIcon";
 import { VideoPreview, VideoTrigger } from "../ui/VideoDialog";
 import { ArrowUpRight, Github, Play } from "lucide-react";
 
@@ -55,18 +54,18 @@ export function Work() {
         {projects.map((p, i) => (
           <Reveal key={p.id} delay={Math.min(i, 4) * 50}>
             <article
-              className={`grid gap-5 border-b border-[var(--line-hi)] py-9 md:grid-cols-12 md:gap-8 md:py-11 ${
-                p.badge ? "relative overflow-hidden" : ""
-              }`}
+              id={`work-${p.id}`}
+              className="relative grid gap-5 border-b border-[var(--line-hi)] py-9 text-[22px] md:grid-cols-12 md:gap-8 md:py-11 md:text-[26px]"
             >
+              <span aria-hidden className="stop" style={{ top: "calc(2.75rem + 0.55em)" }} />
               <div className="relative md:col-span-3">
-                <h3 className="h-section text-[22px] md:text-[26px]">{p.title}</h3>
+                <h3 className="h-section">{p.title}</h3>
                 <div className="mt-2 flex items-center gap-3">
-                  <p className="mono text-[11px] text-[var(--faint)]">{p.year}</p>
+                  <p className="mono text-[12px] text-[var(--faint)]">{p.year}</p>
                   {p.badge && (
                     <span
                       className="mono rounded-full px-2.5 py-0.5 text-[10px] font-medium"
-                      style={{ background: "var(--l-stack)", color: "#11151c" }}
+                      style={{ background: "var(--line-color)", color: "var(--on-line)" }}
                     >
                       {p.badge}
                     </span>
@@ -120,9 +119,8 @@ export function Work() {
                   {p.tech.map((t) => (
                     <li
                       key={t}
-                      className="mono flex items-center gap-1.5 rounded-full bg-[var(--surface-hi)] px-2.5 py-1 text-[11px] text-[var(--muted)]"
+                      className="mono rounded-full bg-[var(--surface-hi)] px-2.5 py-1 text-[11px] text-[var(--muted)]"
                     >
-                      <TechIcon name={t} />
                       {t}
                     </li>
                   ))}

@@ -5,7 +5,7 @@ import { profile } from "@/content/profile";
 
 export function About() {
   return (
-    <section id="about" className="relative py-24 md:py-36" style={lineStyle("about")}>
+    <section id="about" className="relative py-24 md:py-36" style={lineStyle("contact")}>
       <Rail />
       <div className="shell relative">
         <Reveal>
@@ -46,13 +46,11 @@ export function About() {
             ))}
 
             <Reveal delay={340}>
-              <div className="mt-12 border-t border-[var(--line)] pt-6">
-                <p className="eyebrow flex items-baseline gap-3">
-                  <span>Currently</span>
-                  <span className="normal-case tracking-normal text-[var(--faint)]">
-                    {profile.currently.updated}
-                  </span>
-                </p>
+              <div className="mt-12 border-t border-[var(--line-hi)] pt-6">
+                <h3 className="flex items-baseline gap-3 text-[17px] font-extrabold text-[var(--text)]">
+                  Currently
+                  <span className="text-[13px] font-normal text-[var(--faint)]">{profile.currently.updated}</span>
+                </h3>
                 <p className="prose-body mt-3 text-[15px]">
                   {profile.currently.text}
                 </p>
