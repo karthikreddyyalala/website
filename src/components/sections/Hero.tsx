@@ -49,7 +49,8 @@ export function Hero() {
                   className="h-[112px] w-full rounded-[14px] border-2 border-[var(--text)] object-cover object-top lg:h-[176px]"
                 />
                 <figcaption className="mt-2 hidden text-[13px] leading-snug text-[var(--muted)] lg:block">
-                  {profile.role} · {profile.location}
+                  <span className="block">{profile.role}</span>
+                  <span className="block">{profile.location}</span>
                 </figcaption>
               </figure>
             </div>
