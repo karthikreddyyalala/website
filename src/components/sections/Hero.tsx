@@ -25,6 +25,7 @@ const PROOF: { Icon: LucideIcon; place: string; depth: number }[] = [
 export function Hero() {
   return (
     <section id="top" className="relative overflow-hidden pt-28 lg:pt-36">
+      <div data-scroll="hero">
       <Parallax className="shell relative">
         <div className="relative lg:max-w-[56%]">
           <Reveal>
@@ -114,11 +115,13 @@ export function Hero() {
           })}
         </Reveal>
       </Parallax>
+      </div>
 
       <div
         aria-hidden
         className="ticker mt-16 border-y border-[var(--line)] py-4 text-[14px] font-medium text-[var(--muted)] lg:mt-24"
       >
+        <div data-scroll="slide">
         <div>
           {[0, 1].map((k) => (
             <span key={k}>
@@ -132,6 +135,7 @@ export function Hero() {
               <span className="mx-7 text-[var(--signal)]">/</span>
             </span>
           ))}
+        </div>
         </div>
       </div>
     </section>

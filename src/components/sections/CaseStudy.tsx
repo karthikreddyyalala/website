@@ -43,7 +43,8 @@ export function CaseStudy() {
             <Reveal key={init.id} delay={idx === 0 ? 0 : 40}>
               <article id={`avis-${init.id}`} className="relative text-[24px] md:text-[28px]">
                 <div className="grid gap-6 md:grid-cols-12">
-                  <div className="md:col-span-4">
+                  {/* Stays pinned beside the write-up while it scrolls past. */}
+                  <div className="md:sticky md:top-28 md:col-span-4 md:self-start">
                     <h3 className="h-section">{init.title}</h3>
                     <ul className="mt-5 flex flex-wrap gap-1.5">
                       {init.tech.map((t) => (
@@ -63,7 +64,7 @@ export function CaseStudy() {
                     <p className="prose-body text-[16.5px]">{init.summary}</p>
 
                     {init.pipeline && (
-                      <div className="card mt-8 p-6 md:p-7">
+                      <div data-scroll="rise" className="card mt-8 p-6 md:p-7">
                         <Pipeline stages={init.pipeline} />
                       </div>
                     )}
@@ -113,7 +114,7 @@ export function CaseStudy() {
 
         {/* VP research — different shape so it reads as a different kind of work */}
         <Reveal>
-          <div id="avis-research" className="card mt-20 p-7 text-[22px] md:p-10 md:text-[26px]">
+          <div id="avis-research" data-scroll="rise" className="card mt-20 p-7 text-[22px] md:p-10 md:text-[26px]">
             <div className="grid gap-6 md:grid-cols-12">
               <div className="md:col-span-4">
                 <h3 className="h-section">

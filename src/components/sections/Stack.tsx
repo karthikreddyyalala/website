@@ -23,7 +23,7 @@ export function Stack() {
       <div className="grid gap-5 md:grid-cols-2">
         {stack.map((group, i) => (
           <Reveal key={group.id} delay={Math.min(i, 5) * 50}>
-            <div id={`stack-${group.id}`} className="card group h-full p-6 md:p-7">
+            <div id={`stack-${group.id}`} data-scroll="rise" className="card group h-full p-6 md:p-7">
               <div className="flex items-center gap-4">
                 {ICONS[group.id] &&
                   (() => {

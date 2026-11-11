@@ -8,7 +8,7 @@ import { About } from "@/components/sections/About";
 import { Contact } from "@/components/sections/Contact";
 import { VideoDialog } from "@/components/ui/VideoDialog";
 import { Footer } from "@/components/Footer";
-import { Aurora, GlassLight } from "@/components/ui/Fx";
+import { Aurora, GlassLight, ScrollFx, SmoothScroll } from "@/components/ui/Fx";
 
 export default function Home() {
   return (
@@ -19,6 +19,8 @@ export default function Home() {
 
       <Aurora />
       <GlassLight />
+      <SmoothScroll />
+      <ScrollFx />
 
       <Nav />
 

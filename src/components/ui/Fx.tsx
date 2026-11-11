@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useRef, type ReactNode } from "react";
+import Lenis from "lenis";
 
 const reduced = () => window.matchMedia("(prefers-reduced-motion: reduce)").matches;
 
@@ -122,6 +123,81 @@ export function GlassLight() {
     return () => {
       cancelAnimationFrame(raf);
       window.removeEventListener("pointermove", move);
+    };
+  }, []);
+
+  return null;
+}
+
+/* ------------------------------------------------------------------ */
+/* Scrolling                                                          */
+/* ------------------------------------------------------------------ */
+
+/**
+ * Momentum scrolling: the page eases to a stop instead of halting dead, and
+ * nav links glide to their section. Wheel and trackpad only; touch keeps the
+ * phone's own scrolling. Off under reduced motion. Anything marked
+ * data-lenis-prevent (the video dialog, the hands-free panel) scrolls natively.
+ */
+export function SmoothScroll() {
+  useEffect(() => {
+    if (reduced()) return;
+    // Anchor jumps respect the scroll-padding-top set on <html>, which clears the nav bar.
+    const lenis = new Lenis({ autoRaf: true, anchors: true, lerp: 0.11 });
+    return () => lenis.destroy();
+  }, []);
+
+  return null;
+}
+
+const clamp01 = (v: number) => Math.min(1, Math.max(0, v));
+
+/**
+ * Scroll-linked motion that works in every browser. Each element with a
+ * data-scroll attribute gets three CSS variables, updated once per frame
+ * while it is on screen:
+ *   --e  enter: 0 as its top reaches the bottom of the screen, 1 once it is well in
+ *   --p  pass:  0 to 1 across its whole trip through the screen
+ *   --x  exit:  0 until its top leaves the top of the screen, then up to 1
+ * The CSS in globals.css turns those into movement. Without this script (or
+ * under reduced motion) the variables keep their defaults: everything at rest.
+ */
+export function ScrollFx() {
+  useEffect(() => {
+    if (reduced()) return;
+    const onScreen = new Set<HTMLElement>();
+    let raf = 0;
+
+    const paint = () => {
+      raf = 0;
+      const vh = window.innerHeight;
+      onScreen.forEach((el) => {
+        const b = el.getBoundingClientRect();
+        el.style.setProperty("--e", clamp01((vh - b.top) / (vh * 0.42)).toFixed(3));
+        el.style.setProperty("--p", clamp01((vh - b.top) / (vh + b.height)).toFixed(3));
+        el.style.setProperty("--x", clamp01(-b.top / (b.height * 0.75)).toFixed(3));
+      });
+    };
+    const queue = () => {
+      if (!raf) raf = requestAnimationFrame(paint);
+    };
+
+    const watch = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((e) => (e.isIntersecting ? onScreen.add(e.target as HTMLElement) : onScreen.delete(e.target as HTMLElement)));
+        queue();
+      },
+      { rootMargin: "10% 0px" }
+    );
+    document.querySelectorAll<HTMLElement>("[data-scroll]").forEach((el) => watch.observe(el));
+    window.addEventListener("scroll", queue, { passive: true });
+    window.addEventListener("resize", queue);
+
+    return () => {
+      cancelAnimationFrame(raf);
+      watch.disconnect();
+      window.removeEventListener("scroll", queue);
+      window.removeEventListener("resize", queue);
     };
   }, []);
 

@@ -370,6 +370,38 @@ body {
   }
 }
 
+/* Scroll-linked motion (see ScrollFx). --e, --p and --x are set per element
+   as it moves through the screen; the defaults are the resting state. */
+
+/* Panels grow and rise into place as they enter. */
+[data-scroll="rise"] {
+  transform: translate3d(0, calc((1 - var(--e, 1)) * 70px), 0) scale(calc(0.93 + var(--e, 1) * 0.07));
+  opacity: calc(0.15 + var(--e, 1) * 0.85);
+  transform-origin: 50% 0;
+}
+
+/* Drifts against the scroll, so it sits on a different plane from the text around it. */
+[data-scroll="drift"] {
+  transform: translate3d(0, calc((var(--p, 0.5) - 0.5) * -90px), 0);
+}
+
+/* The hero settles back and dims as the page scrolls over it. */
+[data-scroll="hero"] {
+  transform: translate3d(0, calc(var(--x, 0) * 90px), 0) scale(calc(1 - var(--x, 0) * 0.07));
+  opacity: calc(1 - var(--x, 0) * 0.85);
+  transform-origin: 50% 30%;
+}
+
+/* Slides sideways with the scroll. */
+[data-scroll="slide"] {
+  transform: translate3d(calc((var(--p, 0.5) - 0.5) * -260px), 0, 0);
+}
+
+/* Momentum scrolling replaces the browser's own smooth scroll while it is running. */
+html.lenis {
+  scroll-behavior: auto;
+}
+
 /* Depth layers: elements with data-depth drift with the pointer (see Parallax). */
 [data-depth] {
   will-change: translate;
@@ -389,12 +421,12 @@ body {
   white-space: nowrap;
 }
 
-.ticker > div {
+.ticker > div > div {
   display: inline-block;
   animation: ticker 40s linear infinite;
 }
 
-.ticker:hover > div {
+.ticker:hover > div > div {
   animation-play-state: paused;
 }
 
@@ -507,14 +539,16 @@ body {
     transition: none;
   }
   .pulse,
-  .ticker > div {
+  .ticker > div > div {
     animation: none;
   }
   .pulse {
     display: none;
   }
   .tilt,
+  [data-scroll],
   [data-depth] {
+    opacity: 1;
     transform: none;
     translate: none;
     transition: none;

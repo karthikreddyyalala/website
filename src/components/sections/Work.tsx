@@ -54,6 +54,7 @@ export function Work() {
           <Reveal key={p.id} delay={Math.min(i, 4) * 50}>
             <article
               id={`work-${p.id}`}
+              data-scroll="rise"
               className="card grid gap-5 p-6 text-[22px] md:grid-cols-12 md:gap-8 md:p-9 md:text-[26px]"
             >
               <div className="relative md:col-span-3">

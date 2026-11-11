@@ -26,7 +26,7 @@ export function Contact() {
   return (
     <section id="contact" className="relative py-24 md:py-32">
       <div className="shell relative">
-        <div className="card p-7 md:p-14">
+        <div data-scroll="rise" className="card p-7 md:p-14">
         <Reveal>
           <SectionHead label="Contact">
             <h2 className="h-display max-w-[15ch] text-[clamp(2.2rem,6vw,4.2rem)]">

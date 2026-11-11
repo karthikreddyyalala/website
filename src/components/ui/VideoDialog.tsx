@@ -159,6 +159,7 @@ export function VideoDialog() {
   return (
     <dialog
       ref={ref}
+      data-lenis-prevent
       aria-label={video ? video.title : "Video"}
       onClose={onClose}
       onClick={(e) => e.target === e.currentTarget && ref.current?.close()}

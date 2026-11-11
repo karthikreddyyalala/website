@@ -16,6 +16,7 @@ export function About() {
         <div className="mt-12 grid gap-12 md:grid-cols-12 md:gap-16">
           <div className="md:col-span-4">
             <Reveal delay={80}>
+              <div data-scroll="drift">
               <Tilt max={7}>
                 <div className="card overflow-hidden p-2.5">
                   <Image
@@ -29,6 +30,7 @@ export function About() {
                   />
                 </div>
               </Tilt>
+              </div>
             </Reveal>
           </div>
 
