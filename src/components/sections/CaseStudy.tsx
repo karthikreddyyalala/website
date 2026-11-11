@@ -5,6 +5,7 @@ import { Aside } from "../ui/Aside";
 import { SectionHead } from "../ui/Section";
 import { caseStudy } from "@/content/casestudy";
 import { Plus } from "lucide-react";
+import { TechTag } from "../ui/TechTag";
 
 export function CaseStudy() {
   return (
@@ -48,12 +49,7 @@ export function CaseStudy() {
                     <h3 className="h-section">{init.title}</h3>
                     <ul className="mt-5 flex flex-wrap gap-1.5">
                       {init.tech.map((t) => (
-                        <li
-                          key={t}
-                          className="tag mono text-[12.5px]"
-                        >
-                          {t}
-                        </li>
+                        <TechTag key={t} name={t} className="mono text-[12.5px]" />
                       ))}
                     </ul>
 

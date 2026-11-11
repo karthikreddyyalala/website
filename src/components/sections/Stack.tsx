@@ -2,6 +2,7 @@ import { Section } from "../ui/Section";
 import { Reveal } from "../ui/Reveal";
 import { stack } from "@/content/stack";
 import { Braces, BrainCircuit, Cloud, Database, Globe, Workflow, type LucideIcon } from "lucide-react";
+import { TechTag } from "../ui/TechTag";
 
 const ICONS: Record<string, LucideIcon> = {
   engineering: Workflow,
@@ -41,12 +42,7 @@ export function Stack() {
               {group.note && <p className="mt-3 text-[14.5px] text-[var(--faint)]">{group.note}</p>}
               <ul className="mt-4 flex flex-wrap gap-2">
                 {group.items.map((item) => (
-                  <li
-                    key={item}
-                    className="tag text-[14.5px] !text-[var(--text)]"
-                  >
-                    {item}
-                  </li>
+                  <TechTag key={item} name={item} className="text-[14.5px] !text-[var(--text)]" />
                 ))}
               </ul>
             </div>

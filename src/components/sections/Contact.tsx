@@ -31,7 +31,7 @@ export function Contact() {
           <SectionHead label="Contact">
             <h2 className="h-display max-w-[15ch] text-[clamp(2.2rem,6vw,4.2rem)]">
               Let&apos;s talk about
-              <span className="sheen"> what you&apos;re building.</span>
+               what you&apos;re building.
             </h2>
           </SectionHead>
         </Reveal>

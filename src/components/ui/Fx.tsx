@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useRef, type ReactNode } from "react";
+import { useEffect, useRef, useState, type ReactNode } from "react";
 import Lenis from "lenis";
 
 const reduced = () => window.matchMedia("(prefers-reduced-motion: reduce)").matches;
@@ -75,7 +75,8 @@ export function Aurora() {
       gl.drawArrays(gl.TRIANGLES, 0, 3);
     };
     const loop = (ms: number) => {
-      draw(ms);
+      // The "Pause motion" control in the footer sets data-motion="off".
+      if (document.documentElement.dataset.motion !== "off") draw(ms);
       raf = requestAnimationFrame(loop);
     };
     const size = () => {
@@ -217,7 +218,7 @@ export function ScrollFx() {
 }
 
 /* ------------------------------------------------------------------ */
-/* Depth and tilt                                                     */
+/* Depth                                                              */
 /* ------------------------------------------------------------------ */
 
 /** Children with a data-depth attribute drift with the pointer, deeper values moving further. */
@@ -250,33 +251,24 @@ export function Parallax({ children, className = "" }: { children: ReactNode; cl
   );
 }
 
-/** Tilts its content in 3D toward the pointer. Mouse only; flat on touch and under reduced motion. */
-export function Tilt({ children, className = "", max = 5 }: { children: ReactNode; className?: string; max?: number }) {
-  const ref = useRef<HTMLDivElement>(null);
+/* ------------------------------------------------------------------ */
+/* Pause control                                                      */
+/* ------------------------------------------------------------------ */
+
+/**
+ * Stops everything that loops on its own (the backdrop light, the ticker,
+ * the pipeline pulses), for anyone who finds constant movement distracting.
+ */
+export function MotionToggle({ className = "" }: { className?: string }) {
+  const [paused, setPaused] = useState(false);
 
   useEffect(() => {
-    const el = ref.current!;
-    if (reduced() || !window.matchMedia("(hover: hover)").matches) return;
-    const move = (e: PointerEvent) => {
-      const b = el.getBoundingClientRect();
-      el.style.setProperty("--ry", `${((e.clientX - b.left) / b.width - 0.5) * 2 * max}deg`);
-      el.style.setProperty("--rx", `${(0.5 - (e.clientY - b.top) / b.height) * 2 * max}deg`);
-    };
-    const leave = () => {
-      el.style.setProperty("--rx", "0deg");
-      el.style.setProperty("--ry", "0deg");
-    };
-    el.addEventListener("pointermove", move);
-    el.addEventListener("pointerleave", leave);
-    return () => {
-      el.removeEventListener("pointermove", move);
-      el.removeEventListener("pointerleave", leave);
-    };
-  }, [max]);
+    document.documentElement.dataset.motion = paused ? "off" : "on";
+  }, [paused]);
 
   return (
-    <div ref={ref} className={`tilt ${className}`}>
-      {children}
-    </div>
+    <button type="button" aria-pressed={paused} onClick={() => setPaused((v) => !v)} className={className}>
+      {paused ? "Play motion" : "Pause motion"}
+    </button>
   );
 }

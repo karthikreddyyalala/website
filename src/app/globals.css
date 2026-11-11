@@ -124,11 +124,6 @@ dt,
   line-height: 1.04;
 }
 
-/* The quieter half of a two-tone headline: solid steel, no gradient. */
-.sheen {
-  color: color-mix(in srgb, var(--text) 52%, var(--bg));
-}
-
 /* Mono is for data, codes and measurements only. */
 .mono {
   font-family: var(--font-code), ui-monospace, monospace;
@@ -224,7 +219,7 @@ dt,
   }
 
   a.card:hover {
-    transform: translate3d(0, -3px, 0);
+    transform: translate3d(0, -2px, 0);
     background-color: rgba(255, 250, 240, 0.06);
   }
 
@@ -302,7 +297,28 @@ dt,
   }
 
   .icon-link:hover svg {
-    transform: translate3d(1px, -1px, 0);
+    transform: scale(1.12);
+  }
+
+  /* The underline draws in from the left on hover and focus. */
+  .icon-link {
+    position: relative;
+  }
+
+  .icon-link::after {
+    content: "";
+    position: absolute;
+    inset: auto 0 9px;
+    height: 1.5px;
+    background: currentColor;
+    transform: scaleX(0);
+    transform-origin: left;
+    transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+  }
+
+  .icon-link:hover::after,
+  .icon-link:focus-visible::after {
+    transform: scaleX(1);
   }
 
   /* Buttons. 48px tall so they are easy to hit on a phone. */
@@ -513,13 +529,6 @@ html.lenis {
   transition: translate 0.35s cubic-bezier(0.16, 1, 0.3, 1);
 }
 
-/* 3D tilt on glass cards (see Tilt). */
-.tilt {
-  transform: perspective(1100px) rotateX(var(--rx, 0deg)) rotateY(var(--ry, 0deg));
-  transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1);
-  transform-style: preserve-3d;
-}
-
 /* Ticker of proof points along the bottom of the hero. Pauses on hover. */
 .ticker {
   overflow: hidden;
@@ -529,6 +538,12 @@ html.lenis {
 .ticker > div > div {
   display: inline-block;
   animation: ticker 40s linear infinite;
+}
+
+/* The footer's "Pause motion" control stops everything that loops. */
+html[data-motion="off"] .ticker > div > div,
+html[data-motion="off"] .pulse {
+  animation-play-state: paused;
 }
 
 .ticker:hover > div > div {
@@ -650,7 +665,6 @@ html.lenis {
   .pulse {
     display: none;
   }
-  .tilt,
   [data-scroll],
   [data-depth] {
     opacity: 1;

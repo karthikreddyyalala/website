@@ -1,5 +1,6 @@
 import { Github, Linkedin, Mail, type LucideIcon } from "lucide-react";
 import { profile } from "@/content/profile";
+import { MotionToggle } from "./ui/Fx";
 
 const LINKS: { label: string; href: string; Icon?: LucideIcon }[] = [
   { label: "Email", href: `mailto:${profile.contact.email}`, Icon: Mail },
@@ -62,6 +63,9 @@ export function Footer() {
                 </a>
               </li>
             ))}
+            <li>
+              <MotionToggle className="icon-link text-[15px] font-bold text-[var(--text)] transition-colors duration-200 hover:text-[var(--accent)]" />
+            </li>
           </ul>
         </nav>
       </div>

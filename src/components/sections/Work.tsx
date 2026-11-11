@@ -3,8 +3,8 @@ import { Section } from "../ui/Section";
 import { Reveal } from "../ui/Reveal";
 import { projects } from "@/content/projects";
 import { VideoPreview, VideoTrigger } from "../ui/VideoDialog";
-import { Tilt } from "../ui/Fx";
 import { Github, Globe, Play } from "lucide-react";
+import { TechTag } from "../ui/TechTag";
 
 /** Product screenshot, styled to match the video preview. Links to the live site when there is one. */
 function Shot({ src, title, href }: { src: string; title: string; href?: string }) {
@@ -116,23 +116,18 @@ export function Work() {
                 <p className="prose-body mt-3 text-[16.5px] md:text-[17px]">{p.body}</p>
                 <ul className="mt-5 flex flex-wrap gap-1.5">
                   {p.tech.map((t) => (
-                    <li
-                      key={t}
-                      className="tag mono text-[12.5px]"
-                    >
-                      {t}
-                    </li>
+                    <TechTag key={t} name={t} className="mono text-[12.5px]" />
                   ))}
                 </ul>
                 {p.video ? (
-                  <Tilt className="mt-7 max-w-[720px]">
+                  <div className="mt-7 max-w-[720px]">
                     <VideoPreview {...p.video} title={`${p.title} demo`} />
-                  </Tilt>
+                  </div>
                 ) : (
                   p.image && (
-                    <Tilt className="max-w-[720px]">
+                    <div className="max-w-[720px]">
                       <Shot src={p.image} title={p.title} href={p.live} />
-                    </Tilt>
+                    </div>
                   )
                 )}
               </div>

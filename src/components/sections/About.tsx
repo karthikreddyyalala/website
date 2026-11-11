@@ -1,7 +1,6 @@
 import Image from "next/image";
 import { Reveal } from "../ui/Reveal";
 import { SectionHead } from "../ui/Section";
-import { Tilt } from "../ui/Fx";
 import { profile } from "@/content/profile";
 
 export function About() {
@@ -17,8 +16,7 @@ export function About() {
           <div className="md:col-span-4">
             <Reveal delay={80}>
               <div data-scroll="drift">
-              <Tilt max={7}>
-                <div className="card overflow-hidden p-2.5">
+                <div className="card group overflow-hidden p-2.5">
                   <Image
                     src="/images/about-photo.webp"
                     alt="Karthik Reddy Yalala"
@@ -26,10 +24,9 @@ export function About() {
                     height={700}
                     loading="lazy"
                     sizes="(max-width: 768px) 100vw, 320px"
-                    className="h-full w-full rounded-[13px] object-cover"
+                    className="h-full w-full rounded-[13px] object-cover transition-transform duration-700 ease-[cubic-bezier(0.16,1,0.3,1)] group-hover:scale-[1.03]"
                   />
                 </div>
-              </Tilt>
               </div>
             </Reveal>
           </div>

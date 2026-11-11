@@ -1,6 +1,7 @@
 import { Section } from "../ui/Section";
 import { Reveal } from "../ui/Reveal";
 import { timeline } from "@/content/experience";
+import { TechTag } from "../ui/TechTag";
 
 /** Single-column timeline with a spine that lights up as you scroll through the years. */
 export function Timeline() {
@@ -59,12 +60,7 @@ export function Timeline() {
                   {entry.tech && (
                     <ul className="mt-4 flex flex-wrap gap-1.5">
                       {entry.tech.map((t) => (
-                        <li
-                          key={t}
-                          className="tag mono text-[12.5px]"
-                        >
-                          {t}
-                        </li>
+                        <TechTag key={t} name={t} className="mono text-[12.5px]" />
                       ))}
                     </ul>
                   )}

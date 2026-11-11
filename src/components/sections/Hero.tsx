@@ -1,13 +1,9 @@
 import Image from "next/image";
 import type { CSSProperties } from "react";
-import { Building2, Clock, FileText, GraduationCap, Play, Rocket, type LucideIcon } from "lucide-react";
+import { Building2, Clock, FileText, GraduationCap, Rocket, type LucideIcon } from "lucide-react";
 import { Reveal } from "../ui/Reveal";
 import { Parallax } from "../ui/Fx";
 import { profile } from "@/content/profile";
-import { projects } from "@/content/projects";
-import { VideoTrigger } from "../ui/VideoDialog";
-
-const demo = projects.find((p) => p.video);
 
 // One icon and one position per proof point, in the order they appear in profile.proof.
 const PROOF: { Icon: LucideIcon; place: string; depth: number }[] = [
@@ -18,9 +14,9 @@ const PROOF: { Icon: LucideIcon; place: string; depth: number }[] = [
 ];
 
 /**
- * First screen: the name at display scale, and a portrait in glass with the
- * proof points floating around it at different depths, so the group shifts
- * like layered glass as the pointer moves. A ticker repeats the proof below.
+ * First screen: the name at display scale, what he does, and two actions. A
+ * portrait in glass has the proof points floating around it at different
+ * depths, so the group shifts like layered glass as the pointer moves.
  */
 export function Hero() {
   return (
@@ -37,33 +33,33 @@ export function Hero() {
                 <span>Reddy</span>
               </span>
               <span className="line-rise" style={{ "--rise-delay": "160ms" } as CSSProperties}>
-                <span className="sheen">Yalala</span>
+                <span>Yalala</span>
               </span>
             </h1>
           </Reveal>
 
           <Reveal delay={220}>
-            <p className="mt-7 text-[16.5px] font-medium text-[var(--ice)]">
+            <p className="mt-7 flex flex-wrap items-center gap-x-4 gap-y-2.5 text-[16.5px] font-medium text-[var(--ice)]">
               {profile.role} · {profile.location}
+              {profile.availability.active && (
+                <span className="tag inline-flex items-center gap-2 text-[14.5px] font-normal !text-[var(--text)]">
+                  <span aria-hidden className="h-2 w-2 flex-none rounded-full bg-[var(--signal)]" />
+                  {profile.availability.status}
+                </span>
+              )}
             </p>
             <p className="mt-4 max-w-[52ch] text-[18px] leading-[1.6] text-[var(--text)]">{profile.claim}</p>
           </Reveal>
 
           <Reveal delay={300}>
             <div className="mt-8 flex flex-wrap items-center gap-3">
-              <a href="#work-avis" className="btn btn-signal">
+              <a href="#work-avis" className="btn btn-signal w-full justify-center sm:w-auto">
                 See the production work
               </a>
-              <a href={profile.contact.resume} target="_blank" rel="noopener noreferrer" className="btn btn-glass">
+              <a href={profile.contact.resume} target="_blank" rel="noopener noreferrer" className="btn btn-glass w-full justify-center sm:w-auto">
                 <FileText className="h-4 w-4" strokeWidth={2.25} />
                 Résumé
               </a>
-              {demo?.video && (
-                <VideoTrigger {...demo.video} title={`${demo.title} demo`} className="btn btn-glass">
-                  <Play className="h-3.5 w-3.5" fill="currentColor" strokeWidth={0} />
-                  Watch the {demo.title} demo
-                </VideoTrigger>
-              )}
             </div>
           </Reveal>
         </div>
@@ -86,12 +82,6 @@ export function Hero() {
               sizes="(min-width: 640px) 300px, 90vw"
               className="aspect-[4/5] w-full rounded-[18px] object-cover object-top"
             />
-            {profile.availability.active && (
-              <figcaption className="flex items-center gap-2.5 px-2 pb-1.5 pt-3 text-[14.5px] leading-snug text-[var(--muted)]">
-                <span aria-hidden className="h-2 w-2 flex-none rounded-full bg-[var(--signal)]" />
-                {profile.availability.status}
-              </figcaption>
-            )}
           </figure>
 
           {profile.proof.map((p, i) => {
