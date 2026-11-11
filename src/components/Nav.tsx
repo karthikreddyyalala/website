@@ -2,7 +2,7 @@
 
 import { useCallback, useEffect, useState } from "react";
 import dynamic from "next/dynamic";
-import { Hand } from "lucide-react";
+import { ArrowUpRight, Hand } from "lucide-react";
 import { profile } from "@/content/profile";
 
 // MediaPipe only downloads once a visitor turns hands-free on.
@@ -22,7 +22,6 @@ export function Nav() {
   const [active, setActive] = useState<string>("");
   const [lifted, setLifted] = useState(false);
   const [open, setOpen] = useState(false);
-  const [theme, setTheme] = useState<"dark" | "light">("dark");
   const [hasCamera, setHasCamera] = useState(false);
   const [handsFree, setHandsFree] = useState(false);
   const [cameraMsg, setCameraMsg] = useState("");
@@ -40,12 +39,6 @@ export function Nav() {
     const t = window.setTimeout(() => setCameraMsg(""), 4000);
     return () => window.clearTimeout(t);
   }, [cameraMsg]);
-
-  function toggleTheme() {
-    const next = theme === "dark" ? "light" : "dark";
-    setTheme(next);
-    document.documentElement.setAttribute("data-theme", next);
-  }
 
   /**
    * Active-section tracking and the scrolled state both run on
@@ -99,17 +92,17 @@ export function Nav() {
   }, [open]);
 
   return (
-    <header
-      className="fixed inset-x-0 top-0 z-50 transition-colors duration-300"
-      style={{
-        background: lifted ? "rgba(11,11,12,0.92)" : "transparent",
-        borderBottom: `1px solid ${lifted ? "var(--line)" : "transparent"}`,
-      }}
-    >
-      <nav className="shell flex h-[68px] items-center justify-between">
+    <header className="fixed inset-x-0 top-0 z-50 px-3 pt-3">
+      <div
+        className={`relative mx-auto max-w-[1180px] overflow-hidden rounded-full border transition-[background-color,border-color,backdrop-filter] duration-500 ${
+          lifted ? "card !rounded-full" : "border-transparent"
+        }`}
+      >
+      <span aria-hidden className="scroll-progress absolute inset-x-0 bottom-0 h-[2px] bg-[var(--signal)]" />
+      <nav className="flex h-[58px] items-center justify-between px-5 md:px-7">
         <a
           href="#top"
-          className="mono text-[13px] tracking-tight text-[var(--text)] transition-colors hover:text-[var(--accent)]"
+          className="h-section text-[17px] text-[var(--text)]"
         >
           KRY<span className="text-[var(--accent)]">.</span>
         </a>
@@ -120,19 +113,15 @@ export function Nav() {
               <a
                 href={`#${link.id}`}
                 aria-current={active === link.id ? "true" : undefined}
-                className="relative block px-3.5 py-2 text-[13px] transition-colors duration-200"
-                style={{
-                  color: active === link.id ? "var(--text)" : "var(--muted)",
-                }}
+                className="flex items-center gap-2 px-3 py-2 text-[14px] font-semibold transition-colors duration-200 hover:!text-[var(--text)]"
+                style={{ color: active === link.id ? "var(--text)" : "var(--muted)" }}
               >
+                <span
+                  aria-hidden
+                  className="h-1.5 w-1.5 rounded-full transition-colors duration-300"
+                  style={{ background: active === link.id ? "var(--signal)" : "transparent" }}
+                />
                 {link.label}
-                {active === link.id && (
-                  <span
-                    aria-hidden
-                    className="absolute inset-x-3.5 -bottom-px h-px"
-                    style={{ background: "var(--accent)" }}
-                  />
-                )}
               </a>
             </li>
           ))}
@@ -160,30 +149,12 @@ export function Nav() {
               </button>
             </li>
           )}
-          <li>
-            <button
-              type="button"
-              onClick={toggleTheme}
-              aria-label={theme === "dark" ? "Switch to light mode" : "Switch to dark mode"}
-              className="flex h-7 w-7 items-center justify-center rounded-full border border-[var(--line-hi)] text-[var(--muted)] transition-all duration-300 hover:border-[var(--accent)] hover:text-[var(--accent)]"
-            >
-              {theme === "dark" ? (
-                <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-                  <circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M4.93 19.07l1.41-1.41M17.66 6.34l1.41-1.41"/>
-                </svg>
-              ) : (
-                <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-                  <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/>
-                </svg>
-              )}
-            </button>
-          </li>
           <li className="ml-2">
             <a
               href={profile.contact.resume}
               target="_blank"
               rel="noopener noreferrer"
-              className="rounded-full border border-[var(--line-hi)] px-4 py-1.5 text-[13px] text-[var(--text)] transition-all duration-300 hover:border-[var(--accent)] hover:text-[var(--accent)] active:scale-[0.97]"
+              className="rounded-full bg-[var(--signal)] px-4 py-1.5 text-[13.5px] font-bold text-[var(--on-signal)] transition-colors duration-200 hover:bg-[var(--signal-hi)]"
             >
               Résumé
             </a>
@@ -210,9 +181,11 @@ export function Nav() {
         </button>
       </nav>
 
+      </div>
+
       {open && (
-        <div className="border-t border-[var(--line)] bg-[var(--bg)] md:hidden">
-          <ul className="shell flex flex-col py-3">
+        <div className="card mt-2 !rounded-[22px] !bg-[rgba(8,12,18,0.92)] md:hidden">
+          <ul className="flex flex-col px-6 py-3">
             {LINKS.map((link) => (
               <li key={link.id}>
                 <a
@@ -225,25 +198,6 @@ export function Nav() {
               </li>
             ))}
             <li>
-              <button
-                type="button"
-                onClick={toggleTheme}
-                aria-label={theme === "dark" ? "Switch to light mode" : "Switch to dark mode"}
-                className="flex w-full items-center gap-3 border-b border-[var(--line)] py-3.5 text-[15px] text-[var(--muted)]"
-              >
-                {theme === "dark" ? (
-                  <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-                    <circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M4.93 19.07l1.41-1.41M17.66 6.34l1.41-1.41"/>
-                  </svg>
-                ) : (
-                  <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-                    <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/>
-                  </svg>
-                )}
-                {theme === "dark" ? "Light mode" : "Dark mode"}
-              </button>
-            </li>
-            <li>
               <a
                 href={profile.contact.resume}
                 target="_blank"
@@ -251,7 +205,7 @@ export function Nav() {
                 onClick={() => setOpen(false)}
                 className="block py-3.5 text-[15px] text-[var(--accent)]"
               >
-                Résumé ↗
+                Résumé <ArrowUpRight className="inline h-4 w-4" />
               </a>
             </li>
           </ul>

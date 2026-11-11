@@ -6,8 +6,9 @@ import { Stack } from "@/components/sections/Stack";
 import { Timeline } from "@/components/sections/Timeline";
 import { About } from "@/components/sections/About";
 import { Contact } from "@/components/sections/Contact";
-import { profile } from "@/content/profile";
 import { VideoDialog } from "@/components/ui/VideoDialog";
+import { Footer } from "@/components/Footer";
+import { Aurora } from "@/components/ui/Fx";
 
 export default function Home() {
   return (
@@ -15,6 +16,8 @@ export default function Home() {
       <a href="#main" className="skip-link">
         Skip to main content
       </a>
+
+      <Aurora />
 
       <Nav />
 
@@ -28,20 +31,7 @@ export default function Home() {
         <Contact />
       </main>
 
-      {/* Colophon. Says a person chose these things, which a template cannot. */}
-      <footer className="border-t border-[var(--line)] py-12">
-        <div className="shell grid gap-8 md:grid-cols-12">
-          <div className="md:col-span-5">
-            <p className="mono text-[11px] text-[var(--faint)]">
-              © {new Date().getFullYear()} {profile.name}
-            </p>
-            <p className="mt-2 text-[13px] text-[var(--muted)]">
-              {profile.location} · Open to work, May 2027
-            </p>
-          </div>
-
-        </div>
-      </footer>
+      <Footer />
 
       <VideoDialog />
 

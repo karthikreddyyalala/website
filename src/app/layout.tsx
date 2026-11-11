@@ -1,21 +1,27 @@
 import type { Metadata } from "next";
-import { Outfit, JetBrains_Mono } from "next/font/google";
+import { Archivo, Hanken_Grotesk, JetBrains_Mono } from "next/font/google";
 import { Analytics } from "@vercel/analytics/react";
 import "./globals.css";
 
-// Two families, trimmed weights. Every extra weight is render-blocking payload.
-const outfit = Outfit({
-  variable: "--font-outfit",
+// Archivo (with its width axis) for display, Hanken Grotesk for reading,
+// JetBrains Mono for data. All variable fonts, one file each.
+const display = Archivo({
+  variable: "--font-display",
   subsets: ["latin"],
   display: "swap",
-  weight: ["300", "400", "500", "600"],
+  axes: ["wdth"],
 });
 
-const jetbrainsMono = JetBrains_Mono({
-  variable: "--font-jetbrains-mono",
+const body = Hanken_Grotesk({
+  variable: "--font-body",
   subsets: ["latin"],
   display: "swap",
-  weight: ["400", "500"],
+});
+
+const code = JetBrains_Mono({
+  variable: "--font-code",
+  subsets: ["latin"],
+  display: "swap",
 });
 
 const SITE = "https://karthikreddyy.vercel.app";
@@ -64,7 +70,11 @@ export default function RootLayout({
 }: Readonly<{ children: React.ReactNode }>) {
   return (
     <html lang="en">
-      <body className={`${outfit.variable} ${jetbrainsMono.variable}`}>
+      <body className={`${display.variable} ${body.variable} ${code.variable}`}>
+        {/* Reveal starts hidden and is shown by JS; without JS, show everything. */}
+        <noscript>
+          <style>{".reveal{opacity:1;transform:none}"}</style>
+        </noscript>
         {children}
         <Analytics />
       </body>

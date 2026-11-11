@@ -1,6 +1,6 @@
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32">
   <clipPath id="k"><rect x="0" y="8" width="32" height="16"/></clipPath>
-  <rect width="32" height="32" rx="8" fill="#141416"/>
-  <path clip-path="url(#k)" d="M9.6 8v16M22 6.5 11.2 16 22 25.5" fill="none" stroke="#edede9" stroke-width="3.2"/>
-  <circle cx="25.4" cy="22.4" r="2.4" fill="#c8873e"/>
+  <rect width="32" height="32" rx="8" fill="#0a0f18"/>
+  <path clip-path="url(#k)" d="M9.6 8v16M22 6.5 11.2 16 22 25.5" fill="none" stroke="#f3f5f8" stroke-width="3.2"/>
+  <circle cx="25.4" cy="22.4" r="2.4" fill="#ff5b2e"/>
 </svg>

@@ -1,36 +1,38 @@
 import Image from "next/image";
 import { Reveal } from "../ui/Reveal";
+import { SectionHead } from "../ui/Section";
+import { Tilt } from "../ui/Fx";
 import { profile } from "@/content/profile";
 
 export function About() {
   return (
-    <section id="about" className="py-24 md:py-36">
-      <div className="shell">
-        <div className="grid gap-12 md:grid-cols-12 md:gap-16">
+    <section id="about" className="relative py-24 md:py-32">
+      <div className="shell relative">
+        <Reveal>
+          <SectionHead>
+            <h2 className="h-section">About</h2>
+          </SectionHead>
+        </Reveal>
+        <div className="mt-12 grid gap-12 md:grid-cols-12 md:gap-16">
           <div className="md:col-span-4">
-            <Reveal>
-              <p className="eyebrow flex items-center gap-3">
-                <span>05</span>
-                <span aria-hidden className="h-px w-8 bg-[var(--line-hi)]" />
-                <span>About</span>
-              </p>
-            </Reveal>
             <Reveal delay={80}>
-              <div className="mt-7 overflow-hidden rounded-[16px] border border-[var(--line)]">
-                <Image
-                  src="/images/about-photo.webp"
-                  alt="Karthik Reddy Yalala"
-                  width={560}
-                  height={700}
-                  loading="lazy"
-                  sizes="(max-width: 768px) 100vw, 320px"
-                  className="h-full w-full object-cover"
-                />
-              </div>
+              <Tilt max={7}>
+                <div className="card overflow-hidden p-2.5">
+                  <Image
+                    src="/images/about-photo.webp"
+                    alt="Karthik Reddy Yalala"
+                    width={560}
+                    height={700}
+                    loading="lazy"
+                    sizes="(max-width: 768px) 100vw, 320px"
+                    className="h-full w-full rounded-[13px] object-cover"
+                  />
+                </div>
+              </Tilt>
             </Reveal>
           </div>
 
-          <div className="md:col-span-8 md:pt-14">
+          <div className="md:col-span-8">
             {profile.about.map((para, i) => (
               <Reveal key={i} delay={100 + i * 70}>
                 <p
@@ -46,13 +48,11 @@ export function About() {
             ))}
 
             <Reveal delay={340}>
-              <div className="mt-12 border-t border-[var(--line)] pt-6">
-                <p className="eyebrow flex items-baseline gap-3">
-                  <span>Currently</span>
-                  <span className="normal-case tracking-normal text-[var(--faint)]">
-                    {profile.currently.updated}
-                  </span>
-                </p>
+              <div className="card mt-12 p-6">
+                <h3 className="h-section flex items-baseline gap-3 text-[18px] text-[var(--text)]">
+                  Currently
+                  <span className="mono text-[12px] font-normal tracking-normal text-[var(--faint)]" style={{ fontStretch: "100%" }}>{profile.currently.updated}</span>
+                </h3>
                 <p className="prose-body mt-3 text-[15px]">
                   {profile.currently.text}
                 </p>

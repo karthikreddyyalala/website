@@ -1,51 +1,45 @@
+import type { CSSProperties } from "react";
 import type { DiagramStage } from "@/content/casestudy";
 
 /**
- * Generalized architecture diagram.
- *
- * Deliberately shows the *pattern* — stage, purpose, and failure branch — with
- * no infrastructure identifiers. Built from flow layout rather than SVG so it
- * reflows on mobile instead of scaling into illegibility.
+ * Architecture as a flow running down the page: each stage is a node, a
+ * signal pulse travels down the track between stages, and each failure path
+ * branches off to the side. Shows the pattern only, with no infrastructure
+ * identifiers.
  */
 export function Pipeline({ stages }: { stages: readonly DiagramStage[] }) {
   return (
-    <div className="-mx-5 overflow-x-auto px-5 pb-2 md:mx-0 md:px-0">
-      <ol className="flex min-w-max items-stretch md:min-w-0 md:flex-wrap">
-        {stages.map((stage, i) => (
-          <li key={stage.label} className="flex items-stretch">
-            <div className="flex w-[152px] flex-col justify-between py-4 md:w-[148px]">
-              <div>
-                <p className="mono text-[10px] text-[var(--faint)]">
-                  {String(i + 1).padStart(2, "0")}
-                </p>
-                <p className="mt-1.5 text-[13.5px] font-medium leading-tight text-[var(--text)]">
-                  {stage.label}
-                </p>
-                <p className="mt-1 text-[11.5px] leading-snug text-[var(--muted)]">
-                  {stage.detail}
-                </p>
-              </div>
+    <ol>
+      {stages.map((stage, i) => (
+        <li key={stage.label} className="relative pb-6 pl-10 last:pb-0">
+          {i < stages.length - 1 && (
+            <span aria-hidden className="absolute bottom-0 left-[9px] top-5 w-[2px] bg-[var(--line-hi)]">
+              <span className="flow-fill absolute inset-0 bg-[var(--ice)]" />
+              <span className="pulse" style={{ "--i": i } as CSSProperties} />
+            </span>
+          )}
+          <span
+            aria-hidden
+            className="absolute left-0 top-0.5 h-5 w-5 rounded-full border-[3px] border-[var(--ice)] bg-[var(--bg)]"
+          />
 
-              {stage.branch ? (
-                <p
-                  className="mono mt-3 text-[10px] leading-snug"
-                  style={{ color: "var(--accent)" }}
-                >
-                  ↳ {stage.branch}
-                </p>
-              ) : (
-                <span className="mt-3 block h-3" aria-hidden />
-              )}
-            </div>
+          <p className="flex flex-wrap items-baseline gap-x-3 gap-y-0.5">
+            <span className="text-[16px] font-bold leading-tight text-[var(--text)]">{stage.label}</span>
+            <span className="text-[14px] leading-snug text-[var(--muted)]">{stage.detail}</span>
+          </p>
 
-            {i < stages.length - 1 && (
-              <div aria-hidden className="flex w-6 items-center justify-center">
-                <span className="h-px w-full bg-[var(--line-hi)]" />
-              </div>
-            )}
-          </li>
-        ))}
-      </ol>
-    </div>
+          {stage.branch && (
+            <p className="mono relative mt-2 flex h-[28px] items-end pl-[34px] text-[12px] leading-none text-[var(--signal-hi)]">
+              {/* The branch leaves the track and ends at its own small node. */}
+              <svg aria-hidden viewBox="0 0 62 30" className="absolute -left-[30px] bottom-[-2px] h-[30px] w-[62px]">
+                <path d="M0 0L22 22H46" fill="none" stroke="var(--signal)" strokeWidth="2" strokeLinejoin="round" />
+                <circle cx="52" cy="22" r="4.5" fill="var(--bg)" stroke="var(--signal)" strokeWidth="2" />
+              </svg>
+              <span className="pb-[3px]">{stage.branch}</span>
+            </p>
+          )}
+        </li>
+      ))}
+    </ol>
   );
 }

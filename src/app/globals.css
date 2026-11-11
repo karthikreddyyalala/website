@@ -1,74 +1,71 @@
 @import "tailwindcss";
 
 /* ============================================================
-   THEME TOKENS — the entire palette lives here.
-   To reskin the site, change these values and nothing else.
+   THEME TOKENS: the entire palette lives here.
+   One dark world: a blue-black night sky, frosted glass panels,
+   ice-white type and a single hot orange signal color.
    ============================================================ */
 :root {
-  --bg: #0b0b0c;
-  --bg-deep: #08080a;
-  --surface: #141416;
-  --surface-hi: #1b1b1e;
-  --line: rgba(255, 255, 255, 0.08);
-  --line-hi: rgba(255, 255, 255, 0.14);
+  color-scheme: dark;
 
-  --text: #edede9;
-  --muted: #a3a39d;
-  --faint: #8a8a84;
+  --bg: #06080c;
+  --bg-deep: #04060a;
+  --surface: rgba(255, 255, 255, 0.06); /* glass fill */
+  --surface-hi: rgba(255, 255, 255, 0.1);
+  --line: rgba(207, 230, 255, 0.14);
+  --line-hi: rgba(207, 230, 255, 0.28);
 
-  --accent: #c8873e;
-  --accent-hi: #e0a05a;
-  --accent-dim: rgba(200, 135, 62, 0.14);
+  --text: #f3f5f8;
+  --muted: #b9c1ce;
+  --faint: #8f99a9;
 
-  --radius: 14px;
+  --signal: #ff5b2e; /* the one accent: actions, pulses, live state */
+  --signal-hi: #ff7d55;
+  --on-signal: #170500;
+  --ice: #cfe6ff; /* cool highlight: labels, graph nodes */
+  --teal: #19d3c5; /* aurora light and "measured" data */
+
+  /* Older names still used by a few components. */
+  --accent: var(--signal);
+  --accent-hi: var(--signal-hi);
+  --accent-dim: rgba(255, 91, 46, 0.22);
+  --on-accent: var(--on-signal);
+
+  --radius: 20px;
   --maxw: 1180px;
-}
-
-/* Light mode overrides */
-[data-theme="light"] {
-  --bg: #f7f6f3;
-  --bg-deep: #eeede9;
-  --surface: #ffffff;
-  --surface-hi: #f0efeb;
-  --line: rgba(0, 0, 0, 0.08);
-  --line-hi: rgba(0, 0, 0, 0.14);
-  --text: #141412;
-  --muted: #585853;
-  --faint: #6a6a64;
-  --accent: #b8762e;
-  --accent-hi: #c8873e;
-  --accent-dim: rgba(184, 118, 46, 0.12);
 }
 
 @theme inline {
   --color-bg: var(--bg);
-  --color-surface: var(--surface);
-  --color-line: var(--line);
   --color-text: var(--text);
   --color-muted: var(--muted);
   --color-faint: var(--faint);
   --color-accent: var(--accent);
 
-  --font-display: var(--font-outfit);
-  --font-sans: var(--font-outfit);
-  --font-mono: var(--font-jetbrains-mono);
+  --font-sans: var(--font-body);
+  --font-mono: var(--font-code);
 }
 
-* {
-  border-color: var(--line);
+/* In the base layer so Tailwind border-color utilities can override it. */
+@layer base {
+  * {
+    border-color: var(--line);
+  }
 }
 
 html {
   scroll-behavior: smooth;
   /* Offset anchor targets so the fixed nav doesn't cover headings. */
-  scroll-padding-top: 90px;
+  scroll-padding-top: 96px;
   background: var(--bg);
+  scrollbar-color: var(--line-hi) var(--bg-deep);
 }
 
 body {
-  background: var(--bg);
+  /* Transparent so the fixed aurora canvas behind the page shows through; html paints the base color. */
+  background: transparent;
   color: var(--text);
-  font-family: var(--font-outfit), ui-sans-serif, system-ui, sans-serif;
+  font-family: var(--font-body), ui-sans-serif, system-ui, sans-serif;
   font-size: 17px;
   -webkit-font-smoothing: antialiased;
   text-rendering: optimizeLegibility;
@@ -76,42 +73,44 @@ body {
 }
 
 ::selection {
-  background: var(--accent);
-  color: #14100a;
+  background: var(--signal);
+  color: var(--on-signal);
 }
 
-/* ---------- Typography primitives ---------- */
-.h-display {
-  letter-spacing: -0.04em;
-  line-height: 0.95;
-  font-weight: 600;
+/* ---------- Typography ---------- */
+.h-display,
+.h-section {
+  font-family: var(--font-display), var(--font-body), sans-serif;
+  font-stretch: 122%;
+  font-weight: 800;
   text-wrap: balance;
+}
+
+.h-display {
+  letter-spacing: -0.035em;
+  line-height: 0.94;
 }
 
 .h-section {
   letter-spacing: -0.03em;
-  line-height: 1.05;
-  font-weight: 600;
-  text-wrap: balance;
+  line-height: 1.02;
 }
 
+/* Outlined display type: the second line of the name, and the footer wordmark. */
+.stroke-text {
+  color: transparent;
+  -webkit-text-stroke: 2px var(--signal);
+}
+
+/* Mono is for data, codes and measurements only. */
 .mono {
-  font-family: var(--font-jetbrains-mono), ui-monospace, monospace;
+  font-family: var(--font-code), ui-monospace, monospace;
   font-feature-settings: "tnum" 1;
-}
-
-/* Small uppercase section marker, e.g. "01 — SELECTED WORK" */
-.eyebrow {
-  font-family: var(--font-jetbrains-mono), monospace;
-  font-size: 11px;
-  letter-spacing: 0.14em;
-  text-transform: uppercase;
-  color: var(--faint);
 }
 
 .prose-body {
   color: var(--muted);
-  line-height: 1.75;
+  line-height: 1.7;
   max-width: 66ch;
   text-wrap: pretty;
 }
@@ -130,20 +129,114 @@ body {
   }
 }
 
-/* ---------- Surfaces ----------
-   Deliberately no backdrop-blur: blur inside scrolling containers forces
-   continuous GPU repaint and was a measured source of jank. */
-.panel {
+/* ---------- Glass ----------
+   Frosted panels over the moving backdrop. Blur is bounded to these panels;
+   nothing blurs the page itself. */
+.card {
+  position: relative;
   background: var(--surface);
-  border: 1px solid var(--line);
+  -webkit-backdrop-filter: blur(16px) saturate(1.5);
+  backdrop-filter: blur(16px) saturate(1.5);
+  border: 1px solid var(--line-hi);
   border-radius: var(--radius);
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.22),
+    0 30px 50px -28px rgba(0, 0, 0, 0.85);
+}
+
+/* Glass icon badge. One icon set (lucide), one stroke weight. */
+.glass {
+  display: inline-flex;
+  flex: none;
+  align-items: center;
+  justify-content: center;
+  width: 46px;
+  height: 46px;
+  border-radius: 14px;
+  color: var(--ice);
+  background: rgba(207, 230, 255, 0.1);
+  -webkit-backdrop-filter: blur(10px) saturate(1.5);
+  backdrop-filter: blur(10px) saturate(1.5);
+  border: 1px solid rgba(207, 230, 255, 0.34);
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.35),
+    0 10px 18px -10px rgba(0, 0, 0, 0.8);
+  transition:
+    transform 0.3s cubic-bezier(0.16, 1, 0.3, 1),
+    color 0.3s ease-out;
+}
+
+.glass svg {
+  width: 21px;
+  height: 21px;
+  stroke-width: 1.9;
+}
+
+.group:hover .glass {
+  transform: translate3d(0, -3px, 0);
+  color: var(--signal-hi);
+}
+
+/* Text link with an icon. */
+.icon-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.icon-link svg {
+  width: 1.05em;
+  height: 1.05em;
+  flex: none;
+  stroke-width: 2.25;
+  transition: transform 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.icon-link:hover svg {
+  transform: translate3d(1px, -1px, 0);
+}
+
+/* Buttons. 48px tall so they are easy to hit on a phone. */
+.btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 9px;
+  min-height: 48px;
+  padding: 0 24px;
+  border-radius: 999px;
+  font-weight: 700;
+  font-size: 15px;
+  transition:
+    transform 0.3s cubic-bezier(0.16, 1, 0.3, 1),
+    background-color 0.3s ease-out;
+}
+
+.btn:hover {
+  transform: translate3d(0, -2px, 0);
+}
+
+.btn-signal {
+  background: var(--signal);
+  color: var(--on-signal);
+}
+
+.btn-signal:hover {
+  background: var(--signal-hi);
+}
+
+.btn-glass {
+  background: var(--surface);
+  -webkit-backdrop-filter: blur(14px);
+  backdrop-filter: blur(14px);
+  border: 1px solid var(--line-hi);
+  color: var(--text);
 }
 
 /* ---------- Focus ---------- */
 :focus-visible {
-  outline: 2px solid var(--accent);
+  outline: 2px solid var(--signal-hi);
   outline-offset: 3px;
-  border-radius: 4px;
+  border-radius: 6px;
 }
 
 .skip-link {
@@ -152,9 +245,9 @@ body {
   top: 0;
   z-index: 100;
   padding: 12px 20px;
-  background: var(--accent);
-  color: #14100a;
-  font-weight: 600;
+  background: var(--signal);
+  color: var(--on-signal);
+  font-weight: 700;
 }
 
 .skip-link:focus {
@@ -162,10 +255,9 @@ body {
   top: 12px;
 }
 
-/* ---------- Video dialog ----------
-   Solid scrim rather than blur, per the surfaces note above. */
+/* ---------- Video dialog ---------- */
 .video-dialog::backdrop {
-  background: rgba(5, 5, 6, 0.88);
+  background: rgba(3, 4, 7, 0.9);
 }
 
 .video-dialog[open] {
@@ -189,26 +281,165 @@ body {
   }
 }
 
-/* ---------- Entry reveal ----------
-   CSS-driven so it costs nothing on the main thread. The IntersectionObserver
-   only toggles a class; nothing animates per-frame in JS. */
+/* ---------- Motion ----------
+   Scroll reveal: content rises into place once, when it enters the screen.
+   The observer only toggles a class; the transition runs on the compositor. */
 .reveal {
   opacity: 0;
-  transform: translate3d(0, 14px, 0);
-  transition: opacity 0.7s cubic-bezier(0.16, 1, 0.3, 1),
-    transform 0.7s cubic-bezier(0.16, 1, 0.3, 1);
+  transform: translate3d(0, 28px, 0);
+  transition:
+    opacity 0.8s cubic-bezier(0.16, 1, 0.3, 1),
+    transform 0.8s cubic-bezier(0.16, 1, 0.3, 1);
   transition-delay: var(--reveal-delay, 0ms);
-  will-change: transform, opacity;
 }
 
 .reveal.is-in {
   opacity: 1;
-  transform: translate3d(0, 0, 0);
+  transform: none;
 }
 
-/* Once revealed, stop promoting the layer. */
-.reveal.is-settled {
-  will-change: auto;
+/* Hero name: each line rises from behind its own mask. */
+.hero-title {
+  font-size: clamp(3rem, 9.4vw, 7.4rem);
+}
+
+@media (min-width: 1024px) and (max-height: 820px) {
+  .hero-title {
+    font-size: 5.6rem;
+  }
+}
+
+.line-rise {
+  display: block;
+  overflow: hidden;
+  padding-bottom: 0.12em;
+  margin-bottom: -0.12em;
+}
+
+.reveal.is-in .line-rise > span {
+  display: block;
+  animation: line-rise 1s cubic-bezier(0.16, 1, 0.3, 1) both;
+  animation-delay: var(--rise-delay, 0ms);
+}
+
+@keyframes line-rise {
+  from {
+    transform: translate3d(0, 110%, 0);
+  }
+}
+
+/* Depth layers: elements with data-depth drift with the pointer (see Parallax). */
+[data-depth] {
+  will-change: translate;
+  transition: translate 0.35s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+/* 3D tilt on glass cards (see Tilt). */
+.tilt {
+  transform: perspective(1100px) rotateX(var(--rx, 0deg)) rotateY(var(--ry, 0deg));
+  transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+  transform-style: preserve-3d;
+}
+
+/* Ticker of proof points along the bottom of the hero. Pauses on hover. */
+.ticker {
+  overflow: hidden;
+  white-space: nowrap;
+}
+
+.ticker > div {
+  display: inline-block;
+  animation: ticker 40s linear infinite;
+}
+
+.ticker:hover > div {
+  animation-play-state: paused;
+}
+
+@keyframes ticker {
+  to {
+    transform: translate3d(-50%, 0, 0);
+  }
+}
+
+/* Pipeline: a signal pulse travels down the track between stages. */
+.pulse {
+  position: absolute;
+  left: 50%;
+  top: 0;
+  width: 10px;
+  height: 10px;
+  margin-left: -5px;
+  border-radius: 999px;
+  background: var(--signal);
+  box-shadow: 0 0 0 5px rgba(255, 91, 46, 0.22);
+  animation: pulse-run 2.4s cubic-bezier(0.5, 0, 0.5, 1) infinite;
+  animation-delay: calc(var(--i, 0) * 0.34s);
+}
+
+@keyframes pulse-run {
+  0% {
+    top: 0;
+    opacity: 0;
+  }
+  12%,
+  88% {
+    opacity: 1;
+  }
+  100% {
+    top: 100%;
+    opacity: 0;
+  }
+}
+
+@keyframes grow-x {
+  from {
+    transform: scaleX(0);
+  }
+}
+
+@keyframes grow-y {
+  from {
+    transform: scaleY(0);
+  }
+}
+
+@keyframes rise-in {
+  from {
+    transform: translate3d(0, 70%, 0);
+  }
+}
+
+.scroll-progress {
+  display: none;
+}
+
+@supports (animation-timeline: view()) {
+  @media (prefers-reduced-motion: no-preference) {
+    /* Nav line: how far down the page you are. */
+    .scroll-progress {
+      display: block;
+      transform-origin: left;
+      animation: grow-x linear both;
+      animation-timeline: scroll(root);
+    }
+
+    /* Timeline spine and pipeline tracks light up as they cross mid-screen. */
+    .spine-fill,
+    .flow-fill {
+      transform-origin: top;
+      animation: grow-y linear both;
+      animation-timeline: view();
+      animation-range: cover 45vh cover calc(100% - 55vh);
+    }
+
+    /* Footer wordmark rises through the bottom edge as you reach the end. */
+    .wordmark-rise {
+      animation: rise-in linear both;
+      animation-timeline: view();
+      animation-range: entry 0% entry 100%;
+    }
+  }
 }
 
 @media (prefers-reduced-motion: reduce) {
@@ -218,6 +449,19 @@ body {
   .reveal {
     opacity: 1;
     transform: none;
+    transition: none;
+  }
+  .pulse,
+  .ticker > div {
+    animation: none;
+  }
+  .pulse {
+    display: none;
+  }
+  .tilt,
+  [data-depth] {
+    transform: none;
+    translate: none;
     transition: none;
   }
   *,
@@ -237,10 +481,10 @@ body {
   background: var(--bg-deep);
 }
 ::-webkit-scrollbar-thumb {
-  background: #2a2a2e;
+  background: var(--line-hi);
   border-radius: 6px;
   border: 3px solid var(--bg-deep);
 }
 ::-webkit-scrollbar-thumb:hover {
-  background: #3a3a3f;
+  background: var(--faint);
 }
