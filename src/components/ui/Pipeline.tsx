@@ -45,10 +45,9 @@ export function Pipeline({ stages }: { stages: readonly DiagramStage[] }) {
             {condition && (
               <p className="mono relative mt-2.5 flex flex-wrap items-center gap-x-2.5 gap-y-1 text-[13px] leading-none">
                 {/* The branch curves off the rail into the chip. */}
-                <span
-                  aria-hidden
-                  className="absolute -left-[31px] top-0 h-[13px] w-[31px] rounded-bl-[13px] border-b-2 border-l-2 border-[var(--signal)]"
-                />
+                <svg aria-hidden viewBox="0 0 31 14" className="absolute -left-[31px] top-0 h-[14px] w-[31px]">
+                  <path d="M1 0A13 13 0 0 0 14 13H31" fill="none" stroke="var(--signal)" strokeWidth="2" />
+                </svg>
                 <span className="rounded-full border border-[color-mix(in_srgb,var(--signal)_50%,transparent)] bg-[color-mix(in_srgb,var(--signal)_12%,transparent)] px-2.5 py-[6px] text-[var(--signal-hi)]">
                   {condition}
                 </span>
