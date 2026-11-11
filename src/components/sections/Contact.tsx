@@ -1,5 +1,6 @@
 import { Reveal } from "../ui/Reveal";
 import { SectionHead } from "../ui/Section";
+import { CopyButton } from "../ui/Fx";
 import { Download, Github, Linkedin, Mail, Phone } from "lucide-react";
 import { profile } from "@/content/profile";
 
@@ -86,6 +87,7 @@ export function Contact() {
               <Download className="h-4 w-4" />
               Download résumé
             </a>
+            <CopyButton text={contact.email} label="Copy email" className="btn btn-glass" />
           </div>
         </Reveal>
         </div>

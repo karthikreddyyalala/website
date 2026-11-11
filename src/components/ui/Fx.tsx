@@ -2,6 +2,7 @@
 
 import { useEffect, useRef, useState, type ReactNode } from "react";
 import Lenis from "lenis";
+import { Check, Copy } from "lucide-react";
 
 const reduced = () => window.matchMedia("(prefers-reduced-motion: reduce)").matches;
 
@@ -129,6 +130,9 @@ export function GlassLight() {
     const move = (e: PointerEvent) => {
       x = e.clientX;
       y = e.clientY;
+      // The page-wide spotlight (body::before) reads these.
+      document.documentElement.style.setProperty("--px", `${x}px`);
+      document.documentElement.style.setProperty("--py", `${y}px`);
       if (!raf) raf = requestAnimationFrame(paint);
     };
     window.addEventListener("pointermove", move, { passive: true });
@@ -266,9 +270,57 @@ export function MotionToggle({ className = "" }: { className?: string }) {
     document.documentElement.dataset.motion = paused ? "off" : "on";
   }, [paused]);
 
+  // The command menu can flip this too.
+  useEffect(() => {
+    const flip = () => setPaused((v) => !v);
+    window.addEventListener("motion:toggle", flip);
+    return () => window.removeEventListener("motion:toggle", flip);
+  }, []);
+
   return (
     <button type="button" aria-pressed={paused} onClick={() => setPaused((v) => !v)} className={className}>
       {paused ? "Play motion" : "Pause motion"}
     </button>
   );
+}
+
+/* ------------------------------------------------------------------ */
+/* Small living details                                               */
+/* ------------------------------------------------------------------ */
+
+/** Copies text to the clipboard and says so for a moment. */
+export function CopyButton({ text, label, className = "" }: { text: string; label: string; className?: string }) {
+  const [copied, setCopied] = useState(false);
+
+  useEffect(() => {
+    if (!copied) return;
+    const t = window.setTimeout(() => setCopied(false), 1800);
+    return () => window.clearTimeout(t);
+  }, [copied]);
+
+  return (
+    <button
+      type="button"
+      onClick={() => navigator.clipboard?.writeText(text).then(() => setCopied(true), () => {})}
+      className={className}
+    >
+      {copied ? <Check aria-hidden className="h-4 w-4" /> : <Copy aria-hidden className="h-4 w-4" />}
+      <span aria-live="polite">{copied ? "Copied" : label}</span>
+    </button>
+  );
+}
+
+/** The current time where Karthik is, so a visitor knows when to reach him. Fills in after load. */
+export function LocalTime({ timeZone }: { timeZone: string }) {
+  const [time, setTime] = useState("");
+
+  useEffect(() => {
+    const format = new Intl.DateTimeFormat("en-US", { hour: "numeric", minute: "2-digit", timeZone });
+    const tick = () => setTime(format.format(new Date()));
+    tick();
+    const id = window.setInterval(tick, 30_000);
+    return () => window.clearInterval(id);
+  }, [timeZone]);
+
+  return time ? <span className="tabular-nums"> · {time} local time</span> : null;
 }

@@ -7,6 +7,7 @@ import { Timeline } from "@/components/sections/Timeline";
 import { About } from "@/components/sections/About";
 import { Contact } from "@/components/sections/Contact";
 import { VideoDialog } from "@/components/ui/VideoDialog";
+import { CommandMenu } from "@/components/CommandMenu";
 import { Footer } from "@/components/Footer";
 import { Aurora, GlassLight, ScrollFx, SmoothScroll } from "@/components/ui/Fx";
 
@@ -37,6 +38,7 @@ export default function Home() {
       <Footer />
 
       <VideoDialog />
+      <CommandMenu />
 
     </>
   );

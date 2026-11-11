@@ -4,6 +4,7 @@ import { useCallback, useEffect, useRef, useState } from "react";
 import dynamic from "next/dynamic";
 import { Hand } from "lucide-react";
 import { profile } from "@/content/profile";
+import { CommandButton } from "./CommandMenu";
 
 // MediaPipe only downloads once a visitor turns hands-free on.
 const HandScroll = dynamic(() => import("./HandScroll").then((m) => m.HandScroll), {
@@ -149,6 +150,9 @@ export function Nav() {
               </a>
             </li>
           ))}
+          <li>
+            <CommandButton className="mx-1 flex h-11 items-center gap-2 rounded-full border border-[var(--line-hi)] px-4 text-[var(--muted)] transition-colors duration-300 hover:text-[var(--text)]" />
+          </li>
           {hasCamera && (
             <li className="flex items-center">
               <span role="status" className="mono mr-2 text-[12.5px] text-[var(--faint)] empty:hidden">
@@ -185,6 +189,7 @@ export function Nav() {
           </li>
         </ul>
 
+        <CommandButton className="ml-auto flex h-11 w-11 items-center justify-center text-[var(--text)] md:hidden" />
         <button
           type="button"
           onClick={() => setOpen((v) => !v)}

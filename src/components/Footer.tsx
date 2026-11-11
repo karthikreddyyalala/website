@@ -1,6 +1,6 @@
 import { Github, Linkedin, Mail, type LucideIcon } from "lucide-react";
 import { profile } from "@/content/profile";
-import { MotionToggle } from "./ui/Fx";
+import { LocalTime, MotionToggle } from "./ui/Fx";
 
 const LINKS: { label: string; href: string; Icon?: LucideIcon }[] = [
   { label: "Email", href: `mailto:${profile.contact.email}`, Icon: Mail },
@@ -46,6 +46,7 @@ export function Footer() {
           </p>
           <p className="mt-2 text-[14.5px] text-[var(--muted)]">
             {profile.location} · Open to work, May 2027
+            <LocalTime timeZone="America/Phoenix" />
           </p>
         </div>
         <nav aria-label="Footer">
