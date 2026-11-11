@@ -1,21 +1,16 @@
 import type { Metadata } from "next";
-import { Archivo, Hanken_Grotesk, JetBrains_Mono } from "next/font/google";
+import { Inter, JetBrains_Mono } from "next/font/google";
 import { Analytics } from "@vercel/analytics/react";
 import "./globals.css";
 
-// Archivo (with its width axis) for display, Hanken Grotesk for reading,
-// JetBrains Mono for data. All variable fonts, one file each.
-const display = Archivo({
-  variable: "--font-display",
-  subsets: ["latin"],
-  display: "swap",
-  axes: ["wdth"],
-});
-
-const body = Hanken_Grotesk({
+// One family for everything, the way Apple sets its pages: Inter, whose
+// optical-size axis switches to its display cut at heading sizes.
+// JetBrains Mono is for data only.
+const sans = Inter({
   variable: "--font-body",
   subsets: ["latin"],
   display: "swap",
+  axes: ["opsz"],
 });
 
 const code = JetBrains_Mono({
@@ -70,7 +65,7 @@ export default function RootLayout({
 }: Readonly<{ children: React.ReactNode }>) {
   return (
     <html lang="en">
-      <body className={`${display.variable} ${body.variable} ${code.variable}`}>
+      <body className={`${sans.variable} ${code.variable}`}>
         {/* Reveal starts hidden and is shown by JS; without JS, show everything. */}
         <noscript>
           <style>{".reveal{opacity:1;transform:none}"}</style>

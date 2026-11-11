@@ -15,17 +15,17 @@ const LINKS = [
  */
 function Wordmark({ text, width, className }: { text: string; width: number; className: string }) {
   return (
-    <svg viewBox={`0 0 ${width} 71`} aria-hidden className={`w-full ${className}`}>
+    <svg viewBox={`0 0 ${width} 74`} aria-hidden className={`w-full ${className}`}>
       <text
-        y="71"
+        y="74"
         textLength={width}
         fontSize="100"
-        fontWeight="800"
-        letterSpacing="-0.035em"
+        fontWeight="650"
+        letterSpacing="-0.05em"
         fill="none"
         stroke="var(--ice)"
         strokeWidth="1.2"
-        style={{ fontFamily: "var(--font-display), sans-serif", fontStretch: "122%" }}
+        style={{ fontFamily: "var(--font-body), sans-serif" }}
       >
         {text}
         <tspan fill="var(--signal)" stroke="none">.</tspan>
@@ -67,8 +67,8 @@ export function Footer() {
       </div>
 
       <div className="wordmark-rise mt-14 px-[2vw] text-[var(--text)] md:mt-20">
-        <Wordmark text="Karthik Reddy Yalala" width={1192} className="hidden md:block" />
-        <Wordmark text="KRY" width={267} className="md:hidden" />
+        <Wordmark text="Karthik Reddy Yalala" width={856} className="hidden md:block" />
+        <Wordmark text="KRY" width={196} className="md:hidden" />
       </div>
     </footer>
   );

@@ -31,7 +31,7 @@ export function Contact() {
           <SectionHead label="Contact">
             <h2 className="h-display max-w-[15ch] text-[clamp(2.2rem,6vw,4.2rem)]">
               Let&apos;s talk about
-              <span className="stroke-text"> what you&apos;re building.</span>
+              <span className="sheen"> what you&apos;re building.</span>
             </h2>
           </SectionHead>
         </Reveal>
@@ -58,8 +58,8 @@ export function Contact() {
                   <span aria-hidden className="glass">
                     <c.Icon />
                   </span>
-                  <span className="text-[14px] text-[var(--muted)]">{c.label}</span>
-                  <span className="ml-auto min-w-0 break-all text-right text-[15.5px] font-bold text-[var(--text)] transition-colors duration-200 group-hover:text-[var(--accent)]">
+                  <span className="sr-only text-[14px] text-[var(--muted)] sm:not-sr-only">{c.label}</span>
+                  <span className="ml-auto min-w-0 text-right text-[15px] font-semibold text-[var(--text)] transition-colors duration-200 group-hover:text-[var(--accent)]">
                     {c.value}
                   </span>
                 </a>

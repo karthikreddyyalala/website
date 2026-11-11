@@ -1,6 +1,6 @@
 "use client";
 
-import { useCallback, useEffect, useState } from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
 import dynamic from "next/dynamic";
 import { ArrowUpRight, Hand } from "lucide-react";
 import { profile } from "@/content/profile";
@@ -22,6 +22,15 @@ export function Nav() {
   const [active, setActive] = useState<string>("");
   const [lifted, setLifted] = useState(false);
   const [open, setOpen] = useState(false);
+  // The highlight pill slides to the link under the pointer, or to the current section.
+  const listRef = useRef<HTMLUListElement>(null);
+  const [hovered, setHovered] = useState<string | null>(null);
+  const [pill, setPill] = useState<{ left: number; width: number } | null>(null);
+
+  useEffect(() => {
+    const link = listRef.current?.querySelector<HTMLElement>(`a[href="#${hovered ?? active}"]`);
+    setPill(link ? { left: link.offsetLeft, width: link.offsetWidth } : null);
+  }, [active, hovered]);
   const [hasCamera, setHasCamera] = useState(false);
   const [handsFree, setHandsFree] = useState(false);
   const [cameraMsg, setCameraMsg] = useState("");
@@ -94,33 +103,38 @@ export function Nav() {
   return (
     <header className="fixed inset-x-0 top-0 z-50 px-3 pt-3">
       <div
-        className={`relative mx-auto max-w-[1180px] overflow-hidden rounded-full border transition-[background-color,border-color,backdrop-filter] duration-500 ${
-          lifted ? "card !rounded-full" : "border-transparent"
+        className={`nav-glass relative mx-auto max-w-[1180px] overflow-hidden rounded-full transition-shadow duration-500 ${
+          lifted ? "shadow-[0_18px_40px_-18px_rgba(0,0,0,0.9)]" : ""
         }`}
       >
       <span aria-hidden className="scroll-progress absolute inset-x-0 bottom-0 h-[2px] bg-[var(--signal)]" />
       <nav className="flex h-[58px] items-center justify-between px-5 md:px-7">
         <a
           href="#top"
-          className="h-section text-[17px] text-[var(--text)]"
+          className="h-section text-[18px] text-[var(--text)]"
         >
           KRY<span className="text-[var(--accent)]">.</span>
         </a>
 
-        <ul className="hidden items-center gap-1 md:flex">
+        <ul
+          ref={listRef}
+          onPointerLeave={() => setHovered(null)}
+          className="relative hidden items-center gap-1 md:flex"
+        >
+          <li
+            aria-hidden
+            className="pointer-events-none absolute top-1/2 h-9 -translate-y-1/2 rounded-full border border-white/15 bg-white/10 transition-[left,width,opacity] duration-500 ease-[cubic-bezier(0.16,1,0.3,1)]"
+            style={{ left: pill?.left ?? 0, width: pill?.width ?? 0, opacity: pill ? 1 : 0 }}
+          />
           {LINKS.map((link) => (
             <li key={link.id}>
               <a
                 href={`#${link.id}`}
                 aria-current={active === link.id ? "true" : undefined}
-                className="flex items-center gap-2 px-3 py-2 text-[14px] font-semibold transition-colors duration-200 hover:!text-[var(--text)]"
+                onPointerEnter={() => setHovered(link.id)}
+                className="relative block px-4 py-2 text-[14px] font-medium transition-colors duration-300 hover:!text-[var(--text)]"
                 style={{ color: active === link.id ? "var(--text)" : "var(--muted)" }}
               >
-                <span
-                  aria-hidden
-                  className="h-1.5 w-1.5 rounded-full transition-colors duration-300"
-                  style={{ background: active === link.id ? "var(--signal)" : "transparent" }}
-                />
                 {link.label}
               </a>
             </li>

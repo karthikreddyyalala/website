@@ -35,15 +35,16 @@ export function About() {
           <div className="md:col-span-8">
             {profile.about.map((para, i) => (
               <Reveal key={i} delay={100 + i * 70}>
-                <p
-                  className={
-                    i === 0
-                      ? "text-[19px] leading-relaxed text-[var(--text)] md:text-[22px]"
-                      : "prose-body mt-6 text-[15.5px]"
-                  }
-                >
-                  {para}
-                </p>
+                {i === 0 ? (
+                  // Each word is its own span so it can brighten as you scroll past it.
+                  <p className="read-along h-section text-[24px] !leading-[1.28] text-[var(--text)] md:text-[32px]">
+                    {para.split(" ").map((word, k) => (
+                      <span key={k}>{word} </span>
+                    ))}
+                  </p>
+                ) : (
+                  <p className="prose-body mt-6 text-[16.5px]">{para}</p>
+                )}
               </Reveal>
             ))}
 
@@ -51,7 +52,7 @@ export function About() {
               <div className="card mt-12 p-6">
                 <h3 className="h-section flex items-baseline gap-3 text-[18px] text-[var(--text)]">
                   Currently
-                  <span className="mono text-[12px] font-normal tracking-normal text-[var(--faint)]" style={{ fontStretch: "100%" }}>{profile.currently.updated}</span>
+                  <span className="mono text-[12px] font-normal tracking-normal text-[var(--faint)]">{profile.currently.updated}</span>
                 </h3>
                 <p className="prose-body mt-3 text-[15px]">
                   {profile.currently.text}

@@ -89,159 +89,43 @@ export function Aurora() {
 }
 
 /* ------------------------------------------------------------------ */
-/* Agent graph: the hero centerpiece                                  */
+/* Glass light                                                        */
 /* ------------------------------------------------------------------ */
 
-type Node3 = { x: number; y: number; z: number; name?: string };
-
 /**
- * A slowly rotating 3D network: the named agents in a ring, a cloud of small
- * nodes around them, and orange message pulses travelling agent to agent in
- * pipeline order. Turns with the pointer. Pauses off-screen; one still frame
- * under reduced motion.
+ * A soft highlight that follows the pointer across every glass card, like
+ * light moving over real glass. Sets --mx/--my on the cards near the pointer;
+ * the highlight itself is drawn in CSS (.card::after). Mouse only.
  */
-export function AgentGraph({ agents, className = "" }: { agents: string[]; className?: string }) {
-  const ref = useRef<HTMLCanvasElement>(null);
-
+export function GlassLight() {
   useEffect(() => {
-    const canvas = ref.current!;
-    const ctx = canvas.getContext("2d");
-    if (!ctx) return;
-    const dpr = Math.min(window.devicePixelRatio || 1, 1.75);
-    const N = agents.length;
-
-    let seed = 7;
-    const rnd = () => (seed = (seed * 16807) % 2147483647) / 2147483647;
-    const nodes: Node3[] = agents.map((name, i) => {
-      const a = (i / N) * Math.PI * 2;
-      return { x: Math.cos(a) * 0.62, y: Math.sin(a * 1.3) * 0.22, z: Math.sin(a) * 0.62, name };
-    });
-    for (let i = 0; i < 70; i++) {
-      const a = rnd() * Math.PI * 2;
-      const b = Math.acos(2 * rnd() - 1);
-      const R = 0.85 + rnd() * 0.4;
-      nodes.push({ x: R * Math.sin(b) * Math.cos(a), y: R * Math.cos(b) * 0.8, z: R * Math.sin(b) * Math.sin(a) });
-    }
-    const edges: [number, number, boolean][] = [];
-    for (let i = 0; i < N; i++) edges.push([i, (i + 1) % N, true]);
-    for (let i = N; i < nodes.length; i++) {
-      const near = nodes
-        .map((n, j) => [j, (n.x - nodes[i].x) ** 2 + (n.y - nodes[i].y) ** 2 + (n.z - nodes[i].z) ** 2] as const)
-        .filter(([j]) => j !== i)
-        .sort((a, b) => a[1] - b[1]);
-      edges.push([i, near[0][0], false], [i, near[1][0], false]);
-    }
-
-    const m = { x: 0.5, y: 0.5 };
-    const goal = { x: 0.5, y: 0.5 };
+    if (reduced() || !window.matchMedia("(hover: hover)").matches) return;
     let raf = 0;
-    let visible = false;
-    const still = reduced();
-
-    const draw = (ms: number) => {
-      const t = ms / 1000 + 12;
-      m.x += (goal.x - m.x) * 0.06;
-      m.y += (goal.y - m.y) * 0.06;
-      const W = canvas.width;
-      const H = canvas.height;
-      const cx = W * 0.5;
-      const cy = H * 0.5;
-      const S = Math.min(W, H) * 0.4;
-      const yaw = t * 0.13 + (m.x - 0.5) * 1.6;
-      const pitch = 0.32 + (m.y - 0.5) * 0.7;
-      const cyw = Math.cos(yaw), syw = Math.sin(yaw), cp = Math.cos(pitch), sp = Math.sin(pitch);
-      const P = nodes.map((n) => {
-        const x = n.x * cyw - n.z * syw;
-        const z0 = n.x * syw + n.z * cyw;
-        const y = n.y * cp - z0 * sp;
-        const z = n.y * sp + z0 * cp;
-        const k = 2.6 / (2.6 + z);
-        return { sx: cx + x * S * k, sy: cy + y * S * k, k, z };
+    let x = 0;
+    let y = 0;
+    const paint = () => {
+      raf = 0;
+      document.querySelectorAll<HTMLElement>(".card").forEach((card) => {
+        const b = card.getBoundingClientRect();
+        // Skip cards that are off-screen or far from the pointer.
+        if (b.bottom < 0 || b.top > innerHeight || x < b.left - 300 || x > b.right + 300) return;
+        card.style.setProperty("--mx", `${x - b.left}px`);
+        card.style.setProperty("--my", `${y - b.top}px`);
       });
-
-      ctx.clearRect(0, 0, W, H);
-      ctx.lineCap = "round";
-      for (const [a, b, main] of edges) {
-        const A = P[a], B = P[b], d = (A.k + B.k) / 2;
-        ctx.strokeStyle = main ? `rgba(207,230,255,${0.55 * d})` : `rgba(150,185,230,${0.17 * d * d})`;
-        ctx.lineWidth = (main ? 2 : 1) * dpr * d;
-        ctx.beginPath();
-        ctx.moveTo(A.sx, A.sy);
-        ctx.lineTo(B.sx, B.sy);
-        ctx.stroke();
-      }
-      for (let i = 0; i < N; i++) {
-        for (let j = 0; j < 2; j++) {
-          const A = P[i], B = P[(i + 1) % N];
-          const f = (t * 0.32 + j * 0.5 + i * 0.13) % 1;
-          const x = A.sx + (B.sx - A.sx) * f;
-          const y = A.sy + (B.sy - A.sy) * f;
-          const k = A.k + (B.k - A.k) * f;
-          ctx.fillStyle = "rgba(255,91,46,0.22)";
-          ctx.beginPath();
-          ctx.arc(x, y, 11 * dpr * k, 0, 7);
-          ctx.fill();
-          ctx.fillStyle = "#ff7d55";
-          ctx.beginPath();
-          ctx.arc(x, y, 4 * dpr * k, 0, 7);
-          ctx.fill();
-        }
-      }
-      ctx.font = `600 ${13 * dpr}px ${getComputedStyle(canvas).fontFamily}`;
-      P.map((p, i) => [p, i] as const)
-        .sort((a, b) => b[0].z - a[0].z)
-        .forEach(([p, i]) => {
-          if (i < N) {
-            ctx.fillStyle = "#0a0f18";
-            ctx.strokeStyle = "#eaf3ff";
-            ctx.lineWidth = 3 * dpr * p.k;
-            ctx.beginPath();
-            ctx.arc(p.sx, p.sy, 9 * dpr * p.k, 0, 7);
-            ctx.fill();
-            ctx.stroke();
-            ctx.fillStyle = `rgba(234,243,255,${0.55 + 0.45 * Math.min(1, p.k)})`;
-            ctx.fillText(nodes[i].name!, p.sx + 16 * dpr * p.k, p.sy + 4 * dpr);
-          } else {
-            ctx.fillStyle = `rgba(175,208,245,${0.38 * p.k * p.k})`;
-            ctx.beginPath();
-            ctx.arc(p.sx, p.sy, 2.6 * dpr * p.k, 0, 7);
-            ctx.fill();
-          }
-        });
     };
-    const loop = (ms: number) => {
-      draw(ms);
-      raf = requestAnimationFrame(loop);
-    };
-
-    const sizeWatch = new ResizeObserver(() => {
-      canvas.width = Math.round(canvas.clientWidth * dpr);
-      canvas.height = Math.round(canvas.clientHeight * dpr);
-      draw(performance.now());
-    });
-    sizeWatch.observe(canvas);
-    const viewWatch = new IntersectionObserver(([e]) => {
-      visible = e.isIntersecting;
-      cancelAnimationFrame(raf);
-      if (visible && !still) raf = requestAnimationFrame(loop);
-    });
-    viewWatch.observe(canvas);
-
     const move = (e: PointerEvent) => {
-      goal.x = e.clientX / window.innerWidth;
-      goal.y = e.clientY / window.innerHeight;
+      x = e.clientX;
+      y = e.clientY;
+      if (!raf) raf = requestAnimationFrame(paint);
     };
-    if (!still) window.addEventListener("pointermove", move, { passive: true });
-
+    window.addEventListener("pointermove", move, { passive: true });
     return () => {
       cancelAnimationFrame(raf);
-      sizeWatch.disconnect();
-      viewWatch.disconnect();
       window.removeEventListener("pointermove", move);
     };
-  }, [agents]);
+  }, []);
 
-  return <canvas ref={ref} aria-hidden className={`mono block h-full w-full ${className}`} />;
+  return null;
 }
 
 /* ------------------------------------------------------------------ */
