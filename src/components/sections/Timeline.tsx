@@ -24,7 +24,7 @@ export function Timeline() {
                   style={{ borderColor: entry.kind === "work" ? "var(--signal)" : "var(--ice)" }}
                 />
 
-                <p className="mono pt-1 text-[12.5px] text-[var(--ice)]">
+                <p className="mono pt-1 text-[13px] text-[var(--ice)]">
                   {entry.period}
                 </p>
 
@@ -32,7 +32,7 @@ export function Timeline() {
                   <h3 className="h-section text-[20px] text-[var(--text)]">
                     {entry.title}
                   </h3>
-                  <p className="mt-1 text-[13.5px] text-[var(--muted)]">
+                  <p className="mt-1 text-[14.5px] text-[var(--muted)]">
                     {entry.org}
                     <span className="text-[var(--faint)]"> · {entry.location}</span>
                   </p>
@@ -40,7 +40,7 @@ export function Timeline() {
                   {entry.points.length > 0 && (
                     <ul className="mt-4 space-y-2">
                       {entry.points.map((pt) => (
-                        <li key={pt} className="prose-body text-[15px]">
+                        <li key={pt} className="prose-body text-[16.5px]">
                           {pt}
                         </li>
                       ))}
@@ -50,7 +50,7 @@ export function Timeline() {
                   {entry.caseStudyId && (
                     <a
                       href="#work-avis"
-                      className="icon-link mt-4 text-[13.5px] font-bold text-[var(--signal)]"
+                      className="icon-link mt-4 text-[14.5px] font-bold text-[var(--signal)]"
                     >
                       Read the case study
                     </a>
@@ -61,7 +61,7 @@ export function Timeline() {
                       {entry.tech.map((t) => (
                         <li
                           key={t}
-                          className="mono rounded-full border border-[var(--line)] bg-[var(--surface)] px-2.5 py-1 text-[11.5px] text-[var(--muted)]"
+                          className="tag mono text-[12.5px]"
                         >
                           {t}
                         </li>

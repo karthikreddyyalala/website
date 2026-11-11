@@ -40,10 +40,10 @@ export function Footer() {
     <footer className="overflow-hidden border-t border-[var(--line-hi)] pt-12">
       <div className="shell flex flex-col gap-8 md:flex-row md:items-end md:justify-between">
         <div>
-          <p className="mono text-[11px] text-[var(--faint)]">
+          <p className="mono text-[12.5px] text-[var(--faint)]">
             © {new Date().getFullYear()} {profile.name}
           </p>
-          <p className="mt-2 text-[13px] text-[var(--muted)]">
+          <p className="mt-2 text-[14.5px] text-[var(--muted)]">
             {profile.location} · Open to work, May 2027
           </p>
         </div>
@@ -55,7 +55,7 @@ export function Footer() {
                   href={l.href}
                   target={l.href.startsWith("http") ? "_blank" : undefined}
                   rel={l.href.startsWith("http") ? "noopener noreferrer" : undefined}
-                  className="icon-link text-[14px] font-bold text-[var(--text)] transition-colors duration-200 hover:text-[var(--accent)]"
+                  className="icon-link text-[15px] font-bold text-[var(--text)] transition-colors duration-200 hover:text-[var(--accent)]"
                 >
                   {l.Icon && <l.Icon />}
                   {l.label}

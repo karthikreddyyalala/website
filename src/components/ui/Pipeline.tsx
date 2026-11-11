@@ -24,12 +24,12 @@ export function Pipeline({ stages }: { stages: readonly DiagramStage[] }) {
           />
 
           <p className="flex flex-wrap items-baseline gap-x-3 gap-y-0.5">
-            <span className="text-[16px] font-bold leading-tight text-[var(--text)]">{stage.label}</span>
-            <span className="text-[14px] leading-snug text-[var(--muted)]">{stage.detail}</span>
+            <span className="text-[17px] font-bold leading-tight text-[var(--text)]">{stage.label}</span>
+            <span className="text-[15px] leading-snug text-[var(--muted)]">{stage.detail}</span>
           </p>
 
           {stage.branch && (
-            <p className="mono relative mt-2 flex h-[28px] items-end pl-[34px] text-[12px] leading-none text-[var(--signal-hi)]">
+            <p className="mono relative mt-2 flex h-[28px] items-end pl-[34px] text-[13px] leading-none text-[var(--signal-hi)]">
               {/* The branch leaves the track and ends at its own small node. */}
               <svg aria-hidden viewBox="0 0 62 30" className="absolute -left-[30px] bottom-[-2px] h-[30px] w-[62px]">
                 <path d="M0 0L22 22H46" fill="none" stroke="var(--signal)" strokeWidth="2" strokeLinejoin="round" />

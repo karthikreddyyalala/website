@@ -32,7 +32,7 @@ function Shot({ src, title, href }: { src: string; title: string; href?: string 
       {img}
       <span
         aria-hidden
-        className="mono absolute bottom-3 right-3 rounded-full px-3 py-1.5 text-[11px] opacity-0 transition-opacity duration-300 group-hover:opacity-100 group-focus-visible:opacity-100"
+        className="mono absolute bottom-3 right-3 rounded-full px-3 py-1.5 text-[12.5px] opacity-0 transition-opacity duration-300 group-hover:opacity-100 group-focus-visible:opacity-100"
         style={{ background: "rgba(0,0,0,0.75)", color: "#fff" }}
       >
         Visit live site
@@ -60,10 +60,10 @@ export function Work() {
               <div className="relative md:col-span-3">
                 <h3 className="h-section">{p.title}</h3>
                 <div className="mt-2 flex items-center gap-3">
-                  <p className="mono text-[12px] text-[var(--faint)]">{p.year}</p>
+                  <p className="mono text-[13px] text-[var(--faint)]">{p.year}</p>
                   {p.badge && (
                     <span
-                      className="mono rounded-full px-2.5 py-0.5 text-[10px] font-medium"
+                      className="mono rounded-full px-2.5 py-0.5 text-[12.5px] font-medium"
                       style={{ background: "var(--signal)", color: "var(--on-signal)" }}
                     >
                       {p.badge}
@@ -78,7 +78,7 @@ export function Work() {
                         href={p.github}
                         target="_blank"
                         rel="noopener noreferrer"
-                        className="icon-link text-[13.5px] font-bold text-[var(--text)] transition-colors hover:text-[var(--signal)]"
+                        className="icon-link text-[14.5px] font-bold text-[var(--text)] transition-colors hover:text-[var(--signal)]"
                       >
                         <Github />
                         GitHub
@@ -89,7 +89,7 @@ export function Work() {
                         href={p.live}
                         target="_blank"
                         rel="noopener noreferrer"
-                        className="icon-link text-[13.5px] font-bold text-[var(--text)] transition-colors hover:text-[var(--signal)]"
+                        className="icon-link text-[14.5px] font-bold text-[var(--text)] transition-colors hover:text-[var(--signal)]"
                       >
                         <Globe />
                         Live
@@ -99,7 +99,7 @@ export function Work() {
                       <VideoTrigger
                         {...p.video}
                         title={`${p.title} demo`}
-                        className="icon-link text-[13.5px] font-bold text-[var(--signal)]"
+                        className="icon-link text-[14.5px] font-bold text-[var(--signal)]"
                       >
                         <Play fill="currentColor" />
                         Demo
@@ -110,15 +110,15 @@ export function Work() {
               </div>
 
               <div className="relative md:col-span-9">
-                <p className="text-[15.5px] leading-relaxed text-[var(--text)]">
+                <p className="text-[16.5px] leading-relaxed text-[var(--text)]">
                   {p.tagline}
                 </p>
-                <p className="prose-body mt-3 text-[15px] md:text-[16px]">{p.body}</p>
+                <p className="prose-body mt-3 text-[16.5px] md:text-[17px]">{p.body}</p>
                 <ul className="mt-5 flex flex-wrap gap-1.5">
                   {p.tech.map((t) => (
                     <li
                       key={t}
-                      className="mono rounded-full border border-[var(--line)] bg-[var(--surface)] px-2.5 py-1 text-[11.5px] text-[var(--muted)]"
+                      className="tag mono text-[12.5px]"
                     >
                       {t}
                     </li>

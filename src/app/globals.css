@@ -73,7 +73,13 @@ body {
   color: var(--text);
   font-family: var(--font-body), ui-sans-serif, system-ui, sans-serif;
   font-size: 17px;
+  line-height: 1.6;
+  /* Inter reads best slightly tightened at text sizes. */
+  letter-spacing: -0.011em;
+  font-optical-sizing: auto;
+  font-kerning: normal;
   -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
   text-rendering: optimizeLegibility;
   overflow-x: hidden;
 }
@@ -92,8 +98,25 @@ body {
 }
 
 .h-display {
-  letter-spacing: -0.05em;
-  line-height: 0.96;
+  letter-spacing: -0.052em;
+  line-height: 0.95;
+}
+
+/* Smaller headings need less tightening than display sizes. */
+h3.h-section {
+  letter-spacing: -0.028em;
+  line-height: 1.12;
+}
+
+p,
+li {
+  text-wrap: pretty;
+}
+
+/* Numbers that sit in rows or change (stats, dates) keep a fixed width. */
+dt,
+.mono {
+  font-variant-numeric: tabular-nums;
 }
 
 .h-section {
@@ -114,7 +137,7 @@ body {
 
 .prose-body {
   color: var(--muted);
-  line-height: 1.7;
+  line-height: 1.68;
   max-width: 66ch;
   text-wrap: pretty;
 }
@@ -142,17 +165,44 @@ body {
      Blur is bounded to these panels; nothing blurs the page itself. */
   .card {
     position: relative;
-    background: linear-gradient(180deg, rgba(255, 255, 255, 0.09), rgba(255, 255, 255, 0.04));
-    -webkit-backdrop-filter: blur(26px) saturate(1.8);
-    backdrop-filter: blur(26px) saturate(1.8);
-    border: 1px solid rgba(255, 255, 255, 0.14);
+    background: linear-gradient(180deg, rgba(255, 250, 240, 0.1), rgba(255, 250, 240, 0.035));
+    -webkit-backdrop-filter: blur(28px) saturate(1.8);
+    backdrop-filter: blur(28px) saturate(1.8);
+    border: 1px solid transparent;
     border-radius: var(--radius);
     box-shadow:
-      inset 0 1px 0 rgba(255, 255, 255, 0.3),
-      inset 0 -1px 0 rgba(255, 255, 255, 0.04),
-      0 30px 60px -30px rgba(0, 0, 0, 0.9);
+      inset 0 1px 0 rgba(255, 255, 255, 0.16),
+      0 14px 28px -16px rgba(0, 0, 0, 0.7),
+      0 44px 80px -44px rgba(0, 0, 0, 0.95);
+    transition:
+      background-color 0.4s ease-out,
+      box-shadow 0.4s ease-out;
   }
 
+  /* The edge of the glass: a hairline that is bright where light would
+     catch it (top left, bottom right) and nearly gone in between. */
+  .card::before {
+    content: "";
+    position: absolute;
+    inset: -1px;
+    border-radius: inherit;
+    padding: 1px;
+    pointer-events: none;
+    background: linear-gradient(
+      155deg,
+      rgba(255, 255, 255, 0.5),
+      rgba(255, 255, 255, 0.08) 34%,
+      rgba(255, 255, 255, 0.03) 64%,
+      rgba(255, 255, 255, 0.22)
+    );
+    -webkit-mask:
+      linear-gradient(#000 0 0) content-box,
+      linear-gradient(#000 0 0);
+    -webkit-mask-composite: xor;
+    mask-composite: exclude;
+  }
+
+  /* A soft highlight that follows the pointer (see GlassLight). */
   .card::after {
     content: "";
     position: absolute;
@@ -164,6 +214,32 @@ body {
       rgba(255, 255, 255, 0.1),
       transparent 62%
     );
+  }
+
+  /* Glass you can press: lifts a little and brightens. */
+  a.card {
+    transition:
+      transform 0.4s cubic-bezier(0.16, 1, 0.3, 1),
+      background-color 0.4s ease-out;
+  }
+
+  a.card:hover {
+    transform: translate3d(0, -3px, 0);
+    background-color: rgba(255, 250, 240, 0.06);
+  }
+
+  a.card:active {
+    transform: translate3d(0, 0, 0) scale(0.99);
+  }
+
+  /* Small glass pill for tags. */
+  .tag {
+    border-radius: 999px;
+    border: 1px solid var(--line);
+    background: var(--surface);
+    box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.1);
+    padding: 5px 11px;
+    color: var(--muted);
   }
 
   /* Navigation bar: the same glass, a little denser so links stay readable over anything. */
@@ -212,7 +288,9 @@ body {
   .icon-link {
     display: inline-flex;
     align-items: center;
-    gap: 6px;
+    gap: 7px;
+    /* Tall enough to tap comfortably. */
+    min-height: 44px;
   }
 
   .icon-link svg {
@@ -246,9 +324,18 @@ body {
     transform: translate3d(0, -2px, 0);
   }
 
+  .btn:active {
+    transform: translate3d(0, 0, 0) scale(0.98);
+    transition-duration: 0.1s;
+  }
+
   .btn-signal {
     background: var(--signal);
     color: var(--on-signal);
+    box-shadow:
+      inset 0 1px 0 rgba(255, 255, 255, 0.55),
+      inset 0 -1px 0 rgba(0, 0, 0, 0.12),
+      0 14px 26px -14px color-mix(in srgb, var(--signal) 70%, transparent);
   }
 
   .btn-signal:hover {
@@ -261,7 +348,19 @@ body {
     backdrop-filter: blur(14px);
     border: 1px solid var(--line-hi);
     color: var(--text);
+    box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.2);
   }
+
+  .btn-glass:hover {
+    background: var(--surface-hi);
+  }
+}
+
+/* ---------- Interaction ---------- */
+button,
+summary,
+[role="button"] {
+  cursor: pointer;
 }
 
 /* ---------- Focus ---------- */

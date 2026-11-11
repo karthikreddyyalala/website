@@ -169,7 +169,8 @@ const clamp01 = (v: number) => Math.min(1, Math.max(0, v));
  * while it is on screen:
  *   --e  enter: 0 as its top reaches the bottom of the screen, 1 once it is well in
  *   --p  pass:  0 to 1 across its whole trip through the screen
- *   --x  exit:  0 until its top leaves the top of the screen, then up to 1
+ *   --x  exit:  0 until its bottom edge comes up into the screen, then up to 1
+ *               (so a tall block never fades while you are still reading it)
  * The CSS in globals.css turns those into movement. Without this script (or
  * under reduced motion) the variables keep their defaults: everything at rest.
  */
@@ -186,7 +187,7 @@ export function ScrollFx() {
         const b = el.getBoundingClientRect();
         el.style.setProperty("--e", clamp01((vh - b.top) / (vh * 0.42)).toFixed(3));
         el.style.setProperty("--p", clamp01((vh - b.top) / (vh + b.height)).toFixed(3));
-        el.style.setProperty("--x", clamp01(-b.top / (b.height * 0.75)).toFixed(3));
+        el.style.setProperty("--x", clamp01((vh - b.bottom) / (vh * 0.85)).toFixed(3));
       });
     };
     const queue = () => {

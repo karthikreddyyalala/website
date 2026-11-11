@@ -7,7 +7,7 @@ export function SectionHead({ label, children }: { label?: string; children: Rea
     <div className="flex flex-wrap items-end justify-between gap-x-8 gap-y-3 border-b border-[var(--line-hi)] pb-6 text-[clamp(2rem,4.6vw,3.4rem)]">
       {children}
       {label && (
-        <p className="mono pb-1.5 text-[12.5px] uppercase tracking-[0.16em] text-[var(--ice)]">{label}</p>
+        <p className="mono pb-1.5 text-[13px] uppercase tracking-[0.16em] text-[var(--ice)]">{label}</p>
       )}
     </div>
   );
@@ -35,7 +35,7 @@ export function Section({ id, label, title, lede, children, className = "" }: Se
 
         {lede ? (
           <Reveal delay={90}>
-            <p className="prose-body mt-6 text-[16.5px]">{lede}</p>
+            <p className="prose-body mt-6 text-[17px]">{lede}</p>
           </Reveal>
         ) : null}
 

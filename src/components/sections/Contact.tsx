@@ -26,7 +26,7 @@ export function Contact() {
   return (
     <section id="contact" className="relative py-24 md:py-32">
       <div className="shell relative">
-        <div data-scroll="rise" className="card p-7 md:p-14">
+        <div data-scroll="rise" className="card p-5 sm:p-7 md:p-14">
         <Reveal>
           <SectionHead label="Contact">
             <h2 className="h-display max-w-[15ch] text-[clamp(2.2rem,6vw,4.2rem)]">
@@ -38,7 +38,7 @@ export function Contact() {
 
         {availability.active && (
           <Reveal delay={130}>
-            <p className="mt-7 flex items-center gap-2.5 text-[15px] text-[var(--muted)]">
+            <p className="mt-7 flex items-center gap-2.5 text-[16.5px] text-[var(--muted)]">
               <span aria-hidden className="inline-block h-2 w-2 rounded-full bg-[var(--signal)]" />
               {availability.status}
             </p>
@@ -53,13 +53,13 @@ export function Contact() {
                   href={c.href}
                   target={c.href.startsWith("http") ? "_blank" : undefined}
                   rel={c.href.startsWith("http") ? "noopener noreferrer" : undefined}
-                  className="card group flex items-center gap-4 !rounded-[18px] p-3.5 pr-5"
+                  className="card group flex items-center gap-3 !rounded-[18px] p-3 pr-4 sm:gap-4 sm:p-3.5 sm:pr-5"
                 >
                   <span aria-hidden className="glass">
                     <c.Icon />
                   </span>
-                  <span className="sr-only text-[14px] text-[var(--muted)] sm:not-sr-only">{c.label}</span>
-                  <span className="ml-auto min-w-0 text-right text-[15px] font-semibold text-[var(--text)] transition-colors duration-200 group-hover:text-[var(--accent)]">
+                  <span className="sr-only text-[15px] text-[var(--muted)] sm:not-sr-only">{c.label}</span>
+                  <span className="ml-auto min-w-0 text-right text-[14px] font-semibold sm:text-[16.5px] text-[var(--text)] transition-colors duration-200 group-hover:text-[var(--accent)]">
                     {c.value}
                   </span>
                 </a>

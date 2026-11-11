@@ -123,12 +123,12 @@ export function VideoPreview(video: Video) {
         </span>
         <span className="absolute inset-x-0 bottom-0 flex items-end justify-between gap-4 p-4 md:p-5">
           <span>
-            <span className="block text-[14px] font-medium text-white">Watch the demo</span>
-            <span className="mt-0.5 block text-[12.5px] text-white/75">
+            <span className="block text-[15px] font-medium text-white">Watch the demo</span>
+            <span className="mt-0.5 block text-[13px] text-white/75">
               Plays right here · no redirect
             </span>
           </span>
-          <span className="hidden text-[12.5px] text-white/75 sm:block">{video.title}</span>
+          <span className="hidden text-[13px] text-white/75 sm:block">{video.title}</span>
         </span>
       </VideoTrigger>
     </div>
@@ -168,9 +168,9 @@ export function VideoDialog() {
       {video && (
         <div>
           <div className="mb-3 flex items-center justify-between gap-4">
-            <p className="text-[14px] font-medium text-white">{video.title}</p>
+            <p className="text-[15px] font-medium text-white">{video.title}</p>
             <div className="flex items-center gap-3">
-              <kbd className="mono hidden rounded border border-white/20 px-1.5 py-0.5 text-[10px] text-white/60 sm:inline">
+              <kbd className="mono hidden rounded border border-white/20 px-1.5 py-0.5 text-[12.5px] text-white/70 sm:inline">
                 Esc
               </kbd>
               <button

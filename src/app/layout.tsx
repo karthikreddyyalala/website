@@ -1,4 +1,4 @@
-import type { Metadata } from "next";
+import type { Metadata, Viewport } from "next";
 import { Inter, JetBrains_Mono } from "next/font/google";
 import { Analytics } from "@vercel/analytics/react";
 import "./globals.css";
@@ -22,6 +22,9 @@ const code = JetBrains_Mono({
 const SITE = "https://karthikreddyy.vercel.app";
 const DESCRIPTION =
   "Software engineer building end-to-end systems with AI inside them. Four production initiatives shipped at Avis Budget Group. CS at Arizona State, 4.0 GPA.";
+
+// Tints the browser chrome on phones to match the page.
+export const viewport: Viewport = { themeColor: "#0a0a0b", colorScheme: "dark" };
 
 export const metadata: Metadata = {
   metadataBase: new URL(SITE),

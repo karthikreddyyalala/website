@@ -45,7 +45,7 @@ export function About() {
                     ))}
                   </p>
                 ) : (
-                  <p className="prose-body mt-6 text-[16.5px]">{para}</p>
+                  <p className="prose-body mt-6 text-[17px]">{para}</p>
                 )}
               </Reveal>
             ))}
@@ -54,9 +54,9 @@ export function About() {
               <div className="card mt-12 p-6">
                 <h3 className="h-section flex items-baseline gap-3 text-[18px] text-[var(--text)]">
                   Currently
-                  <span className="mono text-[12px] font-normal tracking-normal text-[var(--faint)]">{profile.currently.updated}</span>
+                  <span className="mono text-[13px] font-normal tracking-normal text-[var(--faint)]">{profile.currently.updated}</span>
                 </h3>
-                <p className="prose-body mt-3 text-[15px]">
+                <p className="prose-body mt-3 text-[16.5px]">
                   {profile.currently.text}
                 </p>
               </div>

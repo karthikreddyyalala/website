@@ -43,7 +43,7 @@ export function Hero() {
           </Reveal>
 
           <Reveal delay={220}>
-            <p className="mt-7 text-[15px] font-medium text-[var(--ice)]">
+            <p className="mt-7 text-[16.5px] font-medium text-[var(--ice)]">
               {profile.role} · {profile.location}
             </p>
             <p className="mt-4 max-w-[52ch] text-[18px] leading-[1.6] text-[var(--text)]">{profile.claim}</p>
@@ -87,7 +87,7 @@ export function Hero() {
               className="aspect-[4/5] w-full rounded-[18px] object-cover object-top"
             />
             {profile.availability.active && (
-              <figcaption className="flex items-center gap-2.5 px-2 pb-1.5 pt-3 text-[13.5px] leading-snug text-[var(--muted)]">
+              <figcaption className="flex items-center gap-2.5 px-2 pb-1.5 pt-3 text-[14.5px] leading-snug text-[var(--muted)]">
                 <span aria-hidden className="h-2 w-2 flex-none rounded-full bg-[var(--signal)]" />
                 {profile.availability.status}
               </figcaption>
@@ -105,7 +105,7 @@ export function Hero() {
                 <span aria-hidden className="glass">
                   <Icon />
                 </span>
-                <p className="text-[13px] leading-snug text-[var(--muted)]">
+                <p className="text-[14.5px] leading-snug text-[var(--muted)]">
                   <span className="h-section block text-[19px] text-[var(--text)]">{p.value}</span>
                   {p.label}
                 </p>
@@ -118,7 +118,7 @@ export function Hero() {
 
       <div
         aria-hidden
-        className="ticker mt-16 border-y border-[var(--line)] py-4 text-[14px] font-medium text-[var(--muted)] lg:mt-24"
+        className="ticker mt-16 border-y border-[var(--line)] py-4 text-[15px] font-medium text-[var(--muted)] lg:mt-24"
       >
         <div data-scroll="slide">
         <div>

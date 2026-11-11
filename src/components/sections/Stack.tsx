@@ -38,12 +38,12 @@ export function Stack() {
                   {group.label}
                 </h3>
               </div>
-              {group.note && <p className="mt-3 text-[13.5px] text-[var(--faint)]">{group.note}</p>}
+              {group.note && <p className="mt-3 text-[14.5px] text-[var(--faint)]">{group.note}</p>}
               <ul className="mt-4 flex flex-wrap gap-2">
                 {group.items.map((item) => (
                   <li
                     key={item}
-                    className="rounded-full border border-[var(--line)] bg-[var(--surface)] px-3 py-1.5 text-[13.5px] text-[var(--text)] transition-colors duration-300 hover:border-[var(--signal)]"
+                    className="tag text-[14.5px] !text-[var(--text)]"
                   >
                     {item}
                   </li>

@@ -92,6 +92,14 @@ export function Nav() {
     };
   }, []);
 
+  // Escape closes the mobile sheet.
+  useEffect(() => {
+    if (!open) return;
+    const onKey = (e: KeyboardEvent) => e.key === "Escape" && setOpen(false);
+    window.addEventListener("keydown", onKey);
+    return () => window.removeEventListener("keydown", onKey);
+  }, [open]);
+
   // Lock body scroll while the mobile sheet is open.
   useEffect(() => {
     document.body.style.overflow = open ? "hidden" : "";
@@ -108,10 +116,10 @@ export function Nav() {
         }`}
       >
       <span aria-hidden className="scroll-progress absolute inset-x-0 bottom-0 h-[2px] bg-[var(--signal)]" />
-      <nav className="flex h-[58px] items-center justify-between px-5 md:px-7">
+      <nav className="flex h-[60px] items-center justify-between pl-6 pr-2 md:pl-7">
         <a
           href="#top"
-          className="h-section text-[18px] text-[var(--text)]"
+          className="h-section flex min-h-[44px] items-center text-[18px] text-[var(--text)]"
         >
           KRY<span className="text-[var(--accent)]">.</span>
         </a>
@@ -123,7 +131,7 @@ export function Nav() {
         >
           <li
             aria-hidden
-            className="pointer-events-none absolute top-1/2 h-9 -translate-y-1/2 rounded-full border border-white/15 bg-white/10 transition-[left,width,opacity] duration-500 ease-[cubic-bezier(0.16,1,0.3,1)]"
+            className="pointer-events-none absolute top-1/2 h-10 -translate-y-1/2 rounded-full border border-white/15 bg-white/10 transition-[left,width,opacity] duration-500 ease-[cubic-bezier(0.16,1,0.3,1)]"
             style={{ left: pill?.left ?? 0, width: pill?.width ?? 0, opacity: pill ? 1 : 0 }}
           />
           {LINKS.map((link) => (
@@ -132,7 +140,9 @@ export function Nav() {
                 href={`#${link.id}`}
                 aria-current={active === link.id ? "true" : undefined}
                 onPointerEnter={() => setHovered(link.id)}
-                className="relative block px-4 py-2 text-[14px] font-medium transition-colors duration-300 hover:!text-[var(--text)]"
+                onFocus={() => setHovered(link.id)}
+                onBlur={() => setHovered(null)}
+                className="relative flex min-h-[44px] items-center px-4 text-[15px] font-medium transition-colors duration-300 hover:!text-[var(--text)]"
                 style={{ color: active === link.id ? "var(--text)" : "var(--muted)" }}
               >
                 {link.label}
@@ -141,7 +151,7 @@ export function Nav() {
           ))}
           {hasCamera && (
             <li className="flex items-center">
-              <span role="status" className="mono mr-2 text-[11px] text-[var(--faint)] empty:hidden">
+              <span role="status" className="mono mr-2 text-[12.5px] text-[var(--faint)] empty:hidden">
                 {cameraMsg}
               </span>
               <button
@@ -152,13 +162,13 @@ export function Nav() {
                   setHandsFree((v) => !v);
                 }}
                 title="Control the page with hand gestures through your camera"
-                className="mr-1.5 flex h-7 items-center gap-1.5 rounded-full border px-3 text-[12px] transition-colors duration-300 hover:border-[var(--accent)] hover:text-[var(--accent)]"
+                className="mr-1.5 flex h-11 items-center gap-2 rounded-full border px-4 text-[14px] transition-colors duration-300 hover:border-[var(--accent)] hover:text-[var(--accent)]"
                 style={{
                   borderColor: handsFree ? "var(--accent)" : "var(--line-hi)",
                   color: handsFree ? "var(--accent)" : "var(--muted)",
                 }}
               >
-                <Hand className="h-3 w-3" />
+                <Hand className="h-4 w-4" />
                 Hands-free
               </button>
             </li>
@@ -168,7 +178,7 @@ export function Nav() {
               href={profile.contact.resume}
               target="_blank"
               rel="noopener noreferrer"
-              className="rounded-full bg-[var(--signal)] px-4 py-1.5 text-[13.5px] font-bold text-[var(--on-signal)] transition-colors duration-200 hover:bg-[var(--signal-hi)]"
+              className="flex h-11 items-center rounded-full bg-[var(--signal)] px-5 text-[14.5px] font-semibold text-[var(--on-signal)] transition-colors duration-200 hover:bg-[var(--signal-hi)]"
             >
               Résumé
             </a>
@@ -180,7 +190,7 @@ export function Nav() {
           onClick={() => setOpen((v) => !v)}
           aria-expanded={open}
           aria-label={open ? "Close menu" : "Open menu"}
-          className="flex h-9 w-9 items-center justify-center md:hidden"
+          className="flex h-11 w-11 items-center justify-center md:hidden"
         >
           <span className="relative block h-3 w-5">
             <span
@@ -205,7 +215,7 @@ export function Nav() {
                 <a
                   href={`#${link.id}`}
                   onClick={() => setOpen(false)}
-                  className="block border-b border-[var(--line)] py-3.5 text-[15px] text-[var(--muted)]"
+                  className="block border-b border-[var(--line)] py-3.5 text-[16.5px] text-[var(--muted)]"
                 >
                   {link.label}
                 </a>
@@ -217,7 +227,7 @@ export function Nav() {
                 target="_blank"
                 rel="noopener noreferrer"
                 onClick={() => setOpen(false)}
-                className="block py-3.5 text-[15px] text-[var(--accent)]"
+                className="block py-3.5 text-[16.5px] text-[var(--accent)]"
               >
                 Résumé
               </a>
