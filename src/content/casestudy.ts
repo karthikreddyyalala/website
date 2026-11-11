@@ -139,7 +139,7 @@ export const caseStudy = {
       outcomes: [
         "Passed a 6-phase test suite: 100% faithfulness, 0 hallucinations, 5/5 injection attempts blocked",
         "Constrained the model with AgentCore: guardrails, memory, and formatting on every call",
-        "Shipped a zero-downtime config pipeline: draft → test → approve → publish, versioned",
+        "Shipped a zero-downtime config pipeline: draft, test, approve, publish, versioned",
         "Delivered real-time streaming answers with multi-turn session memory",
         "Replaced a third-party LLM SaaS dependency with an in-house AWS stack, keeping employee and compliance data in the company's own environment",
       ],
