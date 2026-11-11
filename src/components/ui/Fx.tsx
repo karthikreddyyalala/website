@@ -9,21 +9,29 @@ const reduced = () => window.matchMedia("(prefers-reduced-motion: reduce)").matc
 /* Aurora: the page backdrop                                          */
 /* ------------------------------------------------------------------ */
 
-// Slow blue and teal light on a blue-black sky. Rendered at low resolution
-// (it is soft by nature) so it costs very little, and paused when the tab is hidden.
+// Slow, soft light on a near-black ground. The four colors come from the
+// --aurora-* tokens in globals.css, so the palette lives in one place.
+// Rendered at low resolution (it is soft by nature) so it costs very little.
 const AURORA = `
 precision highp float; uniform vec2 r; uniform float t; uniform float s;
+uniform vec3 c0; uniform vec3 c1; uniform vec3 c2; uniform vec3 c3;
 float h(vec2 p){return fract(sin(dot(p,vec2(127.1,311.7)))*43758.5453);}
 float n(vec2 p){vec2 i=floor(p),f=fract(p);f=f*f*(3.-2.*f);return mix(mix(h(i),h(i+vec2(1,0)),f.x),mix(h(i+vec2(0,1)),h(i+vec2(1,1)),f.x),f.y);}
 float fbm(vec2 p){float a=.5,v=0.;for(int i=0;i<4;i++){v+=a*n(p);p=p*2.02+vec2(1.7,9.2);a*=.5;}return v;}
 void main(){vec2 p=(gl_FragCoord.xy-.5*r)/r.y; p.y+=s;
  vec2 q=vec2(fbm(p*1.1+t*.04),fbm(p*1.1+vec2(5.2,1.3)-t*.03));
  float f=fbm(p*1.4+q*1.7);
- vec3 c=vec3(.022,.03,.047);
- c=mix(c,vec3(.07,.24,.62),smoothstep(.42,.82,f)*.55);
- c=mix(c,vec3(.05,.55,.52),smoothstep(.58,.92,fbm(p*1.05-q+t*.025))*.4);
- c+=vec3(1.,.42,.16)*pow(smoothstep(.66,.97,fbm(p*1.9+q*2.-t*.02)),2.)*.12;
+ vec3 c=c0;
+ c=mix(c,c1,smoothstep(.42,.82,f)*.75);
+ c=mix(c,c2,smoothstep(.58,.92,fbm(p*1.05-q+t*.025))*.6);
+ c+=c3*pow(smoothstep(.66,.97,fbm(p*1.9+q*2.-t*.02)),2.)*.1;
  gl_FragColor=vec4(c,1.);}`;
+
+function tokenColor(name: string): [number, number, number] {
+  const hex = getComputedStyle(document.documentElement).getPropertyValue(name).trim();
+  const v = parseInt(hex.slice(1), 16);
+  return [(v >> 16) / 255, ((v >> 8) & 255) / 255, (v & 255) / 255];
+}
 
 /** Fixed, full-screen animated backdrop behind the whole page. Draws nothing without WebGL. */
 export function Aurora() {
@@ -53,6 +61,9 @@ export function Aurora() {
     const uR = gl.getUniformLocation(prog, "r");
     const uT = gl.getUniformLocation(prog, "t");
     const uS = gl.getUniformLocation(prog, "s");
+    ["base", "a", "b", "c"].forEach((key, i) =>
+      gl.uniform3f(gl.getUniformLocation(prog, `c${i}`), ...tokenColor(`--aurora-${key}`))
+    );
 
     let raf = 0;
     const draw = (ms: number) => {

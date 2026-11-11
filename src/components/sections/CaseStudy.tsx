@@ -4,7 +4,6 @@ import { Pipeline } from "../ui/Pipeline";
 import { Aside } from "../ui/Aside";
 import { SectionHead } from "../ui/Section";
 import { caseStudy } from "@/content/casestudy";
-import { ArrowUpRight, ChevronDown } from "lucide-react";
 
 export function CaseStudy() {
   return (
@@ -86,7 +85,6 @@ export function CaseStudy() {
                       <summary className="inline-flex cursor-pointer list-none items-center gap-1.5 text-[13.5px] font-bold text-[var(--signal)] transition-opacity hover:opacity-75 focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-[var(--accent)] [&::-webkit-details-marker]:hidden">
                         <span className="group-open:hidden">Read the engineering decisions</span>
                         <span className="hidden group-open:inline">Hide details</span>
-<ChevronDown aria-hidden className="h-4 w-4 transition-transform duration-200 group-open:rotate-180 motion-reduce:transition-none" />
                       </summary>
                     {/* The decisions. This is the differentiating content. */}
                     <div className="mt-7 space-y-7">
@@ -140,7 +138,6 @@ export function CaseStudy() {
                     className="icon-link mt-4 text-[13.5px] font-bold text-[var(--signal)]"
                   >
                     {caseStudy.research.liveLinkLabel}
-                    <ArrowUpRight />
                   </a>
                 )}
               </div>

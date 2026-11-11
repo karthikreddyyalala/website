@@ -1,7 +1,6 @@
 import { Section } from "../ui/Section";
 import { Reveal } from "../ui/Reveal";
 import { timeline } from "@/content/experience";
-import { ArrowUp } from "lucide-react";
 
 /** Single-column timeline with a spine that lights up as you scroll through the years. */
 export function Timeline() {
@@ -54,7 +53,6 @@ export function Timeline() {
                       className="icon-link mt-4 text-[13.5px] font-bold text-[var(--signal)]"
                     >
                       Read the case study
-                      <ArrowUp />
                     </a>
                   )}
 

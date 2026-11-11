@@ -2,33 +2,39 @@
 
 /* ============================================================
    THEME TOKENS: the entire palette lives here.
-   One dark world: a blue-black night sky, frosted glass panels,
-   ice-white type and a single hot orange signal color.
+   One dark world: neutral graphite, warm pearl type, frosted glass,
+   and a single quiet champagne accent. No saturated color anywhere;
+   the richness comes from light, depth and glass.
    ============================================================ */
 :root {
   color-scheme: dark;
 
-  --bg: #06080c;
-  --bg-deep: #04060a;
-  --surface: rgba(255, 255, 255, 0.06); /* glass fill */
-  --surface-hi: rgba(255, 255, 255, 0.1);
-  --line: rgba(207, 230, 255, 0.14);
-  --line-hi: rgba(207, 230, 255, 0.28);
+  --bg: #0a0a0b;
+  --bg-deep: #060607;
+  --surface: rgba(255, 248, 238, 0.055); /* glass fill */
+  --surface-hi: rgba(255, 248, 238, 0.1);
+  --line: rgba(255, 244, 228, 0.12);
+  --line-hi: rgba(255, 244, 228, 0.24);
 
-  --text: #f3f5f8;
-  --muted: #b9c1ce;
-  --faint: #8f99a9;
+  --text: #f5f2ec;
+  --muted: #b9b4ab;
+  --faint: #918c83;
 
-  --signal: #ff5b2e; /* the one accent: actions, pulses, live state */
-  --signal-hi: #ff7d55;
-  --on-signal: #170500;
-  --ice: #cfe6ff; /* cool highlight: labels, graph nodes */
-  --teal: #19d3c5; /* aurora light and "measured" data */
+  --signal: #d9bd8a; /* the one accent, champagne: actions, pulses, live state */
+  --signal-hi: #e9d3a8;
+  --on-signal: #17120a;
+  --ice: #e7dfd2; /* pearl highlight: labels and glass icons */
+
+  /* Backdrop light (see Aurora). Kept deep so text always reads over it. */
+  --aurora-base: #0b0b0d;
+  --aurora-a: #5a4630; /* bronze */
+  --aurora-b: #4a3a44; /* dusk mauve-grey */
+  --aurora-c: #d9bd8a; /* champagne glints */
 
   /* Older names still used by a few components. */
   --accent: var(--signal);
   --accent-hi: var(--signal-hi);
-  --accent-dim: rgba(255, 91, 46, 0.22);
+  --accent-dim: color-mix(in srgb, var(--signal) 22%, transparent);
   --on-accent: var(--on-signal);
 
   --radius: 26px;
@@ -97,7 +103,7 @@ body {
 
 /* The quieter half of a two-tone headline: solid steel, no gradient. */
 .sheen {
-  color: #8fa1ba;
+  color: color-mix(in srgb, var(--text) 52%, var(--bg));
 }
 
 /* Mono is for data, codes and measurements only. */
@@ -179,10 +185,10 @@ body {
     height: 46px;
     border-radius: 14px;
     color: var(--ice);
-    background: rgba(207, 230, 255, 0.1);
+    background: color-mix(in srgb, var(--ice) 10%, transparent);
     -webkit-backdrop-filter: blur(10px) saturate(1.5);
     backdrop-filter: blur(10px) saturate(1.5);
-    border: 1px solid rgba(207, 230, 255, 0.34);
+    border: 1px solid color-mix(in srgb, var(--ice) 30%, transparent);
     box-shadow:
       inset 0 1px 0 rgba(255, 255, 255, 0.35),
       0 10px 18px -10px rgba(0, 0, 0, 0.8);
@@ -446,7 +452,7 @@ html.lenis {
   margin-left: -5px;
   border-radius: 999px;
   background: var(--signal);
-  box-shadow: 0 0 0 5px rgba(255, 91, 46, 0.22);
+  box-shadow: 0 0 0 5px color-mix(in srgb, var(--signal) 22%, transparent);
   animation: pulse-run 2.4s cubic-bezier(0.5, 0, 0.5, 1) infinite;
   animation-delay: calc(var(--i, 0) * 0.34s);
 }

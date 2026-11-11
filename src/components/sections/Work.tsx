@@ -4,7 +4,7 @@ import { Reveal } from "../ui/Reveal";
 import { projects } from "@/content/projects";
 import { VideoPreview, VideoTrigger } from "../ui/VideoDialog";
 import { Tilt } from "../ui/Fx";
-import { ArrowUpRight, Github, Play } from "lucide-react";
+import { Github, Globe, Play } from "lucide-react";
 
 /** Product screenshot, styled to match the video preview. Links to the live site when there is one. */
 function Shot({ src, title, href }: { src: string; title: string; href?: string }) {
@@ -35,7 +35,7 @@ function Shot({ src, title, href }: { src: string; title: string; href?: string 
         className="mono absolute bottom-3 right-3 rounded-full px-3 py-1.5 text-[11px] opacity-0 transition-opacity duration-300 group-hover:opacity-100 group-focus-visible:opacity-100"
         style={{ background: "rgba(0,0,0,0.75)", color: "#fff" }}
       >
-        Visit live site <ArrowUpRight className="ml-1 inline h-3.5 w-3.5" />
+        Visit live site
       </span>
     </a>
   );
@@ -91,8 +91,8 @@ export function Work() {
                         rel="noopener noreferrer"
                         className="icon-link text-[13.5px] font-bold text-[var(--text)] transition-colors hover:text-[var(--signal)]"
                       >
+                        <Globe />
                         Live
-                        <ArrowUpRight />
                       </a>
                     )}
                     {p.video && (

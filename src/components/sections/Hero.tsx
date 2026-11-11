@@ -1,6 +1,6 @@
 import Image from "next/image";
 import type { CSSProperties } from "react";
-import { ArrowDown, Building2, Clock, FileText, GraduationCap, Play, Rocket, type LucideIcon } from "lucide-react";
+import { Building2, Clock, FileText, GraduationCap, Play, Rocket, type LucideIcon } from "lucide-react";
 import { Reveal } from "../ui/Reveal";
 import { Parallax } from "../ui/Fx";
 import { profile } from "@/content/profile";
@@ -53,7 +53,6 @@ export function Hero() {
             <div className="mt-8 flex flex-wrap items-center gap-3">
               <a href="#work-avis" className="btn btn-signal">
                 See the production work
-                <ArrowDown className="h-4 w-4" strokeWidth={2.5} />
               </a>
               <a href={profile.contact.resume} target="_blank" rel="noopener noreferrer" className="btn btn-glass">
                 <FileText className="h-4 w-4" strokeWidth={2.25} />

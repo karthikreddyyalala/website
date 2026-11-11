@@ -1,11 +1,11 @@
-import { ArrowUp, Github, Linkedin, Mail } from "lucide-react";
+import { Github, Linkedin, Mail, type LucideIcon } from "lucide-react";
 import { profile } from "@/content/profile";
 
-const LINKS = [
+const LINKS: { label: string; href: string; Icon?: LucideIcon }[] = [
   { label: "Email", href: `mailto:${profile.contact.email}`, Icon: Mail },
   { label: "LinkedIn", href: profile.contact.linkedin, Icon: Linkedin },
   { label: "GitHub", href: "https://github.com/karthikreddyyalala", Icon: Github },
-  { label: "Back to top", href: "#top", Icon: ArrowUp },
+  { label: "Back to top", href: "#top" },
 ];
 
 /**
@@ -57,7 +57,7 @@ export function Footer() {
                   rel={l.href.startsWith("http") ? "noopener noreferrer" : undefined}
                   className="icon-link text-[14px] font-bold text-[var(--text)] transition-colors duration-200 hover:text-[var(--accent)]"
                 >
-                  <l.Icon />
+                  {l.Icon && <l.Icon />}
                   {l.label}
                 </a>
               </li>

@@ -2,7 +2,7 @@
 
 import { useCallback, useEffect, useRef, useState } from "react";
 import dynamic from "next/dynamic";
-import { ArrowUpRight, Hand } from "lucide-react";
+import { Hand } from "lucide-react";
 import { profile } from "@/content/profile";
 
 // MediaPipe only downloads once a visitor turns hands-free on.
@@ -219,7 +219,7 @@ export function Nav() {
                 onClick={() => setOpen(false)}
                 className="block py-3.5 text-[15px] text-[var(--accent)]"
               >
-                Résumé <ArrowUpRight className="inline h-4 w-4" />
+                Résumé
               </a>
             </li>
           </ul>
