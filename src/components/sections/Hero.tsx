@@ -4,6 +4,7 @@ import { CountUp } from "../ui/CountUp";
 import { profile } from "@/content/profile";
 import { projects } from "@/content/projects";
 import { VideoTrigger } from "../ui/VideoDialog";
+import { Contour } from "../ui/Contour";
 
 const demo = projects.find((p) => p.video);
 
@@ -18,6 +19,14 @@ export function Hero() {
             "radial-gradient(900px 520px at 8% 0%, rgba(200,135,62,0.07), transparent 65%)",
         }}
       />
+      {/* Live contour lines, faded out toward the bottom so the proof row stays clean. */}
+      <div
+        aria-hidden
+        className="pointer-events-none absolute inset-0"
+        style={{ maskImage: "linear-gradient(to bottom, #000 35%, transparent 92%)" }}
+      >
+        <Contour />
+      </div>
 
       <div className="shell relative">
         <div className="grid items-center gap-14 md:grid-cols-12 md:gap-10">
@@ -37,9 +46,15 @@ export function Hero() {
 
             <Reveal delay={80}>
               <h1 className="h-display mt-6 text-[clamp(2.8rem,8vw,5.5rem)]">
-                Karthik Reddy
-                <br />
-                <span className="text-[var(--muted)]">Yalala</span>
+                <span className="line-rise">
+                  <span>Karthik Reddy</span>
+                </span>
+                <span
+                  className="line-rise text-[var(--muted)]"
+                  style={{ "--rise-delay": "90ms" } as React.CSSProperties}
+                >
+                  <span>Yalala</span>
+                </span>
               </h1>
             </Reveal>
 

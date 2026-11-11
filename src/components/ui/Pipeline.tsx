@@ -40,7 +40,13 @@ export function Pipeline({ stages }: { stages: readonly DiagramStage[] }) {
 
             {i < stages.length - 1 && (
               <div aria-hidden className="flex w-6 items-center justify-center">
-                <span className="h-px w-full bg-[var(--line-hi)]" />
+                <span className="relative h-px w-full bg-[var(--line-hi)]">
+                  {/* Fills in stage order as the diagram scrolls past. */}
+                  <span
+                    className="flow-fill absolute inset-0 bg-[var(--accent)]"
+                    style={{ "--i": i } as React.CSSProperties}
+                  />
+                </span>
               </div>
             )}
           </li>
