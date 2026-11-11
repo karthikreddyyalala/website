@@ -46,22 +46,21 @@ export function Contact() {
         )}
 
         <Reveal delay={190}>
-          <ul className="mt-14 grid border-t-[3px] border-[var(--text)] sm:grid-cols-2">
+          <ul className="mt-16 grid gap-x-10 gap-y-9 sm:grid-cols-2">
             {CHANNELS.map((c) => (
-              <li key={c.label} className="border-b border-[var(--line-hi)]">
+              <li key={c.label} className="border-t-[3px] border-[var(--text)]">
                 <a
                   href={c.href}
                   target={c.href.startsWith("http") ? "_blank" : undefined}
                   rel={c.href.startsWith("http") ? "noopener noreferrer" : undefined}
-                  className="group flex items-center gap-4 py-4 pr-2 sm:pr-8"
+                  className="group -mt-[13px] flex items-end gap-4"
                 >
+                  {/* The badge sits across the ink line, so it shows through the glass. */}
                   <span aria-hidden className="glass">
                     <c.Icon />
                   </span>
-                  <span className="text-[14px] text-[var(--muted)]">
-                    {c.label}
-                  </span>
-                  <span className="ml-auto text-right text-[16px] font-bold text-[var(--text)] transition-colors duration-200 group-hover:text-[var(--accent)]">
+                  <span className="pb-1 text-[14px] text-[var(--muted)]">{c.label}</span>
+                  <span className="ml-auto pb-1 text-right text-[16px] font-bold text-[var(--text)] transition-colors duration-200 group-hover:text-[var(--accent)]">
                     {c.value}
                   </span>
                 </a>

@@ -471,6 +471,18 @@ body {
    of each element is its finished state, so nothing is hidden if a browser
    lacks scroll-driven animations or the visitor prefers reduced motion. */
 
+/* Hero name size. Shorter laptop screens get a smaller title so the whole
+   map still fits in the first screen. */
+.hero-title {
+  font-size: clamp(3rem, 8.4vw, 5.25rem);
+}
+
+@media (min-width: 1024px) and (max-height: 860px) {
+  .hero-title {
+    font-size: 4.25rem;
+  }
+}
+
 /* Hero name: each line rises from behind its own mask once the hero reveals. */
 .line-rise {
   display: block;

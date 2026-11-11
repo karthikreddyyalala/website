@@ -19,11 +19,11 @@ const KEY_LINES = ["avis", "avis", "avis", "path"];
  */
 export function Hero() {
   return (
-    <section id="top" className="relative overflow-hidden pt-28 lg:pt-[104px]">
+    <section id="top" className="relative overflow-hidden pt-28 lg:pt-24">
       <div className="shell">
         <div className="relative">
           <Reveal>
-            <h1 className="h-display text-[clamp(3rem,8.4vw,6rem)]">
+            <h1 className="h-display hero-title">
               <span className="line-rise">
                 <span>Karthik Reddy</span>
               </span>
@@ -38,20 +38,25 @@ export function Hero() {
               <p className="max-w-[64ch] text-[16px] leading-[1.6] text-[var(--text)] lg:text-[17px]">
                 {profile.claim}
               </p>
-              <Image
-                src="/images/profile.webp"
-                alt="Karthik Reddy Yalala"
-                width={1000}
-                height={1000}
-                priority
-                sizes="(min-width: 1024px) 150px, 88px"
-                className="h-[112px] w-[88px] flex-none rounded-[14px] border-2 border-[var(--text)] object-cover object-top lg:absolute lg:right-0 lg:top-1 lg:h-[188px] lg:w-[150px]"
-              />
+              <figure className="w-[88px] flex-none lg:absolute lg:right-0 lg:top-1 lg:w-[150px]">
+                <Image
+                  src="/images/profile.webp"
+                  alt="Karthik Reddy Yalala"
+                  width={1000}
+                  height={1000}
+                  priority
+                  sizes="(min-width: 1024px) 150px, 88px"
+                  className="h-[112px] w-full rounded-[14px] border-2 border-[var(--text)] object-cover object-top lg:h-[176px]"
+                />
+                <figcaption className="mt-2 hidden text-[13px] leading-snug text-[var(--muted)] lg:block">
+                  {profile.role} · {profile.location}
+                </figcaption>
+              </figure>
             </div>
           </Reveal>
 
           <Reveal delay={200}>
-            <div className="mt-6 flex flex-wrap items-center gap-x-3 gap-y-3">
+            <div className="mt-5 flex flex-wrap items-center gap-x-3 gap-y-3">
               <a
                 href="#work-avis"
                 className="rounded-full bg-[var(--l-avis)] px-6 py-3 text-[14.5px] font-bold text-[var(--on-line)] transition-transform duration-200 hover:-translate-y-0.5 active:translate-y-0"
@@ -83,7 +88,7 @@ export function Hero() {
                   Watch the {demo.title} demo
                 </VideoTrigger>
               )}
-              <p className="text-[14px] text-[var(--muted)] lg:ml-auto">
+              <p className="w-full text-[14px] text-[var(--muted)] lg:hidden">
                 {profile.role} · {profile.location}
               </p>
             </div>
@@ -99,18 +104,20 @@ export function Hero() {
 
         {/* Proof, set as the map's key: each fact carries the line it belongs to. */}
         <Reveal delay={320}>
-          <dl className="mt-10 grid gap-x-10 gap-y-6 pb-4 sm:grid-cols-2 lg:mt-12 lg:grid-cols-4">
+          <dl className="mt-10 flex flex-wrap gap-x-9 gap-y-3 pb-4 text-[15px] lg:mt-12">
             {profile.proof.map((p, i) => (
-              <div key={p.label} className="flex items-start gap-3">
-                <span aria-hidden className="relative mt-[13px] h-[6px] w-9 flex-none rounded-full" style={{ background: `var(--l-${KEY_LINES[i]})` }}>
-                  <span className="absolute left-1/2 top-1/2 h-[14px] w-[14px] -translate-x-1/2 -translate-y-1/2 rounded-full border-[3.5px] border-[var(--text)] bg-[var(--bg)]" />
+              <div key={p.label} className="flex items-center gap-2.5">
+                <span
+                  aria-hidden
+                  className="relative h-[5px] w-8 flex-none rounded-full"
+                  style={{ background: `var(--l-${KEY_LINES[i]})` }}
+                >
+                  <span className="absolute left-1/2 top-1/2 h-3 w-3 -translate-x-1/2 -translate-y-1/2 rounded-full border-[3px] border-[var(--text)] bg-[var(--bg)]" />
                 </span>
-                <div>
-                  <dt className="text-[26px] font-black leading-none tabular-nums text-[var(--text)] md:text-[30px]">
-                    <CountUp value={p.value} />
-                  </dt>
-                  <dd className="mt-1.5 text-[13.5px] leading-snug text-[var(--muted)]">{p.label}</dd>
-                </div>
+                <dt className="font-extrabold tabular-nums text-[var(--text)]">
+                  <CountUp value={p.value} />
+                </dt>
+                <dd className="text-[var(--muted)]">{p.label}</dd>
               </div>
             ))}
           </dl>

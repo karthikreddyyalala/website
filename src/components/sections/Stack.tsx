@@ -37,14 +37,12 @@ export function Stack() {
                       </span>
                     );
                   })()}
-                <h3 className="pb-1 text-[18px] font-extrabold text-[var(--text)]">
+                <h3 className="whitespace-nowrap pb-1 text-[18px] font-extrabold text-[var(--text)]">
                   {group.label}
                 </h3>
-                {group.note && (
-                  <p className="ml-auto pb-1.5 text-right text-[13px] text-[var(--faint)]">{group.note}</p>
-                )}
               </div>
-              <ul className="mt-5 flex flex-wrap gap-2">
+              {group.note && <p className="mt-3 text-[13.5px] text-[var(--faint)]">{group.note}</p>}
+              <ul className="mt-4 flex flex-wrap gap-2">
                 {group.items.map((item) => (
                   <li
                     key={item}
