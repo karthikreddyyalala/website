@@ -752,6 +752,70 @@ html[data-motion="off"] .pulse {
   }
 }
 
+/* ---------- Pinned showcase (Selected work) ----------
+   The stage holds one slide per project, stacked. The active one is shown;
+   the one leaving shrinks back and fades while the one arriving settles in
+   from slightly larger, so the stage feels like it is turning a page. */
+.stage-slide {
+  position: absolute;
+  inset: 0;
+  opacity: 0;
+  visibility: hidden;
+  transition:
+    opacity 0.55s cubic-bezier(0.16, 1, 0.3, 1),
+    visibility 0s linear 0.55s;
+}
+
+.stage-slide[data-active] {
+  opacity: 1;
+  visibility: visible;
+  transition-delay: 0.08s, 0s;
+}
+
+.stage-media {
+  transform: scale(0.955);
+  clip-path: inset(6% 0 6% 0 round 14px);
+  transition:
+    transform 0.9s cubic-bezier(0.16, 1, 0.3, 1),
+    clip-path 0.9s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.stage-slide[data-active] .stage-media {
+  transform: none;
+  clip-path: inset(0 round 14px);
+}
+
+.stage-tick {
+  width: 18px;
+  height: 3px;
+  border-radius: 3px;
+  background: var(--line-hi);
+  transition:
+    background-color 0.4s ease-out,
+    transform 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+  transform-origin: left;
+  transform: scaleX(0.55);
+}
+
+.stage-tick[data-active] {
+  background: var(--signal);
+  transform: none;
+}
+
+/* On wide screens, once the stage is live, the write-ups that are not at
+   mid-screen step back. Keyboard focus inside one brings it forward. */
+@media (min-width: 1024px) {
+  [data-live] [data-project] > .showcase-item {
+    transition:
+      opacity 0.5s ease-out,
+      transform 0.8s cubic-bezier(0.16, 1, 0.3, 1);
+  }
+
+  [data-live] [data-project]:not([data-active]):not(:focus-within) > .showcase-item.is-in {
+    opacity: 0.34;
+  }
+}
+
 /* Headline figures in the Avis section. Sized so "$1,000,000+" fits one column. */
 .stat-figure {
   font-size: 2.75rem;

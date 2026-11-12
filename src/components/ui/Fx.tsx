@@ -306,3 +306,42 @@ export function CopyButton({ text, label, className = "" }: { text: string; labe
     </button>
   );
 }
+
+/* ------------------------------------------------------------------ */
+/* Pinned showcase                                                    */
+/* ------------------------------------------------------------------ */
+
+/**
+ * The stage of a pinned showcase. Inside the nearest [data-showcase], it
+ * watches which [data-project] crosses the middle of the screen and marks
+ * that project, its [data-slide] and its [data-tick] as active; CSS does the
+ * rest. The first is active in the HTML, so it also reads without JavaScript.
+ */
+export function ShowcaseStage({ children, className }: { children: ReactNode; className?: string }) {
+  const ref = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    const root = ref.current?.closest<HTMLElement>("[data-showcase]");
+    if (!root) return;
+    const groups = ["[data-project]", "[data-slide]", "[data-tick]"].map((q) => [...root.querySelectorAll(q)]);
+    const activate = (i: number) => groups.forEach((g) => g.forEach((el, k) => el.toggleAttribute("data-active", k === i)));
+
+    root.setAttribute("data-live", ""); // from here on, the projects that are not active dim
+    // A zero-height line across the middle of the screen: exactly one project crosses it at a time.
+    const observer = new IntersectionObserver(
+      (entries) => entries.forEach((e) => e.isIntersecting && activate(groups[0].indexOf(e.target))),
+      { rootMargin: "-50% 0px -50% 0px" }
+    );
+    groups[0].forEach((el) => observer.observe(el));
+    return () => {
+      observer.disconnect();
+      root.removeAttribute("data-live");
+    };
+  }, []);
+
+  return (
+    <div ref={ref} className={className}>
+      {children}
+    </div>
+  );
+}
