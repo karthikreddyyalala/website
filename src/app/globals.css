@@ -520,10 +520,165 @@ summary,
   margin-bottom: -0.12em;
 }
 
-.reveal.is-in .line-rise > span {
+.line-rise > span {
   display: block;
-  animation: line-rise 1s cubic-bezier(0.16, 1, 0.3, 1) both;
-  animation-delay: var(--rise-delay, 0ms);
+}
+
+/* ---------- Opening ----------
+   A curtain carrying the KRY mark covers the first paint, then lifts. The
+   hero enters behind it in sequence. --intro is the moment the lift starts;
+   every hero entrance is timed from it. All of it is CSS, so it runs without
+   JavaScript, and none of it exists under reduced motion. The curtain's
+   resting state is off screen, so a browser that cannot animate never shows it. */
+:root {
+  --intro: 0.9s;
+}
+
+.intro-curtain {
+  position: fixed;
+  inset: 0;
+  z-index: 80;
+  display: grid;
+  place-items: center;
+  background: var(--bg);
+  pointer-events: none;
+  transform: translate3d(0, -101%, 0);
+}
+
+.intro-mark {
+  display: flex;
+  justify-content: center;
+  font-size: clamp(3rem, 7vw, 4.75rem);
+  color: var(--text);
+}
+
+.intro-mark > span {
+  display: block;
+  overflow: hidden;
+  padding-bottom: 0.1em;
+}
+
+.intro-mark > span > span {
+  display: block;
+}
+
+.intro-rule {
+  display: block;
+  width: min(240px, 46vw);
+  height: 1px;
+  margin: 14px auto 0;
+  background: var(--signal);
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  .intro-curtain {
+    animation: curtain-lift 0.9s cubic-bezier(0.76, 0, 0.24, 1) var(--intro) backwards;
+  }
+
+  .intro-mark > span > span {
+    animation: line-rise 0.7s cubic-bezier(0.16, 1, 0.3, 1) both;
+    animation-delay: calc(60ms + var(--k, 0) * 75ms);
+  }
+
+  .intro-rule {
+    animation: grow-x 0.75s cubic-bezier(0.16, 1, 0.3, 1) 0.12s both;
+  }
+
+  /* The nav drops in from above. */
+  .intro-nav {
+    animation: intro-drop 1s cubic-bezier(0.16, 1, 0.3, 1) calc(var(--intro) + 200ms) both;
+  }
+
+  /* The name rises line by line out of its own mask. */
+  .line-rise > span {
+    animation: line-rise 1.15s cubic-bezier(0.16, 1, 0.3, 1) both;
+    animation-delay: calc(var(--intro) + 120ms + var(--rise-delay, 0ms));
+  }
+
+  .intro-up {
+    animation: intro-up 1s cubic-bezier(0.16, 1, 0.3, 1) both;
+    animation-delay: calc(var(--intro) + var(--d, 0ms));
+  }
+
+  /* The portrait slides in from the right while the photo wipes open and settles. */
+  .intro-portrait {
+    animation: intro-slide 1.2s cubic-bezier(0.16, 1, 0.3, 1) calc(var(--intro) + 260ms) both;
+  }
+
+  .intro-wipe {
+    animation: intro-wipe 1.2s cubic-bezier(0.65, 0, 0.35, 1) calc(var(--intro) + 320ms) both;
+  }
+
+  .intro-wipe img {
+    animation: intro-settle 1.8s cubic-bezier(0.16, 1, 0.3, 1) calc(var(--intro) + 320ms) both;
+  }
+
+  /* Each chip slides in from its own side, then floats very slightly. */
+  .intro-chip {
+    animation:
+      intro-chip 1s cubic-bezier(0.16, 1, 0.3, 1) both,
+      chip-float var(--float, 7s) ease-in-out infinite;
+    animation-delay: calc(var(--intro) + var(--d, 0ms)), calc(var(--intro) + var(--d, 0ms) + 1s);
+  }
+
+  html[data-motion="off"] .intro-chip {
+    animation-play-state: paused;
+  }
+}
+
+@keyframes curtain-lift {
+  from {
+    transform: none;
+  }
+}
+
+@keyframes intro-drop {
+  from {
+    opacity: 0;
+    transform: translate3d(0, -120%, 0);
+  }
+}
+
+@keyframes intro-up {
+  from {
+    opacity: 0;
+    transform: translate3d(0, 32px, 0);
+  }
+}
+
+@keyframes intro-slide {
+  from {
+    opacity: 0;
+    transform: translate3d(72px, 0, 0);
+  }
+}
+
+@keyframes intro-wipe {
+  from {
+    clip-path: inset(0 0 100% 0);
+  }
+  to {
+    clip-path: inset(0);
+  }
+}
+
+@keyframes intro-settle {
+  from {
+    transform: scale(1.18);
+  }
+}
+
+@keyframes intro-chip {
+  from {
+    opacity: 0;
+    transform: translate3d(var(--from, 0), 0, 0) scale(0.94);
+  }
+}
+
+@keyframes chip-float {
+  50% {
+    transform: translate3d(0, -7px, 0);
+  }
 }
 
 @keyframes line-rise {

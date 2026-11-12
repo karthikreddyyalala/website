@@ -110,7 +110,7 @@ export function Nav() {
   }, [open]);
 
   return (
-    <header className="fixed inset-x-0 top-0 z-50 px-3 pt-3">
+    <header className="intro-nav fixed inset-x-0 top-0 z-50 px-3 pt-3">
       <div
         className={`nav-glass relative mx-auto max-w-[1180px] overflow-hidden rounded-full transition-shadow duration-500 ${
           lifted ? "shadow-[0_18px_40px_-18px_rgba(0,0,0,0.9)]" : ""

@@ -14,9 +14,10 @@ export function SectionHead({ children }: { children: ReactNode }) {
  */
 export function Meta({ text, className = "" }: { text: string; className?: string }) {
   return (
-    <span className={`inline-flex flex-wrap items-center gap-x-3 gap-y-1 ${className}`}>
+    <span className={className}>
       {text.split(" · ").map((part, i) => (
-        <span key={part} className={i ? "border-l border-[var(--line-hi)] pl-3" : undefined}>
+        // Inline, so a long run wraps like ordinary text instead of dropping each fact to its own line.
+        <span key={part} className={i ? "ml-3 border-l border-[var(--line-hi)] pl-3" : undefined}>
           {i > 0 && <span className="sr-only">, </span>}
           {part}
         </span>
