@@ -3,6 +3,7 @@ import type { CSSProperties } from "react";
 import { Building2, Clock, FileText, GraduationCap, Rocket, type LucideIcon } from "lucide-react";
 import { Reveal } from "../ui/Reveal";
 import { Parallax } from "../ui/Fx";
+import { Meta } from "../ui/Section";
 import { profile } from "@/content/profile";
 
 // One icon and one position per proof point, in the order they appear in profile.proof.
@@ -40,11 +41,11 @@ export function Hero() {
 
           <Reveal delay={220}>
             <p className="mt-7 flex flex-wrap items-center gap-x-4 gap-y-2.5 text-[16.5px] font-medium text-[var(--ice)]">
-              {profile.role} · {profile.location}
+              <Meta text={`${profile.role} · ${profile.location}`} />
               {profile.availability.active && (
                 <span className="tag inline-flex items-center gap-2 text-[14.5px] font-normal !text-[var(--text)]">
                   <span aria-hidden className="h-2 w-2 flex-none rounded-full bg-[var(--signal)]" />
-                  {profile.availability.status}
+                  <Meta text={profile.availability.status} />
                 </span>
               )}
             </p>
@@ -97,7 +98,7 @@ export function Hero() {
                 </span>
                 <p className="text-[14.5px] leading-snug text-[var(--muted)]">
                   <span className="h-section block text-[19px] text-[var(--text)]">{p.value}</span>
-                  {p.label}
+                  <Meta text={p.label} />
                 </p>
               </div>
             );
@@ -116,11 +117,11 @@ export function Hero() {
             <span key={k}>
               {profile.proof.map((p) => (
                 <span key={p.label}>
-                  {p.value} {p.label}
+                  {p.value} <Meta text={p.label} />
                   <span className="mx-7 text-[var(--signal)]">/</span>
                 </span>
               ))}
-              {profile.availability.status}
+              <Meta text={profile.availability.status} />
               <span className="mx-7 text-[var(--signal)]">/</span>
             </span>
           ))}

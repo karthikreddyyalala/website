@@ -89,7 +89,7 @@ export function VideoPreview(video: Video) {
           alt=""
           fill
           sizes="(max-width: 768px) 100vw, 720px"
-          className="object-cover opacity-90 transition-[opacity,transform] duration-500 ease-out group-hover:scale-[1.02] group-hover:opacity-100"
+          className="object-cover opacity-90 transition-opacity duration-500 ease-out group-hover:opacity-100"
         />
         {armed && (
           <video
@@ -101,7 +101,7 @@ export function VideoPreview(video: Video) {
             aria-hidden
             tabIndex={-1}
             onPlaying={() => setPlaying(true)}
-            className={`absolute inset-0 h-full w-full object-cover transition-[opacity,transform] duration-500 ease-out group-hover:scale-[1.02] ${
+            className={`absolute inset-0 h-full w-full object-cover transition-opacity duration-500 ease-out ${
               playing ? "opacity-100" : "opacity-0"
             }`}
           />
@@ -125,7 +125,7 @@ export function VideoPreview(video: Video) {
           <span>
             <span className="block text-[15px] font-medium text-white">Watch the demo</span>
             <span className="mt-0.5 block text-[13px] text-white/75">
-              Plays right here · no redirect
+              Plays right here, no redirect
             </span>
           </span>
           <span className="hidden text-[13px] text-white/75 sm:block">{video.title}</span>

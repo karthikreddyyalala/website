@@ -171,7 +171,7 @@ export function CommandMenu() {
             return (
               <div key={item.group + item.label}>
                 {heading && (
-                  <p className="mono px-3 pb-1.5 pt-3 text-[12.5px] uppercase tracking-[0.14em] text-[var(--faint)]">{heading}</p>
+                  <p className="px-3 pb-1.5 pt-3 text-[13px] text-[var(--faint)]">{heading}</p>
                 )}
                 {item.href ? (
                   <a

@@ -17,7 +17,6 @@ export function Stack() {
   return (
     <Section
       id="stack"
-      label="Stack"
       title="What I actually use."
       lede="Grouped by what it's for. No proficiency bars, because a number I assign to my own skill isn't evidence of anything."
     >

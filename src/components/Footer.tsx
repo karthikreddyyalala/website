@@ -1,6 +1,7 @@
 import { Github, Linkedin, Mail, type LucideIcon } from "lucide-react";
 import { profile } from "@/content/profile";
-import { LocalTime, MotionToggle } from "./ui/Fx";
+import { MotionToggle } from "./ui/Fx";
+import { Meta } from "./ui/Section";
 
 const LINKS: { label: string; href: string; Icon?: LucideIcon }[] = [
   { label: "Email", href: `mailto:${profile.contact.email}`, Icon: Mail },
@@ -23,9 +24,10 @@ function Wordmark({ text, width, className }: { text: string; width: number; cla
         fontSize="100"
         fontWeight="650"
         letterSpacing="-0.05em"
-        fill="none"
+        fill="var(--bg)"
         stroke="var(--ice)"
-        strokeWidth="1.2"
+        strokeWidth="2.4"
+        paintOrder="stroke" // the fill covers the contour overlaps a bare outline would show inside the letters
         style={{ fontFamily: "var(--font-body), sans-serif" }}
       >
         {text}
@@ -41,12 +43,11 @@ export function Footer() {
     <footer className="overflow-hidden border-t border-[var(--line-hi)] pt-12">
       <div className="shell flex flex-col gap-8 md:flex-row md:items-end md:justify-between">
         <div>
-          <p className="mono text-[12.5px] text-[var(--faint)]">
+          <p className="text-[13px] text-[var(--faint)]">
             © {new Date().getFullYear()} {profile.name}
           </p>
           <p className="mt-2 text-[14.5px] text-[var(--muted)]">
-            {profile.location} · Open to work, May 2027
-            <LocalTime timeZone="America/Phoenix" />
+            <Meta text={`${profile.location} · Open to work, May 2027`} />
           </p>
         </div>
         <nav aria-label="Footer">

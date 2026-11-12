@@ -1,5 +1,5 @@
 import { Reveal } from "../ui/Reveal";
-import { SectionHead } from "../ui/Section";
+import { Meta, SectionHead } from "../ui/Section";
 import { CopyButton } from "../ui/Fx";
 import { Download, Github, Linkedin, Mail, Phone } from "lucide-react";
 import { profile } from "@/content/profile";
@@ -29,7 +29,7 @@ export function Contact() {
       <div className="shell relative">
         <div data-scroll="rise" className="card p-5 sm:p-7 md:p-14">
         <Reveal>
-          <SectionHead label="Contact">
+          <SectionHead>
             <h2 className="h-display max-w-[15ch] text-[clamp(2.2rem,6vw,4.2rem)]">
               Let&apos;s talk about
                what you&apos;re building.
@@ -41,7 +41,7 @@ export function Contact() {
           <Reveal delay={130}>
             <p className="mt-7 flex items-center gap-2.5 text-[16.5px] text-[var(--muted)]">
               <span aria-hidden className="inline-block h-2 w-2 rounded-full bg-[var(--signal)]" />
-              {availability.status}
+              <Meta text={availability.status} />
             </p>
           </Reveal>
         )}

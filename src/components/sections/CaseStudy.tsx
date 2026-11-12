@@ -2,7 +2,7 @@ import { Reveal } from "../ui/Reveal";
 import { CountUp } from "../ui/CountUp";
 import { Pipeline } from "../ui/Pipeline";
 import { Aside } from "../ui/Aside";
-import { SectionHead } from "../ui/Section";
+import { Meta, SectionHead } from "../ui/Section";
 import { caseStudy } from "@/content/casestudy";
 import { Plus } from "lucide-react";
 import { TechTag } from "../ui/TechTag";
@@ -12,15 +12,14 @@ export function CaseStudy() {
     <section id="work-avis" className="relative py-24 md:py-32">
       <div className="shell relative">
         <Reveal>
-          <SectionHead label="Production work">
+          <SectionHead>
             <h2 className="h-section">{caseStudy.company}</h2>
           </SectionHead>
         </Reveal>
 
         <Reveal delay={60}>
           <p className="mt-8 text-[16.5px] text-[var(--muted)]">
-            {caseStudy.role} · {caseStudy.qualifier} · {caseStudy.location}
-            <span className="ml-3 text-[var(--faint)]">{caseStudy.period}</span>
+            <Meta text={`${caseStudy.role} · ${caseStudy.qualifier} · ${caseStudy.location} · ${caseStudy.period}`} />
           </p>
         </Reveal>
 

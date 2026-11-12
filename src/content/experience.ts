@@ -14,7 +14,7 @@ export type TimelineEntry = {
 export const timeline: TimelineEntry[] = [
   {
     id: "professordm",
-    period: "Sep 2026 – Apr 2027",
+    period: "Sep 2026 to Apr 2027",
     title: "AI Systems Architect & Guardrails Lead",
     org: "ProfessorDM Technologies Inc.",
     location: "ASU Capstone · Remote (New Brunswick, CA)",
@@ -30,7 +30,7 @@ export const timeline: TimelineEntry[] = [
   },
   {
     id: "avis",
-    period: "May – Aug 2026",
+    period: "May to Aug 2026",
     title: "AI Enablement Intern",
     org: "Avis Budget Group",
     location: "Parsippany, NJ",
@@ -54,7 +54,7 @@ export const timeline: TimelineEntry[] = [
   },
   {
     id: "food-forest",
-    period: "May – Jul 2025",
+    period: "May to Jul 2025",
     title: "Data Analyst Intern",
     org: "Food Forest AI",
     location: "Philadelphia, PA",
@@ -67,7 +67,7 @@ export const timeline: TimelineEntry[] = [
   },
   {
     id: "yjr",
-    period: "May – Jul 2024",
+    period: "May to Jul 2024",
     title: "Software Engineer Intern",
     org: "YJR Realtors",
     location: "Hyderabad, India",
@@ -81,7 +81,7 @@ export const timeline: TimelineEntry[] = [
   },
   {
     id: "asu",
-    period: "2023 – 2027",
+    period: "2023 to 2027",
     title: "B.S. Computer Science",
     org: "Arizona State University",
     location: "Tempe, AZ",

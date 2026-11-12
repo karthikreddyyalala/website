@@ -14,7 +14,7 @@ function Shot({ src, title, href }: { src: string; title: string; href?: string 
       alt={`${title} screenshot`}
       fill
       sizes="(max-width: 768px) 100vw, 720px"
-      className="object-cover object-top transition-transform duration-500 ease-out group-hover:scale-[1.02]"
+      className="object-cover object-top"
     />
   );
   const box =
@@ -45,7 +45,6 @@ export function Work() {
   return (
     <Section
       id="work"
-      label="Selected work"
       title="Things I built to find out if they'd work."
       lede="Agent systems, mostly. A few are experiments I kept because of what they taught me."
     >

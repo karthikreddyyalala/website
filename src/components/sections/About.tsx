@@ -24,7 +24,7 @@ export function About() {
                     height={700}
                     loading="lazy"
                     sizes="(max-width: 768px) 100vw, 320px"
-                    className="h-full w-full rounded-[13px] object-cover transition-transform duration-700 ease-[cubic-bezier(0.16,1,0.3,1)] group-hover:scale-[1.03]"
+                    className="h-full w-full rounded-[13px] object-cover"
                   />
                 </div>
               </div>

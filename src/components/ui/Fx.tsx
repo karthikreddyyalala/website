@@ -130,9 +130,6 @@ export function GlassLight() {
     const move = (e: PointerEvent) => {
       x = e.clientX;
       y = e.clientY;
-      // The page-wide spotlight (body::before) reads these.
-      document.documentElement.style.setProperty("--px", `${x}px`);
-      document.documentElement.style.setProperty("--py", `${y}px`);
       if (!raf) raf = requestAnimationFrame(paint);
     };
     window.addEventListener("pointermove", move, { passive: true });
@@ -308,19 +305,4 @@ export function CopyButton({ text, label, className = "" }: { text: string; labe
       <span aria-live="polite">{copied ? "Copied" : label}</span>
     </button>
   );
-}
-
-/** The current time where Karthik is, so a visitor knows when to reach him. Fills in after load. */
-export function LocalTime({ timeZone }: { timeZone: string }) {
-  const [time, setTime] = useState("");
-
-  useEffect(() => {
-    const format = new Intl.DateTimeFormat("en-US", { hour: "numeric", minute: "2-digit", timeZone });
-    const tick = () => setTime(format.format(new Date()));
-    tick();
-    const id = window.setInterval(tick, 30_000);
-    return () => window.clearInterval(id);
-  }, [timeZone]);
-
-  return time ? <span className="tabular-nums"> · {time} local time</span> : null;
 }

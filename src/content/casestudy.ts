@@ -39,7 +39,7 @@ export const caseStudy = {
   qualifier: "Fortune 500",
   role: "AI Enablement Intern",
   location: "Parsippany, NJ",
-  period: "May – Aug 2026",
+  period: "May to Aug 2026",
 
   intro:
     "Embedded with the Customer Experience team on a CEO-sponsored AI initiative. Four end-to-end initiatives, from system architecture and API design through front-end and back-end implementation to production handoff. Designs presented to the Director and VP of Customer Experience; the platform demoed to the CEO.",

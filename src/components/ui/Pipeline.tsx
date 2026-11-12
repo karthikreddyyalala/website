@@ -17,7 +17,7 @@ export function Pipeline({ stages }: { stages: readonly DiagramStage[] }) {
       {n > 1 && (
         <li
           aria-hidden
-          className="pointer-events-none relative -mb-3 mt-3 w-5 overflow-hidden"
+          className="pointer-events-none relative -mb-3 mt-3 w-5 overflow-hidden [container-type:size]"
           style={{ gridColumn: 1, gridRow: `1 / span ${n - 1}` }}
         >
           <span className="absolute inset-y-0 left-[9px] w-[2px] bg-[var(--line-hi)]">
