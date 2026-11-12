@@ -17,27 +17,31 @@ export function CaseStudy() {
           </SectionHead>
         </Reveal>
 
-        <div className="mt-8 grid gap-8 md:grid-cols-12 md:items-start">
-          <Reveal delay={60} className="md:col-span-7">
-            <p className="text-[16.5px] text-[var(--muted)]">
-              {caseStudy.role} · {caseStudy.qualifier} · {caseStudy.location}
-              <span className="ml-3 text-[var(--faint)]">{caseStudy.period}</span>
-            </p>
-            <dl className="mt-8 max-w-[440px]">
-              {caseStudy.headline.map((m) => (
-                <div key={m.label} className="flex items-baseline gap-5 border-t border-[var(--line-hi)] py-3.5">
-                  <dt className="h-section w-[150px] flex-none text-[26px] leading-none tabular-nums text-[var(--signal-hi)]">
-                    <CountUp value={m.value} />
-                  </dt>
-                  <dd className="text-[15px] leading-snug text-[var(--muted)]">{m.label}</dd>
-                </div>
-              ))}
-            </dl>
-          </Reveal>
-          <Reveal delay={120} className="md:col-span-5">
-            <p className="prose-body text-[16.5px]">{caseStudy.intro}</p>
-          </Reveal>
-        </div>
+        <Reveal delay={60}>
+          <p className="mt-8 text-[16.5px] text-[var(--muted)]">
+            {caseStudy.role} · {caseStudy.qualifier} · {caseStudy.location}
+            <span className="ml-3 text-[var(--faint)]">{caseStudy.period}</span>
+          </p>
+        </Reveal>
+
+        {/* The headline figures at display size; each counts up as it scrolls in. */}
+        <Reveal delay={120}>
+          <dl className="mt-8 grid gap-x-6 sm:grid-cols-3 md:mt-10 md:gap-x-10">
+            {caseStudy.headline.map((m) => (
+              <div key={m.label} className="flex flex-col-reverse border-t border-[var(--line-hi)] py-5 sm:py-6">
+                <dt className="mt-2 text-[15.5px] leading-snug text-[var(--muted)]">{m.label}</dt>
+                <dd className="h-display stat-figure tabular-nums text-[var(--signal-hi)]">
+                  <CountUp value={m.value} />
+                </dd>
+              </div>
+            ))}
+          </dl>
+        </Reveal>
+
+        {/* Sits in the same column as the write-ups below. */}
+        <Reveal delay={160} className="mt-6 grid md:mt-8 md:grid-cols-12">
+          <p className="prose-body text-[16.5px] md:col-span-8 md:col-start-5">{caseStudy.intro}</p>
+        </Reveal>
 
         <div className="mt-20 space-y-20 md:space-y-28">
           {caseStudy.initiatives.map((init, idx) => (

@@ -8,9 +8,9 @@ import { profile } from "@/content/profile";
 // One icon and one position per proof point, in the order they appear in profile.proof.
 const PROOF: { Icon: LucideIcon; place: string; depth: number }[] = [
   { Icon: Building2, place: "sm:left-0 sm:top-[5%]", depth: 38 },
-  { Icon: Rocket, place: "sm:right-0 sm:top-[49%]", depth: 52 },
+  { Icon: Rocket, place: "sm:right-0 sm:top-[44%]", depth: 52 },
   { Icon: Clock, place: "sm:left-0 sm:bottom-[27%]", depth: 30 },
-  { Icon: GraduationCap, place: "sm:right-[4%] sm:bottom-[2%]", depth: 44 },
+  { Icon: GraduationCap, place: "sm:right-[3%] sm:bottom-[17%]", depth: 44 },
 ];
 
 /**
@@ -90,7 +90,7 @@ export function Hero() {
               <div
                 key={p.label}
                 data-depth={depth}
-                className={`card group flex items-center gap-3 !rounded-[20px] p-3 pr-4 sm:absolute sm:max-w-[215px] ${place}`}
+                className={`card card-smoke group flex items-center gap-3 !rounded-[20px] p-3 pr-4 sm:absolute sm:max-w-[215px] ${place}`}
               >
                 <span aria-hidden className="glass">
                   <Icon />

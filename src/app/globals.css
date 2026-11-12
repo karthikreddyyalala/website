@@ -202,6 +202,14 @@ dt,
       box-shadow 0.4s ease-out;
   }
 
+  /* Smoked glass for panels that sit over a photo: darker and with the
+     colour behind it muted, so the photo cannot tint the panel or its text. */
+  .card.card-smoke {
+    background: linear-gradient(180deg, rgba(30, 29, 28, 0.74), rgba(18, 18, 19, 0.7));
+    -webkit-backdrop-filter: blur(22px) saturate(0.55);
+    backdrop-filter: blur(22px) saturate(0.55);
+  }
+
   /* The edge of the glass: a hairline that is bright where light would
      catch it (top left, bottom right) and nearly gone in between. */
   .card::before {
@@ -597,6 +605,19 @@ html[data-motion="off"] .pulse {
 @keyframes ticker {
   to {
     transform: translate3d(-50%, 0, 0);
+  }
+}
+
+/* Headline figures in the Avis section. Sized so "$1,000,000+" fits one column. */
+.stat-figure {
+  font-size: 2.75rem;
+  line-height: 1;
+  white-space: nowrap;
+}
+
+@media (min-width: 640px) {
+  .stat-figure {
+    font-size: clamp(1.8rem, 4.3vw, 3.4rem);
   }
 }
 
