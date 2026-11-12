@@ -348,7 +348,6 @@ export function ShowcaseStage({ children, className }: { children: ReactNode; cl
       if (i === current) return;
       current = i;
       groups.forEach((g) => g.forEach((el, k) => el.toggleAttribute("data-active", k === i)));
-      play("swap");
     };
 
     root.setAttribute("data-live", ""); // from here on, the projects that are not active dim

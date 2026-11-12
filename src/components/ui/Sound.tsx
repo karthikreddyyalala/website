@@ -6,11 +6,15 @@ import { Volume2, VolumeX } from "lucide-react";
 /**
  * Interface sound. Off until the visitor turns it on, and remembered after
  * that. Every sound is synthesized with the Web Audio API, so there are no
- * audio files to download, and all of them are short and quiet: they confirm
- * what the visitor just did and never play on their own.
+ * audio files to download.
+ *
+ * The rules it follows: a sound confirms something the visitor did on
+ * purpose and always has a visible twin; hovering, scrolling and typing are
+ * silent; a cue lasts about as long as its action. The one exception is the
+ * Avis figures, which tick as they count up, once per visit.
  */
 
-type Name = "tick" | "tap" | "open" | "close" | "swap" | "count" | "success";
+type Name = "tap" | "open" | "close" | "count" | "success";
 
 const KEY = "sound";
 const CHANGE = "sound:change";
@@ -22,7 +26,7 @@ const last: Partial<Record<Name, number>> = {};
 
 // The least time between two plays of the same sound, in ms. Several things
 // can ask for one at once (three figures counting together, a fast pointer).
-const GAP: Record<Name, number> = { tick: 45, tap: 60, open: 150, close: 150, swap: 240, count: 58, success: 600 };
+const GAP: Record<Name, number> = { tap: 60, open: 150, close: 150, count: 58, success: 600 };
 
 /** One enveloped tone: a fast attack and an exponential decay, optionally gliding in pitch. */
 function tone(freq: number, o: { dur: number; gain: number; to?: number; at?: number; type?: OscillatorType }) {
@@ -37,39 +41,67 @@ function tone(freq: number, o: { dur: number; gain: number; to?: number; at?: nu
   amp.gain.exponentialRampToValueAtTime(o.gain, t + 0.006);
   amp.gain.exponentialRampToValueAtTime(0.0001, t + o.dur);
   osc.connect(amp).connect(out);
+  osc.onended = () => amp.disconnect();
   osc.start(t);
   osc.stop(t + o.dur + 0.03);
+}
+
+let noise: AudioBuffer | null = null;
+
+/**
+ * A physical-sounding click: a few milliseconds of noise through a band-pass
+ * filter. A plain oscillator blip reads as a beep; this reads as a switch.
+ */
+function click(gain: number, ms = 8, band = 4000) {
+  if (!ctx || !out) return;
+  if (!noise) {
+    noise = ctx.createBuffer(1, Math.floor(ctx.sampleRate * 0.02), ctx.sampleRate);
+    const data = noise.getChannelData(0);
+    for (let i = 0; i < data.length; i++) data[i] = Math.random() * 2 - 1;
+  }
+  const src = ctx.createBufferSource();
+  const filter = ctx.createBiquadFilter();
+  const amp = ctx.createGain();
+  const t = ctx.currentTime;
+  src.buffer = noise;
+  filter.type = "bandpass";
+  filter.frequency.value = band;
+  filter.Q.value = 3;
+  amp.gain.setValueAtTime(gain, t);
+  amp.gain.exponentialRampToValueAtTime(0.001, t + ms / 1000);
+  src.connect(filter).connect(amp).connect(out);
+  src.onended = () => amp.disconnect();
+  src.start(t);
+  src.stop(t + ms / 1000 + 0.01);
 }
 
 const C5 = 523.25;
 const G5 = 783.99;
 
 const SOUNDS: Record<Name, (p: number) => void> = {
-  // Pointer arrives on a control: a very quiet, very short tick.
-  tick: () => tone(2100, { to: 1500, dur: 0.035, gain: 0.045 }),
-  // A press: a low soft thump with a faint click on top.
+  // A press: a crisp switch click with a soft low thud under it, about 70ms in all.
   tap: () => {
-    tone(190, { to: 70, dur: 0.09, gain: 0.08 });
-    tone(1400, { to: 900, dur: 0.02, gain: 0.04 });
+    click(0.3);
+    tone(150, { to: 64, dur: 0.07, gain: 0.07 });
   },
   // Command menu: a rising fifth to open, the same falling to close.
   open: () => {
-    tone(C5, { dur: 0.16, gain: 0.07 });
-    tone(G5, { dur: 0.24, gain: 0.07, at: 0.07 });
+    tone(C5, { dur: 0.14, gain: 0.07 });
+    tone(G5, { dur: 0.2, gain: 0.07, at: 0.06 });
   },
   close: () => {
-    tone(G5, { dur: 0.14, gain: 0.055 });
-    tone(C5, { dur: 0.22, gain: 0.055, at: 0.06 });
+    tone(G5, { dur: 0.12, gain: 0.055 });
+    tone(C5, { dur: 0.18, gain: 0.055, at: 0.05 });
   },
-  // The showcase stage changes project: one soft glass note.
-  swap: () => {
-    tone(660, { dur: 0.22, gain: 0.05 });
-    tone(990, { dur: 0.28, gain: 0.028, at: 0.02 });
+  // A figure counting up: soft ticks that climb in pitch with progress p (0 to 1).
+  count: (p) => click(0.12, 6, 2600 + p * 2600),
+  // Something finished (copied, count complete, sound switched on): a tone that
+  // steps up, the way a confirmation does, then rings briefly.
+  success: () => {
+    tone(660, { to: 990, dur: 0.06, gain: 0.07 });
+    tone(990, { dur: 0.34, gain: 0.06, at: 0.055 });
+    tone(1485, { dur: 0.3, gain: 0.02, at: 0.06 });
   },
-  // A figure counting up: ticks that climb in pitch with progress p (0 to 1).
-  count: (p) => tone(900 + p * 700, { dur: 0.03, gain: 0.032 }),
-  // Something finished (copied, count complete, sound switched on): a rising major chord.
-  success: () => [1046.5, 1318.5, 1568].forEach((f, i) => tone(f, { dur: 0.5, gain: 0.055, at: i * 0.07 })),
 };
 
 /** Builds the audio graph on first use. Must run inside a click or key press, or the browser keeps it silent. */
@@ -79,7 +111,7 @@ function wake() {
     if (!ctx) {
       ctx = new AudioContext();
       out = ctx.createGain();
-      out.gain.value = 1.5; // overall level: peaks land around a tenth of full scale
+      out.gain.value = 2; // overall level: peaks stay well under a quarter of full scale
       out.connect(ctx.destination);
       // A faint single echo, so the sounds have a little air instead of stopping dead.
       const echo = ctx.createDelay();
@@ -129,7 +161,7 @@ export const toggleSound = () => setSound(!enabled);
 
 const CONTROL = "a, button, summary, [role='option']";
 
-/** Mount once. Restores the saved choice and gives every link and button its hover tick and press sound. */
+/** Mount once. Restores the saved choice and gives every link and button its press sound. Hovering is silent. */
 export function SoundFx() {
   useEffect(() => {
     try {
@@ -137,24 +169,15 @@ export function SoundFx() {
     } catch {}
     if (enabled) window.dispatchEvent(new Event(CHANGE));
 
-    const fine = window.matchMedia("(hover: hover) and (pointer: fine)").matches;
-    let hovered: Element | null = null;
     const down = (e: Event) => {
       wake();
       if ((e.target as Element).closest?.(CONTROL)) play("tap");
     };
-    const over = (e: Event) => {
-      const el = (e.target as Element).closest?.(CONTROL) ?? null;
-      if (el && el !== hovered) play("tick");
-      hovered = el;
-    };
     window.addEventListener("pointerdown", down, true);
     window.addEventListener("keydown", wake, true);
-    if (fine) window.addEventListener("pointerover", over, { passive: true });
     return () => {
       window.removeEventListener("pointerdown", down, true);
       window.removeEventListener("keydown", wake, true);
-      window.removeEventListener("pointerover", over);
     };
   }, []);
 
