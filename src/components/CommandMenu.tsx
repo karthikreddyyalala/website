@@ -1,7 +1,8 @@
 "use client";
 
 import { useEffect, useMemo, useRef, useState } from "react";
-import { Copy, FileText, Github, Hash, Linkedin, Pause, Search, type LucideIcon } from "lucide-react";
+import { Copy, FileText, Github, Hash, Linkedin, Pause, Search, Volume2, type LucideIcon } from "lucide-react";
+import { play, toggleSound } from "./ui/Sound";
 import { profile } from "@/content/profile";
 import { projects } from "@/content/projects";
 
@@ -61,7 +62,10 @@ export function CommandMenu() {
         Icon: Copy,
         run: () =>
           navigator.clipboard?.writeText(profile.contact.email).then(
-            () => setCopied(true),
+            () => {
+              setCopied(true);
+              play("success");
+            },
             () => {}
           ),
       },
@@ -73,6 +77,7 @@ export function CommandMenu() {
         Icon: Pause,
         run: () => window.dispatchEvent(new Event("motion:toggle")),
       },
+      { group: "Actions", label: "Turn sound on or off", Icon: Volume2, run: toggleSound },
     ],
     []
   );
@@ -87,7 +92,9 @@ export function CommandMenu() {
       setQuery("");
       setActive(0);
       setCopied(false);
-      if (!dialog.current?.open) dialog.current?.showModal();
+      if (dialog.current?.open) return;
+      dialog.current?.showModal();
+      play("open");
     };
     const onKey = (e: KeyboardEvent) => {
       if ((e.metaKey || e.ctrlKey) && e.key.toLowerCase() === "k") {
@@ -131,6 +138,7 @@ export function CommandMenu() {
       ref={dialog}
       data-lenis-prevent
       aria-label="Command menu"
+      onClose={() => play("close")}
       onClick={(e) => e.target === e.currentTarget && dialog.current?.close()}
       className="command-menu m-auto mt-[14vh] w-[min(620px,calc(100vw-24px))] max-w-none bg-transparent p-0 text-[var(--text)]"
     >

@@ -5,6 +5,7 @@ import dynamic from "next/dynamic";
 import { Hand } from "lucide-react";
 import { profile } from "@/content/profile";
 import { CommandButton } from "./CommandMenu";
+import { SoundToggle } from "./ui/Sound";
 
 // MediaPipe only downloads once a visitor turns hands-free on.
 const HandScroll = dynamic(() => import("./HandScroll").then((m) => m.HandScroll), {
@@ -152,6 +153,9 @@ export function Nav() {
           ))}
           <li>
             <CommandButton className="mx-1 flex h-11 items-center gap-2 rounded-full border border-[var(--line-hi)] px-4 text-[var(--muted)] transition-colors duration-300 hover:text-[var(--text)]" />
+          </li>
+          <li>
+            <SoundToggle className="mr-1.5 flex h-11 w-11 items-center justify-center rounded-full border border-[var(--line-hi)] text-[var(--muted)] transition-colors duration-300 hover:text-[var(--text)] aria-pressed:border-[var(--accent)] aria-pressed:text-[var(--accent)]" />
           </li>
           {hasCamera && (
             <li className="flex items-center">

@@ -1,6 +1,7 @@
 import { Github, Linkedin, Mail, type LucideIcon } from "lucide-react";
 import { profile } from "@/content/profile";
 import { MotionToggle } from "./ui/Fx";
+import { SoundToggle } from "./ui/Sound";
 import { Meta } from "./ui/Section";
 
 const LINKS: { label: string; href: string; Icon?: LucideIcon }[] = [
@@ -67,6 +68,9 @@ export function Footer() {
             ))}
             <li>
               <MotionToggle className="icon-link text-[15px] font-bold text-[var(--text)] transition-colors duration-200 hover:text-[var(--accent)]" />
+            </li>
+            <li>
+              <SoundToggle label className="icon-link text-[15px] font-bold text-[var(--text)] transition-colors duration-200 hover:text-[var(--accent)]" />
             </li>
           </ul>
         </nav>

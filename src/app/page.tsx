@@ -8,6 +8,7 @@ import { Timeline } from "@/components/sections/Timeline";
 import { About } from "@/components/sections/About";
 import { Contact } from "@/components/sections/Contact";
 import { VideoDialog } from "@/components/ui/VideoDialog";
+import { SoundFx } from "@/components/ui/Sound";
 import { CommandMenu } from "@/components/CommandMenu";
 import { Footer } from "@/components/Footer";
 import { Aurora, GlassLight, Magnetic, ScrollFx, SmoothScroll } from "@/components/ui/Fx";
@@ -43,6 +44,7 @@ export default function Home() {
       <SmoothScroll />
       <ScrollFx />
       <Magnetic />
+      <SoundFx />
 
       <Nav />
 

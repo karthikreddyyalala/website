@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useRef } from "react";
+import { play } from "./Sound";
 
 const MULTIPLIERS: Record<string, number> = { K: 1_000, M: 1_000_000, B: 1_000_000_000 };
 
@@ -48,6 +49,8 @@ export function CountUp({ value, duration = 1800 }: { value: string; duration?: 
           const eased = 1 - Math.pow(1 - t, 4); // fast start, long settle on the last digits
           const scale = 10 ** p.decimals;
           el.textContent = format(p, t === 1 ? p.target : Math.floor(eased * p.target * scale) / scale);
+          // With sound on: ticks that climb as the figure does, then a chord when it lands.
+          play(t < 1 ? "count" : "success", t);
           if (t < 1) raf = requestAnimationFrame(tick);
         };
         raf = requestAnimationFrame(tick);

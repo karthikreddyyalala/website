@@ -3,6 +3,7 @@
 import { useEffect, useRef, useState, type ReactNode } from "react";
 import Lenis from "lenis";
 import { Check, Copy } from "lucide-react";
+import { play } from "./Sound";
 
 const reduced = () => window.matchMedia("(prefers-reduced-motion: reduce)").matches;
 
@@ -308,7 +309,15 @@ export function CopyButton({ text, label, className = "" }: { text: string; labe
   return (
     <button
       type="button"
-      onClick={() => navigator.clipboard?.writeText(text).then(() => setCopied(true), () => {})}
+      onClick={() =>
+        navigator.clipboard?.writeText(text).then(
+          () => {
+            setCopied(true);
+            play("success");
+          },
+          () => {}
+        )
+      }
       className={className}
     >
       {copied ? <Check aria-hidden className="h-4 w-4" /> : <Copy aria-hidden className="h-4 w-4" />}
@@ -334,7 +343,13 @@ export function ShowcaseStage({ children, className }: { children: ReactNode; cl
     const root = ref.current?.closest<HTMLElement>("[data-showcase]");
     if (!root) return;
     const groups = ["[data-project]", "[data-slide]", "[data-tick]"].map((q) => [...root.querySelectorAll(q)]);
-    const activate = (i: number) => groups.forEach((g) => g.forEach((el, k) => el.toggleAttribute("data-active", k === i)));
+    let current = 0;
+    const activate = (i: number) => {
+      if (i === current) return;
+      current = i;
+      groups.forEach((g) => g.forEach((el, k) => el.toggleAttribute("data-active", k === i)));
+      play("swap");
+    };
 
     root.setAttribute("data-live", ""); // from here on, the projects that are not active dim
     // A zero-height line across the middle of the screen: exactly one project crosses it at a time.
