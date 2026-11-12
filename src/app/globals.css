@@ -358,6 +358,7 @@ dt,
     font-size: 15px;
     transition:
       transform 0.3s cubic-bezier(0.16, 1, 0.3, 1),
+      translate 0.5s cubic-bezier(0.16, 1, 0.3, 1),
       background-color 0.3s ease-out;
   }
 
@@ -528,7 +529,9 @@ summary,
    A curtain carrying the KRY mark covers the first paint, then lifts. The
    hero enters behind it in sequence. --intro is the moment the lift starts;
    every hero entrance is timed from it. All of it is CSS, so it runs without
-   JavaScript, and none of it exists under reduced motion. The curtain's
+   JavaScript, and none of it exists under reduced motion. Every entrance
+   fills backwards only: once it has played, no animation is left on the
+   element, so glass inside it (the nav, the buttons) can blur the page again. The curtain's
    resting state is off screen, so a browser that cannot animate never shows it. */
 :root {
   --intro: 0.9s;
@@ -576,47 +579,47 @@ summary,
   }
 
   .intro-mark > span > span {
-    animation: line-rise 0.7s cubic-bezier(0.16, 1, 0.3, 1) both;
+    animation: line-rise 0.7s cubic-bezier(0.16, 1, 0.3, 1) backwards;
     animation-delay: calc(60ms + var(--k, 0) * 75ms);
   }
 
   .intro-rule {
-    animation: grow-x 0.75s cubic-bezier(0.16, 1, 0.3, 1) 0.12s both;
+    animation: grow-x 0.75s cubic-bezier(0.16, 1, 0.3, 1) 0.12s backwards;
   }
 
   /* The nav drops in from above. */
   .intro-nav {
-    animation: intro-drop 1s cubic-bezier(0.16, 1, 0.3, 1) calc(var(--intro) + 200ms) both;
+    animation: intro-drop 1s cubic-bezier(0.16, 1, 0.3, 1) calc(var(--intro) + 200ms) backwards;
   }
 
   /* The name rises line by line out of its own mask. */
   .line-rise > span {
-    animation: line-rise 1.15s cubic-bezier(0.16, 1, 0.3, 1) both;
+    animation: line-rise 1.15s cubic-bezier(0.16, 1, 0.3, 1) backwards;
     animation-delay: calc(var(--intro) + 120ms + var(--rise-delay, 0ms));
   }
 
   .intro-up {
-    animation: intro-up 1s cubic-bezier(0.16, 1, 0.3, 1) both;
+    animation: intro-up 1s cubic-bezier(0.16, 1, 0.3, 1) backwards;
     animation-delay: calc(var(--intro) + var(--d, 0ms));
   }
 
   /* The portrait slides in from the right while the photo wipes open and settles. */
   .intro-portrait {
-    animation: intro-slide 1.2s cubic-bezier(0.16, 1, 0.3, 1) calc(var(--intro) + 260ms) both;
+    animation: intro-slide 1.2s cubic-bezier(0.16, 1, 0.3, 1) calc(var(--intro) + 260ms) backwards;
   }
 
   .intro-wipe {
-    animation: intro-wipe 1.2s cubic-bezier(0.65, 0, 0.35, 1) calc(var(--intro) + 320ms) both;
+    animation: intro-wipe 1.2s cubic-bezier(0.65, 0, 0.35, 1) calc(var(--intro) + 320ms) backwards;
   }
 
   .intro-wipe img {
-    animation: intro-settle 1.8s cubic-bezier(0.16, 1, 0.3, 1) calc(var(--intro) + 320ms) both;
+    animation: intro-settle 1.8s cubic-bezier(0.16, 1, 0.3, 1) calc(var(--intro) + 320ms) backwards;
   }
 
   /* Each chip slides in from its own side, then floats very slightly. */
   .intro-chip {
     animation:
-      intro-chip 1s cubic-bezier(0.16, 1, 0.3, 1) both,
+      intro-chip 1s cubic-bezier(0.16, 1, 0.3, 1) backwards,
       chip-float var(--float, 7s) ease-in-out infinite;
     animation-delay: calc(var(--intro) + var(--d, 0ms)), calc(var(--intro) + var(--d, 0ms) + 1s);
   }
@@ -634,8 +637,7 @@ summary,
 
 @keyframes intro-drop {
   from {
-    opacity: 0;
-    transform: translate3d(0, -120%, 0);
+    transform: translate3d(0, -130%, 0);
   }
 }
 
@@ -702,11 +704,78 @@ summary,
   transform: translate3d(0, calc((var(--p, 0.5) - 0.5) * -90px), 0);
 }
 
-/* The hero settles back and dims as the page scrolls over it. */
+/* ---------- Hero scroll scene ----------
+   --x runs 0 to 1 over the first 80% of a screen of scrolling. The pieces of
+   the hero leave separately: the name lines slide apart, the copy lifts, the
+   portrait hangs back and grows slightly, and each chip drifts out to its
+   own side. Only translate, scale and opacity move. */
 [data-scroll="hero"] {
-  transform: translate3d(0, calc(var(--x, 0) * 90px), 0) scale(calc(1 - var(--x, 0) * 0.07));
-  opacity: calc(1 - var(--x, 0) * 0.85);
-  transform-origin: 50% 30%;
+  opacity: calc(1.35 - var(--x, 0) * 1.6); /* holds at full, then fades over the second half */
+}
+
+.hero-title .line-rise {
+  translate: calc(var(--x, 0) * var(--slide, 0vw)) 0;
+}
+
+.hero-title .line-rise:nth-child(1) {
+  --slide: -9vw;
+}
+
+.hero-title .line-rise:nth-child(2) {
+  --slide: 12vw;
+}
+
+.hero-title .line-rise:nth-child(3) {
+  --slide: -5vw;
+}
+
+[data-scroll="hero"] .intro-up {
+  translate: 0 calc(var(--x, 0) * -52px);
+}
+
+.intro-portrait {
+  --sy: calc(var(--x, 0) * 76px);
+  scale: calc(1 + var(--x, 0) * 0.05);
+}
+
+.intro-chip {
+  --sx: calc(var(--x, 0) * var(--from, 0px) * 1.5);
+  --sy: calc(var(--x, 0) * var(--lift, -30px) * 1.4);
+}
+
+/* A band of light across the glass portrait. */
+.sheen {
+  position: absolute;
+  inset: 10px;
+  overflow: hidden;
+  border-radius: 18px;
+  pointer-events: none;
+}
+
+.sheen::before {
+  content: "";
+  position: absolute;
+  inset: -20% auto -20% 0;
+  width: 42%;
+  background: linear-gradient(100deg, transparent, color-mix(in srgb, var(--ice) 20%, transparent), transparent);
+  transform: translate3d(-150%, 0, 0) skewX(-14deg);
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  .sheen::before {
+    animation: sheen 1.5s cubic-bezier(0.4, 0, 0.2, 1) calc(var(--intro) + 1.9s) backwards;
+  }
+
+  .intro-portrait:hover .sheen::before {
+    transform: translate3d(390%, 0, 0) skewX(-14deg);
+    transition: transform 1.25s cubic-bezier(0.4, 0, 0.2, 1);
+  }
+}
+
+@keyframes sheen {
+  to {
+    transform: translate3d(390%, 0, 0) skewX(-14deg);
+  }
 }
 
 /* Slides sideways with the scroll. */
@@ -721,6 +790,8 @@ html.lenis {
 
 /* Depth layers: elements with data-depth drift with the pointer (see Parallax). */
 [data-depth] {
+  /* Pointer drift (--tx, --ty) plus the hero scroll scene's offset (--sx, --sy). */
+  translate: calc(var(--tx, 0px) + var(--sx, 0px)) calc(var(--ty, 0px) + var(--sy, 0px));
   will-change: translate;
   transition: translate 0.35s cubic-bezier(0.16, 1, 0.3, 1);
 }

@@ -189,7 +189,9 @@ export function ScrollFx() {
         const b = el.getBoundingClientRect();
         el.style.setProperty("--e", clamp01((vh - b.top) / (vh * 0.42)).toFixed(3));
         el.style.setProperty("--p", clamp01((vh - b.top) / (vh + b.height)).toFixed(3));
-        el.style.setProperty("--x", clamp01((vh - b.bottom) / (vh * 0.85)).toFixed(3));
+        // The hero's scene runs on distance scrolled, so it is exactly at rest at the top of the page.
+        const exit = el.dataset.scroll === "hero" ? window.scrollY / (vh * 0.8) : (vh - b.bottom) / (vh * 0.85);
+        el.style.setProperty("--x", clamp01(exit).toFixed(3));
       });
     };
     const queue = () => {
@@ -234,9 +236,17 @@ export function Parallax({ children, className = "" }: { children: ReactNode; cl
       const b = el.getBoundingClientRect();
       const dx = (e.clientX - b.left) / b.width - 0.5;
       const dy = (e.clientY - b.top) / b.height - 0.5;
-      layers.forEach((l) => (l.style.translate = `${-dx * +l.dataset.depth!}px ${-dy * +l.dataset.depth!}px`));
+      // Variables, not translate itself: CSS adds the scroll scene's offset to them (see [data-depth]).
+      layers.forEach((l) => {
+        l.style.setProperty("--tx", `${-dx * +l.dataset.depth!}px`);
+        l.style.setProperty("--ty", `${-dy * +l.dataset.depth!}px`);
+      });
     };
-    const leave = () => layers.forEach((l) => (l.style.translate = "0 0"));
+    const leave = () =>
+      layers.forEach((l) => {
+        l.style.removeProperty("--tx");
+        l.style.removeProperty("--ty");
+      });
     el.addEventListener("pointermove", move);
     el.addEventListener("pointerleave", leave);
     return () => {
@@ -344,4 +354,31 @@ export function ShowcaseStage({ children, className }: { children: ReactNode; cl
       {children}
     </div>
   );
+}
+
+/* ------------------------------------------------------------------ */
+/* Magnetic buttons                                                   */
+/* ------------------------------------------------------------------ */
+
+/** Anything marked data-magnetic leans toward the pointer when it comes close, and springs back when it leaves. */
+export function Magnetic() {
+  useEffect(() => {
+    if (reduced() || !window.matchMedia("(hover: hover) and (pointer: fine)").matches) return;
+    const els = [...document.querySelectorAll<HTMLElement>("[data-magnetic]")];
+    const move = (e: PointerEvent) =>
+      els.forEach((el) => {
+        const b = el.getBoundingClientRect();
+        const dx = e.clientX - (b.left + b.width / 2);
+        const dy = e.clientY - (b.top + b.height / 2);
+        const near = Math.abs(dx) < b.width / 2 + 60 && Math.abs(dy) < b.height / 2 + 60;
+        el.style.translate = near ? `${(dx * 0.16).toFixed(1)}px ${(dy * 0.26).toFixed(1)}px` : "";
+      });
+    window.addEventListener("pointermove", move, { passive: true });
+    return () => {
+      window.removeEventListener("pointermove", move);
+      els.forEach((el) => (el.style.translate = ""));
+    };
+  }, []);
+
+  return null;
 }

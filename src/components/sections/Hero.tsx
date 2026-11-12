@@ -22,6 +22,10 @@ const PROOF: { Icon: LucideIcon; place: string; depth: number; from: number }[] 
  * Everything here enters in sequence as the opening curtain lifts (see the
  * "Opening" block in globals.css): the name rises line by line, the portrait
  * slides in and wipes open, and the chips slide in from their own side.
+ *
+ * Scrolling away plays a second scene ("Hero scroll scene" in globals.css):
+ * the name lines slide apart, the copy lifts, the portrait hangs back and the
+ * chips drift outward, each at its own depth.
  */
 export function Hero() {
   return (
@@ -58,10 +62,10 @@ export function Hero() {
 
           <div className="intro-up" style={{ "--d": "500ms" } as CSSProperties}>
             <div className="mt-8 flex flex-wrap items-center gap-3">
-              <a href="#work-avis" className="btn btn-signal w-full justify-center sm:w-auto">
+              <a href="#work-avis" data-magnetic className="btn btn-signal w-full justify-center sm:w-auto">
                 See the production work
               </a>
-              <a href={profile.contact.resume} target="_blank" rel="noopener noreferrer" className="btn btn-glass w-full justify-center sm:w-auto">
+              <a href={profile.contact.resume} target="_blank" rel="noopener noreferrer" data-magnetic className="btn btn-glass w-full justify-center sm:w-auto">
                 <FileText className="h-4 w-4" strokeWidth={2.25} />
                 Résumé
               </a>
@@ -88,6 +92,8 @@ export function Hero() {
               className="aspect-[4/5] w-full object-cover object-top"
             />
             </div>
+            {/* A band of light that crosses the glass once the portrait has arrived, and again on hover. */}
+            <span aria-hidden className="sheen" />
           </figure>
 
           {profile.proof.map((p, i) => {
@@ -97,7 +103,7 @@ export function Hero() {
                 key={p.label}
                 data-depth={depth}
                 className={`intro-chip card card-smoke group flex items-center gap-3 !rounded-[20px] p-3 pr-4 sm:absolute sm:max-w-[215px] ${place}`}
-                style={{ "--from": `${from * 64}px`, "--d": `${650 + i * 120}ms`, "--float": `${6.5 + i * 0.8}s` } as CSSProperties}
+                style={{ "--from": `${from * 64}px`, "--d": `${650 + i * 120}ms`, "--float": `${6.5 + i * 0.8}s`, "--lift": `${-depth}px` } as CSSProperties}
               >
                 <span aria-hidden className="glass">
                   <Icon />
