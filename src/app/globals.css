@@ -96,8 +96,9 @@ body::after {
   inset: 0;
   z-index: 70;
   pointer-events: none;
-  opacity: 0.055;
-  mix-blend-mode: overlay;
+  /* Plain blending: mix-blend-mode on a full-screen layer makes the browser
+     re-blend the whole page every frame anything moves. */
+  opacity: 0.03;
   background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='220' height='220'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='2' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
 }
 
@@ -608,7 +609,21 @@ summary,
     animation: intro-slide 1.2s cubic-bezier(0.16, 1, 0.3, 1) calc(var(--intro) + 260ms) backwards;
   }
 
+  /* The wipe is a cover that shrinks away toward the bottom, revealing the
+     photo from the top down. Done with transform rather than clip-path, so
+     the GPU runs it instead of the main thread. */
   .intro-wipe {
+    position: relative;
+  }
+
+  .intro-wipe::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background: var(--bg-deep);
+    transform: scaleY(0);
+    transform-origin: 50% 100%;
+    pointer-events: none;
     animation: intro-wipe 1.2s cubic-bezier(0.65, 0, 0.35, 1) calc(var(--intro) + 320ms) backwards;
   }
 
@@ -616,16 +631,10 @@ summary,
     animation: intro-settle 1.8s cubic-bezier(0.16, 1, 0.3, 1) calc(var(--intro) + 320ms) backwards;
   }
 
-  /* Each chip slides in from its own side, then floats very slightly. */
+  /* Each chip slides in from its own side. (No endless float: a moving
+     blurred-glass panel makes the browser redo the blur behind it every frame.) */
   .intro-chip {
-    animation:
-      intro-chip 1s cubic-bezier(0.16, 1, 0.3, 1) backwards,
-      chip-float var(--float, 7s) ease-in-out infinite;
-    animation-delay: calc(var(--intro) + var(--d, 0ms)), calc(var(--intro) + var(--d, 0ms) + 1s);
-  }
-
-  html[data-motion="off"] .intro-chip {
-    animation-play-state: paused;
+    animation: intro-chip 1s cubic-bezier(0.16, 1, 0.3, 1) calc(var(--intro) + var(--d, 0ms)) backwards;
   }
 }
 
@@ -657,10 +666,7 @@ summary,
 
 @keyframes intro-wipe {
   from {
-    clip-path: inset(0 0 100% 0);
-  }
-  to {
-    clip-path: inset(0);
+    transform: none;
   }
 }
 
@@ -674,12 +680,6 @@ summary,
   from {
     opacity: 0;
     transform: translate3d(var(--from, 0), 0, 0) scale(0.94);
-  }
-}
-
-@keyframes chip-float {
-  50% {
-    transform: translate3d(0, -7px, 0);
   }
 }
 

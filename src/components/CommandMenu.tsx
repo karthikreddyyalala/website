@@ -27,7 +27,7 @@ export function CommandButton({ className = "" }: { className?: string }) {
       className={className}
     >
       <Search className="h-4 w-4" />
-      <kbd className="mono hidden text-[12.5px] text-[var(--faint)] lg:inline">{keys}</kbd>
+      <kbd aria-hidden className="mono hidden text-[12.5px] text-[var(--faint)] lg:inline">{keys}</kbd>
     </button>
   );
 }

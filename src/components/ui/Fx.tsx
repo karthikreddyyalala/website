@@ -41,34 +41,20 @@ export function Aurora() {
 
   useEffect(() => {
     const canvas = ref.current!;
-    const gl = canvas.getContext("webgl", { antialias: false });
-    if (!gl) return;
-    const prog = gl.createProgram()!;
-    for (const [type, src] of [
-      [gl.VERTEX_SHADER, "attribute vec2 p;void main(){gl_Position=vec4(p,0.,1.);}"],
-      [gl.FRAGMENT_SHADER, AURORA],
-    ] as const) {
-      const sh = gl.createShader(type)!;
-      gl.shaderSource(sh, src);
-      gl.compileShader(sh);
-      gl.attachShader(prog, sh);
-    }
-    gl.linkProgram(prog);
-    if (!gl.getProgramParameter(prog, gl.LINK_STATUS)) return;
-    gl.useProgram(prog);
-    gl.bindBuffer(gl.ARRAY_BUFFER, gl.createBuffer());
-    gl.bufferData(gl.ARRAY_BUFFER, new Float32Array([-1, -1, 3, -1, -1, 3]), gl.STATIC_DRAW);
-    gl.enableVertexAttribArray(0);
-    gl.vertexAttribPointer(0, 2, gl.FLOAT, false, 0, 0);
-    const uR = gl.getUniformLocation(prog, "r");
-    const uT = gl.getUniformLocation(prog, "t");
-    const uS = gl.getUniformLocation(prog, "s");
-    ["base", "a", "b", "c"].forEach((key, i) =>
-      gl.uniform3f(gl.getUniformLocation(prog, `c${i}`), ...tokenColor(`--aurora-${key}`))
-    );
-
+    let gl: WebGLRenderingContext | null = null;
     let raf = 0;
+    let lastFrame = 0;
+    let poll = 0;
+    let cancelled = false;
+    const still = reduced();
+
+    // Uniform locations, filled in once the shader is ready.
+    let uR: WebGLUniformLocation | null = null;
+    let uT: WebGLUniformLocation | null = null;
+    let uS: WebGLUniformLocation | null = null;
+
     const draw = (ms: number) => {
+      if (!gl) return;
       gl.viewport(0, 0, canvas.width, canvas.height);
       gl.uniform2f(uR, canvas.width, canvas.height);
       gl.uniform1f(uT, ms / 1000 + 20);
@@ -76,31 +62,97 @@ export function Aurora() {
       gl.uniform1f(uS, window.scrollY * 0.00035);
       gl.drawArrays(gl.TRIANGLES, 0, 3);
     };
+
+    // The light moves very slowly, so 24 frames a second looks the same as 60.
+    // Every frame drawn makes the browser redo the glass blurs above it, so
+    // the lower rate saves real work on every device.
+    const FRAME = 1000 / 24;
     const loop = (ms: number) => {
       // The "Pause motion" control in the footer sets data-motion="off".
-      if (document.documentElement.dataset.motion !== "off") draw(ms);
+      if (ms - lastFrame >= FRAME && document.documentElement.dataset.motion !== "off") {
+        lastFrame = ms;
+        draw(ms);
+      }
       raf = requestAnimationFrame(loop);
     };
+
     const size = () => {
       // A third of screen resolution: the image is all soft gradients.
       canvas.width = Math.ceil(window.innerWidth / 3);
       canvas.height = Math.ceil(window.innerHeight / 3);
       draw(performance.now());
     };
-    size();
-    window.addEventListener("resize", size);
-    const still = reduced();
-    if (still) window.addEventListener("scroll", size, { passive: true });
-    else raf = requestAnimationFrame(loop);
+
+    // Starting WebGL (a context and a shader compile) is the heaviest single
+    // piece of work on the page, so it waits until the page has loaded and the
+    // browser is idle. Until then the plain dark background shows, and the
+    // light fades in once it is ready.
+    const init = () => {
+      if (cancelled) return;
+      gl = canvas.getContext("webgl", { antialias: false });
+      if (!gl) return;
+      const g = gl;
+      const prog = g.createProgram()!;
+      for (const [type, src] of [
+        [g.VERTEX_SHADER, "attribute vec2 p;void main(){gl_Position=vec4(p,0.,1.);}"],
+        [g.FRAGMENT_SHADER, AURORA],
+      ] as const) {
+        const sh = g.createShader(type)!;
+        g.shaderSource(sh, src);
+        g.compileShader(sh);
+        g.attachShader(prog, sh);
+      }
+      g.linkProgram(prog);
+
+      // Where supported, the compile runs in the background: check back until it is done.
+      const parallel = g.getExtension("KHR_parallel_shader_compile");
+      const ready = () => {
+        if (cancelled) return;
+        if (parallel && !g.getProgramParameter(prog, parallel.COMPLETION_STATUS_KHR)) {
+          poll = window.setTimeout(ready, 60);
+          return;
+        }
+        if (!g.getProgramParameter(prog, g.LINK_STATUS)) return;
+        g.useProgram(prog);
+        g.bindBuffer(g.ARRAY_BUFFER, g.createBuffer());
+        g.bufferData(g.ARRAY_BUFFER, new Float32Array([-1, -1, 3, -1, -1, 3]), g.STATIC_DRAW);
+        g.enableVertexAttribArray(0);
+        g.vertexAttribPointer(0, 2, g.FLOAT, false, 0, 0);
+        uR = g.getUniformLocation(prog, "r");
+        uT = g.getUniformLocation(prog, "t");
+        uS = g.getUniformLocation(prog, "s");
+        ["base", "a", "b", "c"].forEach((key, i) =>
+          g.uniform3f(g.getUniformLocation(prog, `c${i}`), ...tokenColor(`--aurora-${key}`))
+        );
+        size();
+        canvas.style.opacity = "1";
+        window.addEventListener("resize", size);
+        if (still) window.addEventListener("scroll", size, { passive: true });
+        else raf = requestAnimationFrame(loop);
+      };
+      ready();
+    };
+
+    const idle = window.requestIdleCallback ?? ((cb: () => void) => window.setTimeout(cb, 1));
+    const wait = window.setTimeout(() => idle(init, { timeout: 2000 }), 1200);
 
     return () => {
+      cancelled = true;
+      window.clearTimeout(wait);
+      window.clearTimeout(poll);
       cancelAnimationFrame(raf);
       window.removeEventListener("resize", size);
       window.removeEventListener("scroll", size);
     };
   }, []);
 
-  return <canvas ref={ref} aria-hidden className="pointer-events-none fixed inset-0 -z-10 h-full w-full" />;
+  return (
+    <canvas
+      ref={ref}
+      aria-hidden
+      className="pointer-events-none fixed inset-0 -z-10 h-full w-full opacity-0 transition-opacity duration-[1600ms] ease-out"
+    />
+  );
 }
 
 /* ------------------------------------------------------------------ */
@@ -157,8 +209,34 @@ export function SmoothScroll() {
   useEffect(() => {
     if (reduced()) return;
     // Anchor jumps respect the scroll-padding-top set on <html>, which clears the nav bar.
-    const lenis = new Lenis({ autoRaf: true, anchors: true, lerp: 0.11 });
-    return () => lenis.destroy();
+    const lenis = new Lenis({ anchors: true, lerp: 0.11 });
+
+    // Lenis only needs a frame loop while it is moving the page. Its own
+    // autoRaf runs one forever, which keeps the browser rendering every frame
+    // even when the page is still. This loop starts on input that can scroll
+    // (wheel, a click on an anchor, a key) and stops about half a second after
+    // the page comes to rest.
+    let raf = 0;
+    let idle = 0;
+    const tick = (time: number) => {
+      lenis.raf(time);
+      idle = lenis.isScrolling ? 0 : idle + 1;
+      raf = idle > 30 ? 0 : requestAnimationFrame(tick);
+    };
+    const wake = () => {
+      idle = 0;
+      if (raf) return;
+      lenis.time = performance.now(); // so the first step is not one long jump
+      raf = requestAnimationFrame(tick);
+    };
+    const inputs = ["wheel", "pointerdown", "keydown", "touchstart"] as const;
+    inputs.forEach((e) => window.addEventListener(e, wake, { passive: true, capture: true }));
+
+    return () => {
+      inputs.forEach((e) => window.removeEventListener(e, wake, { capture: true }));
+      cancelAnimationFrame(raf);
+      lenis.destroy();
+    };
   }, []);
 
   return null;

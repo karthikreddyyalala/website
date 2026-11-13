@@ -103,7 +103,7 @@ export function Hero() {
                 key={p.label}
                 data-depth={depth}
                 className={`intro-chip card card-smoke group flex items-center gap-3 !rounded-[20px] p-3 pr-4 sm:absolute sm:max-w-[215px] ${place}`}
-                style={{ "--from": `${from * 64}px`, "--d": `${650 + i * 120}ms`, "--float": `${6.5 + i * 0.8}s`, "--lift": `${-depth}px` } as CSSProperties}
+                style={{ "--from": `${from * 64}px`, "--d": `${650 + i * 120}ms`, "--lift": `${-depth}px` } as CSSProperties}
               >
                 <span aria-hidden className="glass">
                   <Icon />
