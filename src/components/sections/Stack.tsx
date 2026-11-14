@@ -1,53 +1,44 @@
-import { Section } from "../ui/Section";
+import { Sheet } from "../ui/Section";
 import { Reveal } from "../ui/Reveal";
-import { stack } from "@/content/stack";
-import { Braces, BrainCircuit, Cloud, Database, Globe, Workflow, type LucideIcon } from "lucide-react";
 import { TechTag } from "../ui/TechTag";
+import { stack } from "@/content/stack";
 
-const ICONS: Record<string, LucideIcon> = {
-  engineering: Workflow,
-  ai: BrainCircuit,
-  languages: Braces,
-  web: Globe,
-  cloud: Cloud,
-  data: Database,
-};
+// Rows of two tiles with unequal widths, so no row is a set of equal cards.
+const SPAN = ["lg:col-span-5", "lg:col-span-7", "lg:col-span-5", "lg:col-span-7", "lg:col-span-7", "lg:col-span-5"];
 
+/**
+ * Sheet 04. Six groups as a bento of matte tiles. Each tool carries its real
+ * mark, in ink until its tile is hovered or holds focus, when the marks take
+ * their brand colours. Layout and the edge light are adapted from the
+ * Interactive Tech Stack Bento Grid on 21st.dev (themeocean); its sample
+ * charts and terminal are dropped. No proficiency bars.
+ */
 export function Stack() {
   return (
-    <Section
+    <Sheet
       id="stack"
+      no="04"
+      name="Stack"
       title="What I actually use."
       lede="Grouped by what it's for. No proficiency bars, because a number I assign to my own skill isn't evidence of anything."
     >
-      <div className="grid gap-5 md:grid-cols-2">
+      <div className="mt-12 grid gap-5 lg:grid-cols-12">
         {stack.map((group, i) => (
-          <Reveal key={group.id} delay={Math.min(i, 5) * 50}>
-            <div id={`stack-${group.id}`} data-scroll="rise" className="card group h-full p-6 md:p-7">
-              <div className="flex items-center gap-4">
-                {ICONS[group.id] &&
-                  (() => {
-                    const Icon = ICONS[group.id];
-                    return (
-                      <span aria-hidden className="glass">
-                        <Icon />
-                      </span>
-                    );
-                  })()}
-                <h3 className="h-section text-[19px] text-[var(--text)]">
-                  {group.label}
-                </h3>
+          <Reveal key={group.id} delay={(i % 2) * 70} className={SPAN[i]}>
+            <div id={`stack-${group.id}`} className="panel tile glow-edge h-full p-5 md:p-6">
+              <div className="flex flex-wrap items-baseline justify-between gap-x-4 gap-y-1 border-b border-[var(--rule)] pb-4">
+                <h3 className="title">{group.label}</h3>
+                {group.note && <p className="note">{group.note}</p>}
               </div>
-              {group.note && <p className="mt-3 text-[14.5px] text-[var(--faint)]">{group.note}</p>}
-              <ul className="mt-4 flex flex-wrap gap-2">
+              <ul className="mt-5 flex flex-wrap gap-2">
                 {group.items.map((item) => (
-                  <TechTag key={item} name={item} className="text-[14.5px] !text-[var(--text)]" />
+                  <TechTag key={item} name={item} icon className="!text-[13.5px] !text-[var(--ink)]" />
                 ))}
               </ul>
             </div>
           </Reveal>
         ))}
       </div>
-    </Section>
+    </Sheet>
   );
 }
