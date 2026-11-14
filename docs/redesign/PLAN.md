@@ -493,3 +493,58 @@ First draft problems, and the revision already applied above:
 8. **Still open after revision:** Archivo is less unusual than Cabinet Grotesk.
    It is here because of D2. The width axis at 118 and weight 800 is what keeps
    it from reading as a default.
+
+---
+
+## 13. As built: where the build differs from the plan above
+
+Where this section and an earlier one disagree, this section is what shipped.
+Each change was made for a measured reason during the build.
+
+1. **No Motion library.** Sections 5 to 7 planned to load Motion lazily for
+   layout animation. Opening and closing a disclosure is animated with a small
+   FLIP helper instead (`flipAfter` in `src/components/ui/Fx.tsx`), so no
+   animation library is loaded at all. `framer-motion` is still in
+   `package.json` from before and is not imported anywhere.
+2. **One client effect for the page.** Reveals, disclosure animation, label
+   scrambles, scroll-tied progress and the pointer edge light are run by a
+   single `PageFx` component with one observer and delegated listeners. The
+   sections themselves are plain server markup (`.reveal`, `<details data-flip>`,
+   `[data-scramble]`, `[data-tied]`). This is what brought blocking time down.
+3. **Hero.** The H1 is one text block (three lines joined by `<br>`), and it is
+   visible at first paint; the load sequence is a cover that lifts off it, so the
+   name is the LCP element and is never delayed. The claim paragraph is split at
+   sentence ends into blocks; the full string is intact in the DOM. The name is
+   larger on phones than the wireframe shows. A size-matched fallback font keeps
+   the name the same size before and after the web font arrives.
+4. **Avis.** Each initiative row shows its number and title when closed, not a
+   one-line summary. Initiative 01 is open on load (D4). The three figures are
+   server-rendered with their final values and count up only when scripts run.
+5. **Scroll-tied text never drops below AA contrast.** Pipeline step text
+   starts at 0.86 opacity and the About read-along at 0.65, rather than fading in
+   from near zero, so text that has not been "reached" yet is still readable.
+6. **Brand marks in Stack** come from one static SVG sprite
+   (`/stack-icons.svg`), referenced with `<use>`, instead of inline SVG per tag.
+7. **Full strings for screen readers** are kept as visually hidden text next
+   to `aria-hidden` visual fragments, not as `aria-label` on generic elements.
+8. **Link preview image** shows the name, the role line, the availability line
+   and the KRY. mark only. No location, no figures.
+9. **Command menu** entries and actions are unchanged from the old site. Its
+   list is rendered the first time the menu opens. There is no theme entry (D9).
+10. **Theme switch** uses the View Transitions API where it exists (a circular
+    wipe of the page snapshot) and changes instantly elsewhere and under reduced
+    motion.
+11. **Not used after all:** Lenis smooth scrolling, the pinned showcase,
+    magnetic buttons, the hero ticker and chips, Text Rotate (D6, D7, D10). The
+    `lenis` package was removed.
+12. **`content-visibility: auto` was tried on sections and removed.** It made
+    jumps to late sections land short, because sections that had not rendered yet
+    used placeholder heights.
+13. **Deep Research card** uses a drawn diagram poster, not
+    `deep-research-team.webp` (D3). Cards without links have no links row.
+14. **21st.dev retrievals used: 2 of 2** (Tubelight Navbar, id 1432, and a
+    stack bento, id 43096), both rebuilt and restyled. Everything else came from
+    open-source originals (Magic UI, MIT) or was written for this site.
+15. **Hands-free control** could not be exercised end to end in the build
+    sandbox, which blocks the MediaPipe download; its code is unchanged apart
+    from colours.
