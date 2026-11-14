@@ -79,10 +79,10 @@ export function VideoPreview(video: Video) {
   };
 
   return (
-    <div onPointerEnter={start} onPointerLeave={stop} onClickCapture={stop}>
+    <div onPointerEnter={start} onPointerLeave={stop} onFocus={start} onBlur={stop} onClickCapture={stop}>
       <VideoTrigger
         {...video}
-        className="group relative block aspect-video w-full overflow-hidden rounded-[12px] border border-[var(--line)] bg-[var(--surface)] text-left transition-colors duration-300 hover:border-[var(--line-hi)]"
+        className="group relative block aspect-video w-full overflow-hidden rounded-[3px] border border-[var(--rule)] bg-[var(--sheet)] text-left"
       >
         <Image
           src={video.poster}

@@ -10,7 +10,7 @@ import { VideoDialog } from "@/components/ui/VideoDialog";
 import { SoundFx } from "@/components/ui/Sound";
 import { CommandMenu } from "@/components/CommandMenu";
 import { Footer } from "@/components/Footer";
-import { ScrollTied } from "@/components/ui/Fx";
+import { EdgeLight, ScrollTied } from "@/components/ui/Fx";
 
 export default function Home() {
   return (
@@ -20,6 +20,7 @@ export default function Home() {
       </a>
 
       <ScrollTied />
+      <EdgeLight />
       <SoundFx />
 
       <Nav />

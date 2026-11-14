@@ -82,6 +82,42 @@ export function ScrollTied() {
 }
 
 /* ------------------------------------------------------------------ */
+/* Edge light                                                         */
+/* ------------------------------------------------------------------ */
+
+/**
+ * Tells the panel under the pointer where the pointer is, so its edge light
+ * (.glow-edge in globals.css) can follow. One listener for the page, at most
+ * one write a frame, mouse only.
+ */
+export function EdgeLight() {
+  useEffect(() => {
+    if (!window.matchMedia("(hover: hover) and (pointer: fine)").matches) return;
+    let raf = 0;
+    let last: PointerEvent | null = null;
+    const paint = () => {
+      raf = 0;
+      const panel = (last?.target as Element | null)?.closest?.<HTMLElement>(".glow-edge");
+      if (!panel || !last) return;
+      const box = panel.getBoundingClientRect();
+      panel.style.setProperty("--mx", `${last.clientX - box.left}px`);
+      panel.style.setProperty("--my", `${last.clientY - box.top}px`);
+    };
+    const move = (e: PointerEvent) => {
+      last = e;
+      if (!raf) raf = requestAnimationFrame(paint);
+    };
+    window.addEventListener("pointermove", move, { passive: true });
+    return () => {
+      cancelAnimationFrame(raf);
+      window.removeEventListener("pointermove", move);
+    };
+  }, []);
+
+  return null;
+}
+
+/* ------------------------------------------------------------------ */
 /* Layout change without animating layout                             */
 /* ------------------------------------------------------------------ */
 

@@ -531,6 +531,63 @@ li {
   opacity: 1;
 }
 
+/* A hairline of the signal colour that follows the pointer round a panel's
+   edge (EdgeLight sets --mx and --my). After the GlowCard in the 21st.dev
+   tech-stack bento: here it is one masked ring, shown by opacity only. */
+.glow-edge::after {
+  content: "";
+  position: absolute;
+  inset: -1px;
+  border-radius: inherit;
+  padding: 1px;
+  pointer-events: none;
+  opacity: 0;
+  transition: opacity 0.3s ease-out;
+  background: radial-gradient(260px circle at var(--mx, 50%) var(--my, 0%), var(--signal), transparent 70%);
+  -webkit-mask:
+    linear-gradient(#000 0 0) content-box,
+    linear-gradient(#000 0 0);
+  -webkit-mask-composite: xor;
+  mask:
+    linear-gradient(#000 0 0) content-box exclude,
+    linear-gradient(#000 0 0);
+}
+
+.glow-edge:hover::after,
+.glow-edge:focus-within::after {
+  opacity: 1;
+}
+
+.lift {
+  transition: transform 0.4s var(--ease);
+  transition-timing-function: var(--spring);
+}
+
+@media (hover: hover) {
+  .lift:hover {
+    transform: translate3d(0, -3px, 0);
+  }
+}
+
+/* Ground for the typographic posters: the page's dot grid, a little denser. */
+.poster {
+  background-color: var(--paper);
+  background-image: radial-gradient(circle at 1px 1px, var(--dot) 1px, transparent 1.5px);
+  background-size: 14px 14px;
+}
+
+/* Brand glyphs in the stack: ink at rest, brand colour while their tile is
+   hovered or holds focus. */
+.glyph {
+  fill: currentColor;
+  transition: fill 0.2s ease-out;
+}
+
+.tile:hover .glyph,
+.tile:focus-within .glyph {
+  fill: var(--brand);
+}
+
 /* ---------- Nav ---------- */
 .nav-pill {
   background: var(--sheet);
