@@ -156,7 +156,7 @@ export function Nav() {
             <SoundToggle className="icon-btn hidden md:inline-flex" />
             {hasCamera && (
               <span className="hidden items-center md:flex">
-                <span role="status" className="note mr-1 empty:hidden">
+                <span role="status" className="note absolute right-3 top-[calc(100%+8px)] rounded-[4px] border border-[var(--rule)] bg-[var(--sheet)] px-3 py-1.5 !text-[var(--ink)] empty:hidden">
                   {cameraMsg}
                 </span>
                 <button

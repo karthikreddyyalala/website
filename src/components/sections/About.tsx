@@ -22,8 +22,8 @@ export function About() {
               <Image
                 src="/images/about-photo.webp"
                 alt="Karthik Reddy Yalala"
-                width={560}
-                height={700}
+                width={675}
+                height={900}
                 loading="lazy"
                 sizes="(max-width: 768px) 100vw, 340px"
                 className="h-auto w-full object-cover"

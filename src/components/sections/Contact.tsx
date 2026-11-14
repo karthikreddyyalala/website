@@ -28,10 +28,10 @@ const CHANNELS = [
 export function Contact() {
   return (
     <Sheet id="contact" no="07" name="Contact">
-      <div className="grid gap-10 lg:grid-cols-12 lg:gap-12">
-        <div className="min-w-0 lg:col-span-6">
+      <div className="grid gap-10 xl:grid-cols-12 xl:gap-12">
+        <div className="min-w-0 xl:col-span-6">
           <Reveal>
-            <h2 className="display-l lg:!text-[min(3.6vw,3.25rem)]">
+            <h2 className="display-l xl:!text-[min(3.6vw,3.25rem)]">
               Let&apos;s talk about
                what you&apos;re building.
             </h2>
@@ -47,7 +47,7 @@ export function Contact() {
           )}
         </div>
 
-        <Reveal delay={120} className="min-w-0 lg:col-span-6">
+        <Reveal delay={120} className="min-w-0 xl:col-span-6">
           <div className="panel ticks">
             <ul>
               {CHANNELS.map((c) => (

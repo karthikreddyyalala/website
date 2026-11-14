@@ -34,17 +34,30 @@ function ScrollTied() {
     if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
     const onScreen = new Set<HTMLElement>();
     let raf = 0;
+    // When each element was first seen. One that turns up already part-way
+    // (a disclosure just opened, a jump straight to a section) draws in over
+    // DRAW ms instead of appearing finished. One scrolled to from below is at
+    // zero anyway, so this changes nothing for it.
+    const firstSeen = new WeakMap<HTMLElement, number>();
+    const DRAW = 900;
 
     const paint = () => {
       raf = 0;
       const line = window.innerHeight * 0.78;
+      const now = performance.now();
+      let drawing = false;
       onScreen.forEach((el) => {
         const box = el.getBoundingClientRect();
         const pipe = el.dataset.tied === "pipe";
         // From 1024px a pipeline pins 96px from the top and stops moving, so it
         // has to be complete by then, however short the screen is.
         const span = pipe && window.innerWidth >= 1024 ? Math.min(box.height, line - 130) : box.height;
-        const p = clamp01((line - box.top) / Math.max(span, 1));
+        let p = clamp01((line - box.top) / Math.max(span, 1));
+        const t = (now - (firstSeen.get(el) ?? 0)) / DRAW;
+        if (t < 1) {
+          p = Math.min(p, 1 - (1 - Math.max(t, 0)) ** 3);
+          drawing = true;
+        }
         el.style.setProperty("--p", p.toFixed(3));
         if (pipe) {
           const steps = el.querySelectorAll<HTMLElement>(".pipe-step");
@@ -52,6 +65,7 @@ function ScrollTied() {
           steps.forEach((step, i) => step.toggleAttribute("data-active", p > 0 && i === active));
         }
       });
+      if (drawing) raf = requestAnimationFrame(paint);
     };
     const queue = () => {
       if (!raf && onScreen.size) raf = requestAnimationFrame(paint);
@@ -59,9 +73,12 @@ function ScrollTied() {
 
     const watch = new IntersectionObserver(
       (entries) => {
-        entries.forEach((e) =>
-          e.isIntersecting ? onScreen.add(e.target as HTMLElement) : onScreen.delete(e.target as HTMLElement)
-        );
+        entries.forEach((e) => {
+          const el = e.target as HTMLElement;
+          if (!e.isIntersecting) return void onScreen.delete(el);
+          onScreen.add(el);
+          if (!firstSeen.has(el)) firstSeen.set(el, performance.now());
+        });
         queue();
       },
       { rootMargin: "10% 0px" }

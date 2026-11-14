@@ -114,6 +114,8 @@ html {
   scroll-behavior: smooth;
   /* Anchor targets clear the floating nav. */
   scroll-padding-top: 96px;
+  /* Room for the focus ring when Tab brings a control in from below. */
+  scroll-padding-bottom: 24px;
   overflow-x: clip;
   background: var(--paper);
 }
@@ -758,6 +760,15 @@ li {
   stroke: var(--rule);
   stroke-width: 1.5;
   vector-effect: non-scaling-stroke;
+}
+
+/* The diagram stays beside its text while that scrolls, on screens tall
+   enough to hold it whole. */
+@media (min-width: 1024px) and (min-height: 660px) {
+  .pipe-pin {
+    position: sticky;
+    top: 6rem;
+  }
 }
 
 /* A step's text is never dimmer than 0.94: the amber branch chips are the

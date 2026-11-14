@@ -561,7 +561,7 @@ Each change was made for a measured reason during the build.
     tags, aside, decisions, then the pipeline (the wireframe drew the pipeline
     first). The Path timeline has no progress line below 768px.
 20. **Size targets missed, still better than baseline.** About 1,630 elements
-    (target under 1,400; baseline 1,843) and about 331 kB of HTML (target under
+    (target under 1,400; baseline 1,843) and about 340 kB of HTML (target under
     320 kB; baseline 527 kB).
 21. **Command button.** Its name is the visually hidden text "Search and
     jump" followed by the visible shortcut, so the visible text is part of the
@@ -576,7 +576,7 @@ Each change was made for a measured reason during the build.
     page, as before.
 24. **A figure already on screen when the page loads** (a reload or a link
     straight to the Avis section) stays at its final value and does not count.
-25. **Contact** is an even 6/6 split from 1024px with the heading sized to its
+25. **Contact** is an even 6/6 split from 1280px (stacked below that) with the heading sized to its
     column, and the three actions sit in a two-column block: "Send an email"
     across the top, "Download résumé" and "Copy email" beneath it.
 26. **Mobile menu** scrolls inside itself when the screen is shorter than the
@@ -589,3 +589,10 @@ Each change was made for a measured reason during the build.
     a short fact such as "Fortune 500" never breaks in the middle.
 30. **Phone on its side** (under 500px tall): the name is sized from the
     screen height so the role line shares the first screen.
+31. **Pipeline pinning.** From 1024px wide the diagram stays beside its text
+    only when the screen is at least 660px tall; on shorter screens it scrolls
+    with the page. Anything scroll-tied that first appears already part-way (a
+    row just opened, a jump straight to a section) draws in over about a second
+    instead of appearing finished.
+32. **Hands-free messages** ("Camera unavailable" and the like) hang under the
+    nav for four seconds instead of sitting inside it.

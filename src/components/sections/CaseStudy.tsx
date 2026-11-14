@@ -110,7 +110,7 @@ export function CaseStudy() {
                   </div>
 
                   {init.pipeline && (
-                    <div className="min-w-0 lg:sticky lg:top-24 lg:order-1 lg:col-span-5 lg:self-start">
+                    <div className="pipe-pin min-w-0 lg:order-1 lg:col-span-5 lg:self-start">
                       <div className="panel ticks p-5 md:p-6">
                         <Pipeline stages={init.pipeline} />
                       </div>
