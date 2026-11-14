@@ -200,7 +200,8 @@ export function PageFx() {
           entry.target.classList.add("is-in");
           reveals.unobserve(entry.target);
         }),
-      { threshold: 0.12, rootMargin: "0px 0px -60px 0px" }
+      // No bottom inset: the last thing on the page could never cross one.
+      { threshold: 0.12 }
     );
     document.querySelectorAll(".reveal").forEach((el) => reveals.observe(el));
 

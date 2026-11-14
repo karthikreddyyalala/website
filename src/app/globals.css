@@ -293,11 +293,6 @@ li {
 .sheet {
   position: relative;
   padding-block: clamp(72px, 11vw, 148px);
-  /* Sections far from the screen are not laid out or painted until they come
-     near it. The size is a placeholder until then; afterwards the browser
-     remembers the real one. */
-  content-visibility: auto;
-  contain-intrinsic-size: auto 1400px;
 }
 
 .sheet-grid {
