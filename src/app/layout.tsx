@@ -2,6 +2,8 @@ import type { Metadata, Viewport } from "next";
 import { Archivo, JetBrains_Mono } from "next/font/google";
 import { Analytics } from "@vercel/analytics/react";
 import "./globals.css";
+import { SITE } from "@/lib/site";
+import { profile } from "@/content/profile";
 
 // One family for everything: Archivo, a grotesk with a width axis as well as
 // a weight axis, so display type can be wide and heavy while body text stays
@@ -19,7 +21,6 @@ const code = JetBrains_Mono({
   display: "swap",
 });
 
-const SITE = "https://karthikreddyy.vercel.app";
 const DESCRIPTION =
   "Software engineer building end-to-end systems with AI inside them. Four production initiatives shipped at Avis Budget Group. CS at Arizona State, 4.0 GPA.";
 
@@ -75,6 +76,24 @@ export const metadata: Metadata = {
   },
 };
 
+/**
+ * Structured data for search engines: who this page is about. Only facts that
+ * are already on the page, and none of the case-study figures.
+ */
+const [locality, region] = profile.location.split(", ");
+const PERSON = {
+  "@context": "https://schema.org",
+  "@type": "Person",
+  name: profile.name,
+  url: SITE,
+  image: `${SITE}/images/profile.webp`,
+  jobTitle: profile.role.split(" · "),
+  email: `mailto:${profile.contact.email}`,
+  address: { "@type": "PostalAddress", addressLocality: locality, addressRegion: region },
+  alumniOf: { "@type": "CollegeOrUniversity", name: "Arizona State University" },
+  sameAs: [profile.contact.linkedin, "https://github.com/karthikreddyyalala"],
+};
+
 export default function RootLayout({
   children,
 }: Readonly<{ children: React.ReactNode }>) {
@@ -89,6 +108,7 @@ export default function RootLayout({
           <style>{".reveal{opacity:1;transform:none}"}</style>
         </noscript>
         {children}
+        <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(PERSON) }} />
         <Analytics />
       </body>
     </html>
