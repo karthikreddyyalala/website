@@ -318,7 +318,7 @@ export function HandScroll({ onClose }: { onClose: (error?: string) => void }) {
         </div>
       </div>
 
-      <aside data-lenis-prevent aria-label="Hands-free control" className="fixed bottom-4 right-4 z-50 w-[180px]">
+      <aside aria-label="Hands-free control" className="fixed bottom-4 right-4 z-50 w-[180px]">
         <div className="relative h-[135px] overflow-hidden rounded-[12px] border border-[var(--line-hi)] bg-[var(--surface)]">
           <video
             ref={videoRef}

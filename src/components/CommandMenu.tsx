@@ -136,7 +136,7 @@ export function CommandMenu() {
   return (
     <dialog
       ref={dialog}
-      data-lenis-prevent
+     
       aria-label="Command menu"
       onClose={() => play("close")}
       onClick={(e) => e.target === e.currentTarget && dialog.current?.close()}

@@ -667,9 +667,13 @@ li {
 }
 
 /* ---------- Dialogs ---------- */
-.command-menu::backdrop,
-.video-dialog::backdrop {
+.command-menu::backdrop {
   background: var(--scrim);
+}
+
+/* The player sits on a near-black ground in both themes, like a cinema. */
+.video-dialog::backdrop {
+  background: rgba(6, 5, 4, 0.92);
 }
 
 .command-menu input:focus-visible {

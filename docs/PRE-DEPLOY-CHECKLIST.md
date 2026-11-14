@@ -43,10 +43,12 @@ regardless of intent.
 
 ## Technical
 
-- [ ] Point `SITE` in `src/app/layout.tsx` at the final domain if it changes from
-      `karthikreddyy.vercel.app`.
-- [ ] Add an Open Graph image (`/opengraph-image.png`, 1200×630). Links currently
-      unfurl with text only.
+- [ ] Point `SITE` in `src/lib/site.ts` at the final domain if it changes from
+      `karthikreddyy.vercel.app`. The sitemap, robots file, link preview and
+      structured data all read it from there.
+- [x] **Open Graph image.** `src/app/opengraph-image.tsx` generates a 1200×630 card
+      from the name, the role line and the availability line only. It carries none
+      of the Avis figures above, on purpose: keep it that way until they are cleared.
 - [ ] Check on a real phone. Verified at desktop widths; the preview pane could not
       produce a trustworthy 375px measurement.
 - [ ] Re-run `npm run build` after any content edit — type and lint checks are on now,

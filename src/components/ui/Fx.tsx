@@ -388,11 +388,3 @@ export function Details({
     </details>
   );
 }
-
-/* Temporary: sections not yet rebuilt still import these. Removed in the clean-up step. */
-export function Parallax({ children, className = "" }: { children: ReactNode; className?: string }) {
-  return <div className={className}>{children}</div>;
-}
-export function ShowcaseStage({ children, className }: { children: ReactNode; className?: string }) {
-  return <div className={className}>{children}</div>;
-}

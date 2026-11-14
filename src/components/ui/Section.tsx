@@ -68,15 +68,3 @@ export function Sheet({ id, no, name, title, lede, children, className = "" }: S
     </section>
   );
 }
-
-/* Temporary: sections not yet rebuilt still import these. Removed in the clean-up step. */
-export function SectionHead({ children }: { children: ReactNode }) {
-  return <div className="border-b border-[var(--rule)] pb-6">{children}</div>;
-}
-export function Section({ id, title, lede, children }: { id: string; title: string; lede?: string; children: ReactNode }) {
-  return (
-    <Sheet id={id} no="" name="" title={title} lede={lede}>
-      <div className="mt-12">{children}</div>
-    </Sheet>
-  );
-}
