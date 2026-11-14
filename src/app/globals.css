@@ -522,7 +522,7 @@ li {
   content: "";
   position: absolute;
   inset: -150%;
-  background: conic-gradient(from 0deg, transparent 0 62%, var(--signal) 82%, transparent 100%);
+  background: conic-gradient(from 0deg, transparent 0 62%, var(--shine, var(--signal)) 82%, transparent 100%);
 }
 
 .pipe-step[data-active] .shine,
