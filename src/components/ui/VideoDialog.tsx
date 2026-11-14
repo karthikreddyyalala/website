@@ -89,7 +89,7 @@ export function VideoPreview(video: Video) {
           alt=""
           fill
           sizes="(max-width: 768px) 100vw, 720px"
-          className="object-cover opacity-90 transition-[opacity,transform] duration-500 ease-out group-hover:scale-[1.02] group-hover:opacity-100"
+          className="object-cover opacity-90 transition-opacity duration-500 ease-out group-hover:opacity-100"
         />
         {armed && (
           <video
@@ -101,7 +101,7 @@ export function VideoPreview(video: Video) {
             aria-hidden
             tabIndex={-1}
             onPlaying={() => setPlaying(true)}
-            className={`absolute inset-0 h-full w-full object-cover transition-[opacity,transform] duration-500 ease-out group-hover:scale-[1.02] ${
+            className={`absolute inset-0 h-full w-full object-cover transition-opacity duration-500 ease-out ${
               playing ? "opacity-100" : "opacity-0"
             }`}
           />
@@ -117,18 +117,18 @@ export function VideoPreview(video: Video) {
           className={`absolute left-1/2 top-1/2 flex h-16 w-16 -translate-x-1/2 -translate-y-1/2 items-center justify-center rounded-full transition-[transform,opacity] duration-300 ease-out group-hover:scale-110 group-active:scale-95 md:h-[72px] md:w-[72px] ${
             playing ? "opacity-0" : "opacity-100"
           }`}
-          style={{ background: "var(--accent)", color: "#14100a", boxShadow: "0 8px 30px rgba(0,0,0,0.35)" }}
+          style={{ background: "var(--accent)", color: "var(--on-accent)", boxShadow: "0 8px 30px rgba(0,0,0,0.35)" }}
         >
           <Play className="ml-1 h-6 w-6" fill="currentColor" strokeWidth={0} />
         </span>
         <span className="absolute inset-x-0 bottom-0 flex items-end justify-between gap-4 p-4 md:p-5">
           <span>
-            <span className="block text-[14px] font-medium text-white">Watch the demo</span>
-            <span className="mono mt-0.5 block text-[10.5px] text-white/70">
-              Plays right here · no redirect
+            <span className="block text-[15px] font-medium text-white">Watch the demo</span>
+            <span className="mt-0.5 block text-[13px] text-white/75">
+              Plays right here, no redirect
             </span>
           </span>
-          <span className="mono hidden text-[10.5px] text-white/70 sm:block">{video.title}</span>
+          <span className="hidden text-[13px] text-white/75 sm:block">{video.title}</span>
         </span>
       </VideoTrigger>
     </div>
@@ -159,6 +159,7 @@ export function VideoDialog() {
   return (
     <dialog
       ref={ref}
+      data-lenis-prevent
       aria-label={video ? video.title : "Video"}
       onClose={onClose}
       onClick={(e) => e.target === e.currentTarget && ref.current?.close()}
@@ -167,9 +168,9 @@ export function VideoDialog() {
       {video && (
         <div>
           <div className="mb-3 flex items-center justify-between gap-4">
-            <p className="text-[14px] font-medium text-white">{video.title}</p>
+            <p className="text-[15px] font-medium text-white">{video.title}</p>
             <div className="flex items-center gap-3">
-              <kbd className="mono hidden rounded border border-white/20 px-1.5 py-0.5 text-[10px] text-white/60 sm:inline">
+              <kbd className="mono hidden rounded border border-white/20 px-1.5 py-0.5 text-[12.5px] text-white/70 sm:inline">
                 Esc
               </kbd>
               <button

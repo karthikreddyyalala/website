@@ -1,3 +1,4 @@
+import type { CSSProperties } from "react";
 import { Nav } from "@/components/Nav";
 import { Hero } from "@/components/sections/Hero";
 import { CaseStudy } from "@/components/sections/CaseStudy";
@@ -6,8 +7,11 @@ import { Stack } from "@/components/sections/Stack";
 import { Timeline } from "@/components/sections/Timeline";
 import { About } from "@/components/sections/About";
 import { Contact } from "@/components/sections/Contact";
-import { profile } from "@/content/profile";
 import { VideoDialog } from "@/components/ui/VideoDialog";
+import { SoundFx } from "@/components/ui/Sound";
+import { CommandMenu } from "@/components/CommandMenu";
+import { Footer } from "@/components/Footer";
+import { Aurora, GlassLight, Magnetic, ScrollFx, SmoothScroll } from "@/components/ui/Fx";
 
 export default function Home() {
   return (
@@ -15,6 +19,32 @@ export default function Home() {
       <a href="#main" className="skip-link">
         Skip to main content
       </a>
+
+      {/* Opening curtain. Pure CSS: it is in the first paint and lifts on its own. */}
+      <div aria-hidden className="intro-curtain">
+        <div>
+          <p className="intro-mark h-display">
+            {["K", "R", "Y"].map((letter, k) => (
+              <span key={letter}>
+                <span style={{ "--k": k } as CSSProperties}>{letter}</span>
+              </span>
+            ))}
+            <span>
+              <span className="text-[var(--signal)]" style={{ "--k": 3 } as CSSProperties}>
+                .
+              </span>
+            </span>
+          </p>
+          <span className="intro-rule" />
+        </div>
+      </div>
+
+      <Aurora />
+      <GlassLight />
+      <SmoothScroll />
+      <ScrollFx />
+      <Magnetic />
+      <SoundFx />
 
       <Nav />
 
@@ -28,22 +58,10 @@ export default function Home() {
         <Contact />
       </main>
 
-      {/* Colophon. Says a person chose these things, which a template cannot. */}
-      <footer className="border-t border-[var(--line)] py-12">
-        <div className="shell grid gap-8 md:grid-cols-12">
-          <div className="md:col-span-5">
-            <p className="mono text-[11px] text-[var(--faint)]">
-              © {new Date().getFullYear()} {profile.name}
-            </p>
-            <p className="mt-2 text-[13px] text-[var(--muted)]">
-              {profile.location} · Open to work, May 2027
-            </p>
-          </div>
-
-        </div>
-      </footer>
+      <Footer />
 
       <VideoDialog />
+      <CommandMenu />
 
     </>
   );

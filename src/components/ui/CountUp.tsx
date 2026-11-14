@@ -1,87 +1,76 @@
 "use client";
 
-import { useEffect, useRef, useState } from "react";
-
-type CountUpProps = {
-  value: string;
-  duration?: number;
-  className?: string;
-};
+import { useEffect, useRef } from "react";
+import { play } from "./Sound";
 
 const MULTIPLIERS: Record<string, number> = { K: 1_000, M: 1_000_000, B: 1_000_000_000 };
 
+/** "$1M+" becomes { prefix: "$", target: 1000000, tail: "+" }; "170+" keeps its tail; "4" has none. */
 function parse(value: string) {
-  const match = value.match(/^([^0-9]*)(\d+(?:\.\d+)?)(.*)$/);
-  if (!match) return null;
-  const prefix = match[1];
-  const num = parseFloat(match[2]);
-  const suffix = match[3];
-  const decimals = match[2].includes(".") ? match[2].split(".")[1].length : 0;
-
-  const suffixLetter = suffix.match(/^([KMB])/i)?.[1]?.toUpperCase() ?? "";
-  const multiplier = MULTIPLIERS[suffixLetter] ?? 1;
-  const fullNum = num * multiplier;
-
-  return { prefix, num, suffix, decimals, fullNum, multiplier };
+  const m = value.match(/^(\D*)(\d+(?:\.\d+)?)([KMB]?)(.*)$/i);
+  if (!m) return null;
+  const decimals = m[2].split(".")[1]?.length ?? 0;
+  return { prefix: m[1], target: parseFloat(m[2]) * (MULTIPLIERS[m[3].toUpperCase()] ?? 1), decimals, tail: m[4] };
 }
 
-function formatMidAnimation(prefix: string, current: number, multiplier: number, suffix: string): string {
-  if (multiplier > 1) {
-    return `${prefix}${Math.floor(current).toLocaleString("en-US")}`;
-  }
-  return `${prefix}${Math.floor(current)}${suffix}`;
+function format(p: NonNullable<ReturnType<typeof parse>>, n: number) {
+  const digits = { minimumFractionDigits: p.decimals, maximumFractionDigits: p.decimals };
+  return `${p.prefix}${n.toLocaleString("en-US", digits)}${p.tail}`;
 }
 
-export function CountUp({ value, duration = 1600, className }: CountUpProps) {
-  const parsed = parse(value);
+/**
+ * A figure that counts up from zero the first time it scrolls into view.
+ * The real figure is in the page from the start, so it is correct without
+ * JavaScript, for search engines, with reduced motion and with motion paused.
+ */
+export function CountUp({ value, duration = 1800 }: { value: string; duration?: number }) {
   const ref = useRef<HTMLSpanElement>(null);
-  const [display, setDisplay] = useState(parsed ? `${parsed.prefix}0${parsed.suffix}` : value);
-  const hasRun = useRef(false);
+  const parsed = parse(value);
+  const final = parsed ? format(parsed, parsed.target) : value;
 
   useEffect(() => {
-    if (!parsed || hasRun.current) return;
     const el = ref.current;
-    if (!el) return;
+    const p = parse(value);
+    if (!el || !p || window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
 
-    if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
-      setDisplay(value);
-      return;
-    }
-
+    let raf = 0;
+    el.textContent = format(p, 0);
     const observer = new IntersectionObserver(
       ([entry]) => {
-        if (!entry.isIntersecting || hasRun.current) return;
-        hasRun.current = true;
+        if (!entry.isIntersecting) return;
         observer.disconnect();
-
-        const start = performance.now();
-        const { prefix, num, suffix, decimals, fullNum, multiplier } = parsed;
-
-        function tick(now: number) {
-          const elapsed = now - start;
-          const progress = Math.min(elapsed / duration, 1);
-          const eased = 1 - Math.pow(1 - progress, 3);
-          const current = eased * fullNum;
-
-          if (progress === 1 && multiplier > 1) {
-            setDisplay(`${prefix}${Math.floor(fullNum).toLocaleString("en-US")}+`);
-          } else if (progress === 1) {
-            setDisplay(prefix + num.toFixed(decimals) + suffix);
-          } else {
-            setDisplay(formatMidAnimation(prefix, current, multiplier, suffix));
-          }
-
-          if (progress < 1) requestAnimationFrame(tick);
+        if (document.documentElement.dataset.motion === "off") {
+          el.textContent = format(p, p.target);
+          return;
         }
-
-        requestAnimationFrame(tick);
+        const start = performance.now();
+        const tick = (now: number) => {
+          const t = Math.min((now - start) / duration, 1);
+          const eased = 1 - Math.pow(1 - t, 4); // fast start, long settle on the last digits
+          const scale = 10 ** p.decimals;
+          el.textContent = format(p, t === 1 ? p.target : Math.floor(eased * p.target * scale) / scale);
+          // With sound on: ticks that climb as the figure does, then a chord when it lands.
+          play(t < 1 ? "count" : "success", t);
+          if (t < 1) raf = requestAnimationFrame(tick);
+        };
+        raf = requestAnimationFrame(tick);
       },
-      { threshold: 0.3 }
+      { threshold: 0.6 }
     );
-
     observer.observe(el);
-    return () => observer.disconnect();
-  }, [parsed, value, duration]);
+    return () => {
+      observer.disconnect();
+      cancelAnimationFrame(raf);
+      el.textContent = format(p, p.target);
+    };
+  }, [value, duration]);
 
-  return <span ref={ref} className={className}>{display}</span>;
+  return (
+    <>
+      <span className="sr-only">{final}</span>
+      <span ref={ref} aria-hidden>
+        {final}
+      </span>
+    </>
+  );
 }

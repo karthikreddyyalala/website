@@ -39,7 +39,7 @@ export const caseStudy = {
   qualifier: "Fortune 500",
   role: "AI Enablement Intern",
   location: "Parsippany, NJ",
-  period: "May – Aug 2026",
+  period: "May to Aug 2026",
 
   intro:
     "Embedded with the Customer Experience team on a CEO-sponsored AI initiative. Four end-to-end initiatives, from system architecture and API design through front-end and back-end implementation to production handoff. Designs presented to the Director and VP of Customer Experience; the platform demoed to the CEO.",
@@ -139,7 +139,7 @@ export const caseStudy = {
       outcomes: [
         "Passed a 6-phase test suite: 100% faithfulness, 0 hallucinations, 5/5 injection attempts blocked",
         "Constrained the model with AgentCore: guardrails, memory, and formatting on every call",
-        "Shipped a zero-downtime config pipeline: draft → test → approve → publish, versioned",
+        "Shipped a zero-downtime config pipeline: draft, test, approve, publish, versioned",
         "Delivered real-time streaming answers with multi-turn session memory",
         "Replaced a third-party LLM SaaS dependency with an in-house AWS stack, keeping employee and compliance data in the company's own environment",
       ],

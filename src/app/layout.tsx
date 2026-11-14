@@ -1,26 +1,30 @@
-import type { Metadata } from "next";
-import { Outfit, JetBrains_Mono } from "next/font/google";
+import type { Metadata, Viewport } from "next";
+import { Inter, JetBrains_Mono } from "next/font/google";
 import { Analytics } from "@vercel/analytics/react";
 import "./globals.css";
 
-// Two families, trimmed weights. Every extra weight is render-blocking payload.
-const outfit = Outfit({
-  variable: "--font-outfit",
+// One family for everything, the way Apple sets its pages: Inter, whose
+// optical-size axis switches to its display cut at heading sizes.
+// JetBrains Mono is for data only.
+const sans = Inter({
+  variable: "--font-body",
   subsets: ["latin"],
   display: "swap",
-  weight: ["300", "400", "500", "600"],
+  axes: ["opsz"],
 });
 
-const jetbrainsMono = JetBrains_Mono({
-  variable: "--font-jetbrains-mono",
+const code = JetBrains_Mono({
+  variable: "--font-code",
   subsets: ["latin"],
   display: "swap",
-  weight: ["400", "500"],
 });
 
 const SITE = "https://karthikreddyy.vercel.app";
 const DESCRIPTION =
   "Software engineer building end-to-end systems with AI inside them. Four production initiatives shipped at Avis Budget Group. CS at Arizona State, 4.0 GPA.";
+
+// Tints the browser chrome on phones to match the page.
+export const viewport: Viewport = { themeColor: "#0a0a0b", colorScheme: "dark" };
 
 export const metadata: Metadata = {
   metadataBase: new URL(SITE),
@@ -64,7 +68,11 @@ export default function RootLayout({
 }: Readonly<{ children: React.ReactNode }>) {
   return (
     <html lang="en">
-      <body className={`${outfit.variable} ${jetbrainsMono.variable}`}>
+      <body className={`${sans.variable} ${code.variable}`}>
+        {/* Reveal starts hidden and is shown by JS; without JS, show everything. */}
+        <noscript>
+          <style>{".reveal{opacity:1;transform:none}"}</style>
+        </noscript>
         {children}
         <Analytics />
       </body>

@@ -2,76 +2,57 @@ import { Reveal } from "../ui/Reveal";
 import { CountUp } from "../ui/CountUp";
 import { Pipeline } from "../ui/Pipeline";
 import { Aside } from "../ui/Aside";
+import { Meta, SectionHead } from "../ui/Section";
 import { caseStudy } from "@/content/casestudy";
+import { Plus } from "lucide-react";
+import { TechTag } from "../ui/TechTag";
 
 export function CaseStudy() {
   return (
-    <section id="work-avis" className="relative py-24 md:py-36">
-      <div className="shell">
+    <section id="work-avis" className="relative py-24 md:py-32">
+      <div className="shell relative">
         <Reveal>
-          <p className="eyebrow flex items-center gap-3">
-            <span>01</span>
-            <span aria-hidden className="h-px w-8 bg-[var(--line-hi)]" />
-            <span>Production work</span>
+          <SectionHead>
+            <h2 className="h-section">{caseStudy.company}</h2>
+          </SectionHead>
+        </Reveal>
+
+        <Reveal delay={60}>
+          <p className="mt-8 text-[16.5px] text-[var(--muted)]">
+            <Meta text={`${caseStudy.role} · ${caseStudy.qualifier} · ${caseStudy.location} · ${caseStudy.period}`} />
           </p>
         </Reveal>
 
-        <div className="mt-5 grid gap-8 md:grid-cols-12 md:items-end">
-          <Reveal delay={60} className="md:col-span-7">
-            <h2 className="h-section text-[clamp(2rem,4.5vw,3.25rem)]">
-              {caseStudy.company}
-            </h2>
-            <p className="mt-3 text-[14px] text-[var(--muted)]">
-              {caseStudy.role} · {caseStudy.qualifier} · {caseStudy.location}
-              <span className="mono ml-3 text-[var(--faint)]">{caseStudy.period}</span>
-            </p>
-          </Reveal>
-          <Reveal delay={120} className="md:col-span-5">
-            <p className="prose-body text-[15px]">{caseStudy.intro}</p>
-          </Reveal>
-        </div>
-
-        <Reveal delay={160}>
-          <dl className="mt-12 grid grid-cols-1 border-t border-[var(--line)] sm:grid-cols-3">
+        {/* The headline figures at display size; each counts up as it scrolls in. */}
+        <Reveal delay={120}>
+          <dl className="mt-8 grid gap-x-6 sm:grid-cols-3 md:mt-10 md:gap-x-10">
             {caseStudy.headline.map((m) => (
-              <div
-                key={m.label}
-                className="border-b border-[var(--line)] py-6 pr-8 sm:border-b-0"
-              >
-                <dt
-                  className="mono tabular-nums text-[28px] md:text-[34px]"
-                  style={{ color: "var(--accent)" }}
-                >
+              <div key={m.label} className="flex flex-col-reverse border-t border-[var(--line-hi)] py-5 sm:py-6">
+                <dt className="mt-2 text-[15.5px] leading-snug text-[var(--muted)]">{m.label}</dt>
+                <dd className="h-display stat-figure tabular-nums text-[var(--signal-hi)]">
                   <CountUp value={m.value} />
-                </dt>
-                <dd className="mt-1.5 text-[12.5px] leading-snug text-[var(--muted)]">
-                  {m.label}
                 </dd>
               </div>
             ))}
           </dl>
         </Reveal>
 
+        {/* Sits in the same column as the write-ups below. */}
+        <Reveal delay={160} className="mt-6 grid md:mt-8 md:grid-cols-12">
+          <p className="prose-body text-[16.5px] md:col-span-8 md:col-start-5">{caseStudy.intro}</p>
+        </Reveal>
+
         <div className="mt-20 space-y-20 md:space-y-28">
           {caseStudy.initiatives.map((init, idx) => (
             <Reveal key={init.id} delay={idx === 0 ? 0 : 40}>
-              <article>
+              <article id={`avis-${init.id}`} className="relative text-[24px] md:text-[28px]">
                 <div className="grid gap-6 md:grid-cols-12">
-                  <div className="md:col-span-4">
-                    <p className="mono text-[12px]" style={{ color: "var(--accent)" }}>
-                      {init.index}
-                    </p>
-                    <h3 className="h-section mt-2 text-[22px] md:text-[26px]">
-                      {init.title}
-                    </h3>
+                  {/* Stays pinned beside the write-up while it scrolls past. */}
+                  <div className="md:sticky md:top-28 md:col-span-4 md:self-start">
+                    <h3 className="h-section">{init.title}</h3>
                     <ul className="mt-5 flex flex-wrap gap-1.5">
                       {init.tech.map((t) => (
-                        <li
-                          key={t}
-                          className="mono rounded-full border border-[var(--line)] px-2.5 py-1 text-[10.5px] text-[var(--faint)]"
-                        >
-                          {t}
-                        </li>
+                        <TechTag key={t} name={t} className="mono text-[12.5px]" />
                       ))}
                     </ul>
 
@@ -79,10 +60,10 @@ export function CaseStudy() {
                   </div>
 
                   <div className="min-w-0 md:col-span-8">
-                    <p className="prose-body text-[16.5px]">{init.summary}</p>
+                    <p className="prose-body text-[17px]">{init.summary}</p>
 
                     {init.pipeline && (
-                      <div className="mt-8 border-y border-[var(--line)]">
+                      <div data-scroll="rise" className="card mt-8 p-6 md:p-7">
                         <Pipeline stages={init.pipeline} />
                       </div>
                     )}
@@ -92,26 +73,19 @@ export function CaseStudy() {
                         {init.outcomes.map((o) => (
                           <li
                             key={o}
-                            className="flex gap-3 text-[14.5px] text-[var(--muted)]"
+                            className="flex gap-3 text-[15px] text-[var(--muted)]"
                           >
-                            <span aria-hidden className="mono mt-px text-[var(--accent)]">
-                              ·
-                            </span>
+                            <span aria-hidden className="mt-[9px] h-1.5 w-1.5 flex-none rounded-full bg-[var(--signal)]" />
                             {o}
                           </li>
                         ))}
                       </ul>
                     )}
                     <details className="group mt-8">
-                      <summary className="mono inline-flex cursor-pointer list-none items-center gap-1.5 text-[12px] text-[var(--accent)] transition-opacity hover:opacity-75 focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-[var(--accent)] [&::-webkit-details-marker]:hidden">
+                      <summary className="inline-flex min-h-[44px] cursor-pointer list-none items-center gap-2 text-[14.5px] font-bold text-[var(--signal)] transition-opacity hover:opacity-75 focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-[var(--accent)] [&::-webkit-details-marker]:hidden">
+                        <Plus aria-hidden className="h-4 w-4 transition-transform duration-300 group-open:rotate-45 motion-reduce:transition-none" strokeWidth={2.25} />
                         <span className="group-open:hidden">Read the engineering decisions</span>
                         <span className="hidden group-open:inline">Hide details</span>
-                        <span
-                          aria-hidden
-                          className="inline-block transition-transform duration-200 group-open:rotate-180 motion-reduce:transition-none"
-                        >
-                          ↓
-                        </span>
                       </summary>
                     {/* The decisions. This is the differentiating content. */}
                     <div className="mt-7 space-y-7">
@@ -121,10 +95,10 @@ export function CaseStudy() {
                           className="border-l pl-5"
                           style={{ borderColor: "var(--accent-dim)" }}
                         >
-                          <h4 className="text-[15px] font-medium text-[var(--text)]">
+                          <h4 className="text-[16.5px] font-medium text-[var(--text)]">
                             {d.title}
                           </h4>
-                          <p className="prose-body mt-2 text-[15px]">{d.body}</p>
+                          <p className="prose-body mt-2 text-[16.5px]">{d.body}</p>
                         </div>
                       ))}
                     </div>
@@ -139,21 +113,21 @@ export function CaseStudy() {
 
         {/* VP research — different shape so it reads as a different kind of work */}
         <Reveal>
-          <div className="panel mt-20 p-7 md:p-10">
+          <div id="avis-research" data-scroll="rise" className="card mt-20 p-7 text-[22px] md:p-10 md:text-[26px]">
             <div className="grid gap-6 md:grid-cols-12">
               <div className="md:col-span-4">
-                <p className="eyebrow">Beyond the build</p>
-                <h3 className="h-section mt-3 text-[20px] md:text-[23px]">
+                <h3 className="h-section">
                   {caseStudy.research.title}
                 </h3>
-                <p className="mt-2.5 text-[13px]" style={{ color: "var(--accent)" }}>
+                <p className="mt-2 text-[15px] font-bold text-[var(--muted)]">Beyond the build</p>
+                <p className="mt-2.5 text-[14.5px] font-bold text-[var(--signal)]">
                   {caseStudy.research.forWhom}
                 </p>
               </div>
               <div className="md:col-span-8">
-                <p className="prose-body text-[15px]">{caseStudy.research.body}</p>
+                <p className="prose-body text-[16.5px]">{caseStudy.research.body}</p>
                 {caseStudy.research.note && (
-                  <p className="mono mt-4 text-[11px] text-[var(--faint)]">
+                  <p className="mt-4 text-[14.5px] text-[var(--faint)]">
                     {caseStudy.research.note}
                   </p>
                 )}
@@ -162,9 +136,9 @@ export function CaseStudy() {
                     href={caseStudy.research.liveLink}
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="mono mt-4 inline-flex items-center gap-1.5 text-[12px] text-[var(--accent)] hover:opacity-75 transition-opacity"
+                    className="icon-link mt-4 text-[14.5px] font-bold text-[var(--signal)]"
                   >
-                    {caseStudy.research.liveLinkLabel} ↗
+                    {caseStudy.research.liveLinkLabel}
                   </a>
                 )}
               </div>

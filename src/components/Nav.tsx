@@ -1,9 +1,11 @@
 "use client";
 
-import { useCallback, useEffect, useState } from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
 import dynamic from "next/dynamic";
 import { Hand } from "lucide-react";
 import { profile } from "@/content/profile";
+import { CommandButton } from "./CommandMenu";
+import { SoundToggle } from "./ui/Sound";
 
 // MediaPipe only downloads once a visitor turns hands-free on.
 const HandScroll = dynamic(() => import("./HandScroll").then((m) => m.HandScroll), {
@@ -22,7 +24,15 @@ export function Nav() {
   const [active, setActive] = useState<string>("");
   const [lifted, setLifted] = useState(false);
   const [open, setOpen] = useState(false);
-  const [theme, setTheme] = useState<"dark" | "light">("dark");
+  // The highlight pill slides to the link under the pointer, or to the current section.
+  const listRef = useRef<HTMLUListElement>(null);
+  const [hovered, setHovered] = useState<string | null>(null);
+  const [pill, setPill] = useState<{ left: number; width: number } | null>(null);
+
+  useEffect(() => {
+    const link = listRef.current?.querySelector<HTMLElement>(`a[href="#${hovered ?? active}"]`);
+    setPill(link ? { left: link.offsetLeft, width: link.offsetWidth } : null);
+  }, [active, hovered]);
   const [hasCamera, setHasCamera] = useState(false);
   const [handsFree, setHandsFree] = useState(false);
   const [cameraMsg, setCameraMsg] = useState("");
@@ -40,12 +50,6 @@ export function Nav() {
     const t = window.setTimeout(() => setCameraMsg(""), 4000);
     return () => window.clearTimeout(t);
   }, [cameraMsg]);
-
-  function toggleTheme() {
-    const next = theme === "dark" ? "light" : "dark";
-    setTheme(next);
-    document.documentElement.setAttribute("data-theme", next);
-  }
 
   /**
    * Active-section tracking and the scrolled state both run on
@@ -90,6 +94,14 @@ export function Nav() {
     };
   }, []);
 
+  // Escape closes the mobile sheet.
+  useEffect(() => {
+    if (!open) return;
+    const onKey = (e: KeyboardEvent) => e.key === "Escape" && setOpen(false);
+    window.addEventListener("keydown", onKey);
+    return () => window.removeEventListener("keydown", onKey);
+  }, [open]);
+
   // Lock body scroll while the mobile sheet is open.
   useEffect(() => {
     document.body.style.overflow = open ? "hidden" : "";
@@ -99,46 +111,55 @@ export function Nav() {
   }, [open]);
 
   return (
-    <header
-      className="fixed inset-x-0 top-0 z-50 transition-colors duration-300"
-      style={{
-        background: lifted ? "rgba(11,11,12,0.92)" : "transparent",
-        borderBottom: `1px solid ${lifted ? "var(--line)" : "transparent"}`,
-      }}
-    >
-      <nav className="shell flex h-[68px] items-center justify-between">
+    <header className="intro-nav fixed inset-x-0 top-0 z-50 px-3 pt-3">
+      <div
+        className={`nav-glass relative mx-auto max-w-[1180px] overflow-hidden rounded-full transition-shadow duration-500 ${
+          lifted ? "shadow-[0_18px_40px_-18px_rgba(0,0,0,0.9)]" : ""
+        }`}
+      >
+      <span aria-hidden className="scroll-progress absolute inset-x-0 bottom-0 h-[2px] bg-[var(--signal)]" />
+      <nav className="flex h-[60px] items-center justify-between pl-6 pr-2 md:pl-7">
         <a
           href="#top"
-          className="mono text-[13px] tracking-tight text-[var(--text)] transition-colors hover:text-[var(--accent)]"
+          className="h-section flex min-h-[44px] items-center text-[18px] text-[var(--text)]"
         >
           KRY<span className="text-[var(--accent)]">.</span>
         </a>
 
-        <ul className="hidden items-center gap-1 md:flex">
+        <ul
+          ref={listRef}
+          onPointerLeave={() => setHovered(null)}
+          className="relative hidden items-center gap-1 md:flex"
+        >
+          <li
+            aria-hidden
+            className="pointer-events-none absolute top-1/2 h-10 -translate-y-1/2 rounded-full border border-white/15 bg-white/10 transition-[left,width,opacity] duration-500 ease-[cubic-bezier(0.16,1,0.3,1)]"
+            style={{ left: pill?.left ?? 0, width: pill?.width ?? 0, opacity: pill ? 1 : 0 }}
+          />
           {LINKS.map((link) => (
             <li key={link.id}>
               <a
                 href={`#${link.id}`}
                 aria-current={active === link.id ? "true" : undefined}
-                className="relative block px-3.5 py-2 text-[13px] transition-colors duration-200"
-                style={{
-                  color: active === link.id ? "var(--text)" : "var(--muted)",
-                }}
+                onPointerEnter={() => setHovered(link.id)}
+                onFocus={() => setHovered(link.id)}
+                onBlur={() => setHovered(null)}
+                className="relative flex min-h-[44px] items-center px-4 text-[15px] font-medium transition-colors duration-300 hover:!text-[var(--text)]"
+                style={{ color: active === link.id ? "var(--text)" : "var(--muted)" }}
               >
                 {link.label}
-                {active === link.id && (
-                  <span
-                    aria-hidden
-                    className="absolute inset-x-3.5 -bottom-px h-px"
-                    style={{ background: "var(--accent)" }}
-                  />
-                )}
               </a>
             </li>
           ))}
+          <li>
+            <CommandButton className="mx-1 flex h-11 items-center gap-2 rounded-full border border-[var(--line-hi)] px-4 text-[var(--muted)] transition-colors duration-300 hover:text-[var(--text)]" />
+          </li>
+          <li>
+            <SoundToggle className="mr-1.5 flex h-11 w-11 items-center justify-center rounded-full border border-[var(--line-hi)] text-[var(--muted)] transition-colors duration-300 hover:text-[var(--text)] aria-pressed:border-[var(--accent)] aria-pressed:text-[var(--accent)]" />
+          </li>
           {hasCamera && (
             <li className="flex items-center">
-              <span role="status" className="mono mr-2 text-[11px] text-[var(--faint)] empty:hidden">
+              <span role="status" className="mono mr-2 text-[12.5px] text-[var(--faint)] empty:hidden">
                 {cameraMsg}
               </span>
               <button
@@ -149,53 +170,36 @@ export function Nav() {
                   setHandsFree((v) => !v);
                 }}
                 title="Control the page with hand gestures through your camera"
-                className="mr-1.5 flex h-7 items-center gap-1.5 rounded-full border px-3 text-[12px] transition-colors duration-300 hover:border-[var(--accent)] hover:text-[var(--accent)]"
+                className="mr-1.5 flex h-11 items-center gap-2 rounded-full border px-4 text-[14px] transition-colors duration-300 hover:border-[var(--accent)] hover:text-[var(--accent)]"
                 style={{
                   borderColor: handsFree ? "var(--accent)" : "var(--line-hi)",
                   color: handsFree ? "var(--accent)" : "var(--muted)",
                 }}
               >
-                <Hand className="h-3 w-3" />
+                <Hand className="h-4 w-4" />
                 Hands-free
               </button>
             </li>
           )}
-          <li>
-            <button
-              type="button"
-              onClick={toggleTheme}
-              aria-label={theme === "dark" ? "Switch to light mode" : "Switch to dark mode"}
-              className="flex h-7 w-7 items-center justify-center rounded-full border border-[var(--line-hi)] text-[var(--muted)] transition-all duration-300 hover:border-[var(--accent)] hover:text-[var(--accent)]"
-            >
-              {theme === "dark" ? (
-                <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-                  <circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M4.93 19.07l1.41-1.41M17.66 6.34l1.41-1.41"/>
-                </svg>
-              ) : (
-                <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-                  <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/>
-                </svg>
-              )}
-            </button>
-          </li>
           <li className="ml-2">
             <a
               href={profile.contact.resume}
               target="_blank"
               rel="noopener noreferrer"
-              className="rounded-full border border-[var(--line-hi)] px-4 py-1.5 text-[13px] text-[var(--text)] transition-all duration-300 hover:border-[var(--accent)] hover:text-[var(--accent)] active:scale-[0.97]"
+              className="flex h-11 items-center rounded-full bg-[var(--signal)] px-5 text-[14.5px] font-semibold text-[var(--on-signal)] transition-colors duration-200 hover:bg-[var(--signal-hi)]"
             >
               Résumé
             </a>
           </li>
         </ul>
 
+        <CommandButton className="ml-auto flex h-11 w-11 items-center justify-center text-[var(--text)] md:hidden" />
         <button
           type="button"
           onClick={() => setOpen((v) => !v)}
           aria-expanded={open}
           aria-label={open ? "Close menu" : "Open menu"}
-          className="flex h-9 w-9 items-center justify-center md:hidden"
+          className="flex h-11 w-11 items-center justify-center md:hidden"
         >
           <span className="relative block h-3 w-5">
             <span
@@ -210,48 +214,31 @@ export function Nav() {
         </button>
       </nav>
 
+      </div>
+
       {open && (
-        <div className="border-t border-[var(--line)] bg-[var(--bg)] md:hidden">
-          <ul className="shell flex flex-col py-3">
+        <div className="card mt-2 !rounded-[22px] !bg-[rgba(8,12,18,0.92)] md:hidden">
+          <ul className="flex flex-col px-6 py-3">
             {LINKS.map((link) => (
               <li key={link.id}>
                 <a
                   href={`#${link.id}`}
                   onClick={() => setOpen(false)}
-                  className="block border-b border-[var(--line)] py-3.5 text-[15px] text-[var(--muted)]"
+                  className="block border-b border-[var(--line)] py-3.5 text-[16.5px] text-[var(--muted)]"
                 >
                   {link.label}
                 </a>
               </li>
             ))}
             <li>
-              <button
-                type="button"
-                onClick={toggleTheme}
-                aria-label={theme === "dark" ? "Switch to light mode" : "Switch to dark mode"}
-                className="flex w-full items-center gap-3 border-b border-[var(--line)] py-3.5 text-[15px] text-[var(--muted)]"
-              >
-                {theme === "dark" ? (
-                  <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-                    <circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M4.93 19.07l1.41-1.41M17.66 6.34l1.41-1.41"/>
-                  </svg>
-                ) : (
-                  <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-                    <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/>
-                  </svg>
-                )}
-                {theme === "dark" ? "Light mode" : "Dark mode"}
-              </button>
-            </li>
-            <li>
               <a
                 href={profile.contact.resume}
                 target="_blank"
                 rel="noopener noreferrer"
                 onClick={() => setOpen(false)}
-                className="block py-3.5 text-[15px] text-[var(--accent)]"
+                className="block py-3.5 text-[16.5px] text-[var(--accent)]"
               >
-                Résumé ↗
+                Résumé
               </a>
             </li>
           </ul>
