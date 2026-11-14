@@ -28,7 +28,7 @@ export function CaseStudy() {
       <Reveal delay={100}>
         <dl className="mt-10 grid gap-x-8 border-y border-[var(--rule)] sm:grid-cols-[1fr_auto_1fr] lg:gap-x-14">
           {caseStudy.headline.map((m, i) => (
-            <div key={m.label} className={`flex flex-col-reverse py-6 ${i ? "border-t border-[var(--rule)] sm:border-t-0" : ""}`}>
+            <div key={m.label} className={`flex flex-col-reverse justify-end py-6 ${i ? "border-t border-[var(--rule)] sm:border-t-0" : ""}`}>
               <dt className="mt-2 text-[15px] leading-snug text-[var(--graphite)]">{m.label}</dt>
               <dd className="readout text-[var(--signal)]">
                 <CountUp value={m.value} />

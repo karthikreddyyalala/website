@@ -581,3 +581,11 @@ Each change was made for a measured reason during the build.
     across the top, "Download résumé" and "Copy email" beneath it.
 26. **Mobile menu** scrolls inside itself when the screen is shorter than the
     menu, and closes when keyboard focus leaves it.
+27. **Nav lamp.** No link is lit while the hero or About is on screen, since
+    neither has a nav link.
+28. **Reveals** start once a 32px strip of a block is on screen, whatever the
+    block's height.
+29. **Fact lines** ("a | b | c") never start a wrapped line with a divider, and
+    a short fact such as "Fortune 500" never breaks in the middle.
+30. **Phone on its side** (under 500px tall): the name is sized from the
+    screen height so the role line shares the first screen.

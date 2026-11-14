@@ -204,8 +204,10 @@ export function PageFx() {
           entry.target.classList.add("is-in");
           reveals.unobserve(entry.target);
         }),
-      // No bottom inset: the last thing on the page could never cross one.
-      { threshold: 0.12 }
+      // A fixed strip, not a share of the block: a tall block must not stay
+      // blank while its top is on screen. Small enough that the last line of
+      // the page (the footer name) can still cross it.
+      { rootMargin: "0px 0px -32px 0px" }
     );
     document.querySelectorAll(".reveal").forEach((el) => reveals.observe(el));
 

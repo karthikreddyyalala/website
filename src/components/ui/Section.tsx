@@ -12,13 +12,18 @@ export function Meta({ text, className = "" }: { text: string; className?: strin
   return (
     <span className={className}>
       <span className="sr-only">{text}</span>
-      <span aria-hidden>
-        {parts.map((part, i) => (
-          // A short fact ("Fortune 500") never breaks in the middle; a long one wraps like ordinary text.
-          <span key={part} className={`${part.length <= 24 ? "inline-block" : ""} ${i ? "ml-3 border-l border-[var(--edge)] pl-3" : ""}`}>
-            {part}
-          </span>
-        ))}
+      {/* Every fact carries a hairline on its left; the list is pulled left by
+          that much and clipped, so a fact that starts a line shows none. A long
+          fact that wraps keeps the same inset on each of its lines (clone). */}
+      <span aria-hidden className="block overflow-x-clip">
+        <span className="-ml-[13px] block">
+          {parts.map((part) => (
+            // A short fact ("Fortune 500") never breaks in the middle; a long one wraps like ordinary text.
+            <span key={part} className={`${part.length <= 24 ? "inline-block" : "box-decoration-clone"} border-l border-[var(--edge)] px-3`}>
+              {part}
+            </span>
+          ))}
+        </span>
       </span>
     </span>
   );

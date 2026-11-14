@@ -23,7 +23,7 @@ export function Hero() {
   const sentences = profile.claim.split(/(?<=\.)\s+/);
 
   return (
-    <section id="top" className="relative flex min-h-[100svh] flex-col justify-center pb-10 pt-28 lg:pt-32">
+    <section id="top" className="relative flex min-h-[100svh] flex-col justify-center pb-10 pt-24 lg:pt-32">
       <div className="shell sheet-grid">
         <div aria-hidden className="rail">
           <div>

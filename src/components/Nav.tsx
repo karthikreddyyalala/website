@@ -68,7 +68,10 @@ export function Nav() {
 
   // The section crossing the middle of the screen is the active one. No scroll listener.
   useEffect(() => {
-    const sections = LINKS.map((l) => document.getElementById(l.id)).filter((el): el is HTMLElement => Boolean(el));
+    // The hero and About have no link: while one of them is on screen, no link is lit.
+    const sections = [...LINKS.map((l) => l.id), "top", "about"]
+      .map((id) => document.getElementById(id))
+      .filter((el): el is HTMLElement => Boolean(el));
     const observer = new IntersectionObserver(
       (entries) => {
         const visible = entries.filter((e) => e.isIntersecting).sort((a, b) => b.intersectionRatio - a.intersectionRatio)[0];
