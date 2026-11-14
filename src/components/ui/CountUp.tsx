@@ -45,7 +45,7 @@ export function CountUp({ value, duration = 1800 }: { value: string; duration?: 
         }
         const start = performance.now();
         const tick = (now: number) => {
-          const t = Math.min((now - start) / duration, 1);
+          const t = Math.min(Math.max((now - start) / duration, 0), 1); // a frame can be stamped before start
           const eased = 1 - Math.pow(1 - t, 4); // fast start, long settle on the last digits
           const scale = 10 ** p.decimals;
           el.textContent = format(p, t === 1 ? p.target : Math.floor(eased * p.target * scale) / scale);
@@ -69,7 +69,8 @@ export function CountUp({ value, duration = 1800 }: { value: string; duration?: 
     <>
       {/* Screen readers get the figure as the content states it, e.g. "$1M+". */}
       <span className="sr-only">{value}</span>
-      <span ref={ref} aria-hidden>
+      {/* As wide as the final figure from the start (the face is monospaced), so nothing beside it moves. */}
+      <span ref={ref} aria-hidden className="inline-block" style={{ minWidth: `${final.length}ch` }}>
         {final}
       </span>
     </>

@@ -82,7 +82,7 @@ export function FigurePoster() {
   return (
     <Frame>
       <div className="flex items-center gap-5 px-6 sm:gap-8">
-        <p className="display-l !text-[clamp(3.25rem,9vw,5.5rem)] text-[var(--signal)]">12%</p>
+        <p className="display-l flex-none !whitespace-nowrap !text-[clamp(3.25rem,9vw,5.5rem)] text-[var(--signal)]">12%</p>
         <div className="mono text-[13px] leading-none text-[var(--ink)]">
           <p className="pb-2.5">LSTM</p>
           <p className="border-t border-[var(--ink)] pt-2.5 text-[var(--graphite)]">linear baseline</p>

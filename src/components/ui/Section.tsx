@@ -14,8 +14,8 @@ export function Meta({ text, className = "" }: { text: string; className?: strin
       <span className="sr-only">{text}</span>
       <span aria-hidden>
         {parts.map((part, i) => (
-          // Inline, so a long run wraps like ordinary text.
-          <span key={part} className={i ? "ml-3 border-l border-[var(--edge)] pl-3" : undefined}>
+          // A short fact ("Fortune 500") never breaks in the middle; a long one wraps like ordinary text.
+          <span key={part} className={`${part.length <= 24 ? "inline-block" : ""} ${i ? "ml-3 border-l border-[var(--edge)] pl-3" : ""}`}>
             {part}
           </span>
         ))}

@@ -283,7 +283,7 @@ export function ThemeToggle({ className = "", label = false }: { className?: str
 
   const next = theme === "light" ? "dark" : "light";
   return (
-    <button type="button" aria-label={`Switch to ${next} theme`} title={`Switch to ${next} theme`} onClick={flip} className={className}>
+    <button type="button" aria-label="Dark theme" aria-pressed={theme === "dark"} title={`Switch to ${next} theme`} onClick={flip} className={className}>
       <span aria-hidden className="relative block h-[17px] w-[17px]">
         <Sun
           className="absolute inset-0 transition-[transform,opacity] duration-500"

@@ -62,7 +62,7 @@ export function Footer() {
 
       <Reveal>
         <div aria-hidden className="shell mt-12 [container-type:inline-size] md:mt-16">
-          <p className="display-xl hidden !text-[calc(100cqw/11.62)] !leading-[0.8] md:block">
+          <p className="display-xl hidden pb-[0.18em] !text-[calc(100cqw/11.62)] !leading-[0.8] md:block">
             {profile.name}
             <span className="text-[var(--signal)]">.</span>
           </p>

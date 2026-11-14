@@ -22,12 +22,13 @@ export function CommandButton({ className = "" }: { className?: string }) {
     <button
       type="button"
       aria-haspopup="dialog"
-      aria-label="Search and jump"
       onClick={() => window.dispatchEvent(new Event(OPEN_EVENT))}
       className={className}
     >
-      <Search />
-      <kbd aria-hidden className="note hidden lg:inline">{keys}</kbd>
+      <Search aria-hidden />
+      <span className="sr-only">Search and jump</span>
+      {/* Fixed width: the shortcut is only known after load and must not move the nav. */}
+      <kbd className="note hidden min-w-[6ch] text-left lg:inline-block">{keys}</kbd>
     </button>
   );
 }
@@ -147,13 +148,14 @@ export function CommandMenu() {
     >
       {used && (
       <div className="panel overflow-hidden shadow-[0_30px_80px_-30px_rgba(0,0,0,0.6)]" onKeyDown={onKeyDown}>
-        <label className="flex items-center gap-3 border-b border-[var(--line)] px-5">
+        <label className="flex items-center gap-3 border-b border-[var(--line)] px-5 focus-within:border-[var(--signal)]">
           <Search aria-hidden className="h-5 w-5 flex-none text-[var(--faint)]" />
           <input
             autoFocus
             role="combobox"
             aria-expanded="true"
             aria-controls="command-list"
+            aria-activedescendant={shown.length ? `command-${active}` : undefined}
             aria-label="Search sections, projects and actions"
             placeholder="Jump to a section, project or action"
             value={query}
@@ -187,6 +189,7 @@ export function CommandMenu() {
                 )}
                 {item.href ? (
                   <a
+                    id={`command-${i}`}
                     role="option"
                     aria-selected={i === active}
                     href={item.href}
@@ -201,6 +204,7 @@ export function CommandMenu() {
                 ) : (
                   <button
                     type="button"
+                    id={`command-${i}`}
                     role="option"
                     aria-selected={i === active}
                     onPointerMove={() => setActive(i)}

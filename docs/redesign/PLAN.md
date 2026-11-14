@@ -521,8 +521,9 @@ Each change was made for a measured reason during the build.
    one-line summary. Initiative 01 is open on load (D4). The three figures are
    server-rendered with their final values and count up only when scripts run.
 5. **Scroll-tied text never drops below AA contrast.** Pipeline step text
-   starts at 0.86 opacity and the About read-along at 0.65, rather than fading in
-   from near zero, so text that has not been "reached" yet is still readable.
+   starts at 0.94 opacity (the amber branch chips in the light theme are the
+   tightest pair and need that much) and the About read-along at 0.65, rather
+   than fading in from near zero. The slide and the drawn line carry the motion.
 6. **Brand marks in Stack** come from one static SVG sprite
    (`/stack-icons.svg`), referenced with `<use>`, instead of inline SVG per tag.
 7. **Full strings for screen readers** are kept as visually hidden text next
@@ -548,3 +549,20 @@ Each change was made for a measured reason during the build.
 15. **Hands-free control** could not be exercised end to end in the build
     sandbox, which blocks the MediaPipe download; its code is unchanged apart
     from colours.
+16. **Theme switch state.** The button's accessible name is "Dark theme" with
+    `aria-pressed` (true in the dark theme), instead of a name that changes
+    between "Switch to light theme" and "Switch to dark theme" as section 9
+    listed. Those two phrases remain as the tooltip.
+17. **Stack brand colours are a hover decoration only.** The tiles hold no
+    controls, so there is nothing to focus, and the colour carries no
+    information: every name is always readable in ink.
+18. **Media slots are 16:9**, the shape of the two demo videos, not 16:10.
+19. **Phones.** Inside an open initiative the order is summary, outcomes,
+    tags, aside, decisions, then the pipeline (the wireframe drew the pipeline
+    first). The Path timeline has no progress line below 768px.
+20. **Size targets missed, still better than baseline.** About 1,630 elements
+    (target under 1,400; baseline 1,843) and about 331 kB of HTML (target under
+    320 kB; baseline 527 kB).
+21. **Command button.** Its name is the visually hidden text "Search and
+    jump" followed by the visible shortcut, so the visible text is part of the
+    accessible name.

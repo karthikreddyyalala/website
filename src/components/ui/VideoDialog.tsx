@@ -114,12 +114,12 @@ export function VideoPreview(video: Video) {
         />
         <span
           aria-hidden
-          className={`absolute left-1/2 top-1/2 flex h-16 w-16 -translate-x-1/2 -translate-y-1/2 items-center justify-center rounded-full transition-[transform,opacity] duration-300 ease-out group-hover:scale-110 group-active:scale-95 md:h-[72px] md:w-[72px] ${
+          className={`absolute left-1/2 top-1/2 flex h-12 w-12 -translate-x-1/2 -translate-y-[62%] sm:h-16 sm:w-16 sm:-translate-y-1/2 items-center justify-center rounded-full transition-[transform,opacity] duration-300 ease-out group-hover:scale-110 group-active:scale-95 md:h-[72px] md:w-[72px] ${
             playing ? "opacity-0" : "opacity-100"
           }`}
           style={{ background: "var(--accent)", color: "var(--on-accent)", boxShadow: "0 8px 30px rgba(0,0,0,0.35)" }}
         >
-          <Play className="ml-1 h-6 w-6" fill="currentColor" strokeWidth={0} />
+          <Play className="ml-0.5 h-5 w-5 sm:ml-1 sm:h-6 sm:w-6" fill="currentColor" strokeWidth={0} />
         </span>
         <span className="absolute inset-x-0 bottom-0 flex items-end justify-between gap-4 p-4 md:p-5">
           <span>

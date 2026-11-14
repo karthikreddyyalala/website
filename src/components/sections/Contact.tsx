@@ -29,7 +29,7 @@ export function Contact() {
   return (
     <Sheet id="contact" no="07" name="Contact">
       <div className="grid gap-10 lg:grid-cols-12 lg:gap-12">
-        <div className="lg:col-span-5">
+        <div className="min-w-0 lg:col-span-5">
           <Reveal>
             <h2 className="display-l">
               Let&apos;s talk about
@@ -47,7 +47,7 @@ export function Contact() {
           )}
         </div>
 
-        <Reveal delay={120} className="lg:col-span-7">
+        <Reveal delay={120} className="min-w-0 lg:col-span-7">
           <div className="panel ticks">
             <ul>
               {CHANNELS.map((c) => (
@@ -56,17 +56,17 @@ export function Contact() {
                     href={c.href}
                     target={c.href.startsWith("http") ? "_blank" : undefined}
                     rel={c.href.startsWith("http") ? "noopener noreferrer" : undefined}
-                    className="group flex min-h-[64px] items-center gap-4 px-5 py-3 transition-colors duration-200 hover:bg-[color-mix(in_srgb,var(--ink)_5%,transparent)] md:px-6"
+                    className="group flex min-h-[64px] items-center gap-3 px-4 py-3 sm:gap-4 sm:px-5 transition-colors duration-200 hover:bg-[color-mix(in_srgb,var(--ink)_5%,transparent)] md:px-6"
                   >
                     <c.Icon aria-hidden className="h-[18px] w-[18px] flex-none text-[var(--graphite)] transition-transform duration-300 group-hover:-translate-y-0.5 group-hover:text-[var(--signal)]" />
-                    <span className="note w-[72px] flex-none">{c.label}</span>
-                    <span className="ml-auto min-w-0 break-words text-right text-[15px] font-semibold text-[var(--ink)] sm:text-[17px]">{c.value}</span>
+                    <span className="note flex-none sm:w-[72px]">{c.label}</span>
+                    <span className="ml-auto min-w-0 text-right text-[14.5px] [overflow-wrap:anywhere] font-semibold text-[var(--ink)] sm:text-[17px]">{c.value}</span>
                   </a>
                 </li>
               ))}
             </ul>
 
-            <div className="flex flex-wrap gap-3 p-5 md:p-6">
+            <div className="flex flex-wrap gap-3 p-4 sm:p-5 md:p-6">
               <a href={`mailto:${contact.email}`} className="btn btn-signal w-full sm:w-auto" style={{ "--shine": "var(--ink)" } as CSSProperties}>
                 <span aria-hidden className="shine" />
                 <Mail aria-hidden />

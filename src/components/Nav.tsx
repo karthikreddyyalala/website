@@ -47,7 +47,8 @@ export function Nav() {
     return () => window.removeEventListener("resize", place);
   }, [active, hovered]);
 
-  const [hasCamera, setHasCamera] = useState(false);
+  // Assumed present until checked, so the button's space is there from the first paint.
+  const [hasCamera, setHasCamera] = useState(true);
   const [handsFree, setHandsFree] = useState(false);
   const [cameraMsg, setCameraMsg] = useState("");
 
@@ -79,24 +80,31 @@ export function Nav() {
     return () => observer.disconnect();
   }, []);
 
-  // Escape closes the mobile sheet.
+  const menuButton = useRef<HTMLButtonElement>(null);
+  const header = useRef<HTMLElement>(null);
+
+  // While the mobile sheet is open: Escape closes it and hands focus back to
+  // its button, a tap outside closes it, and the page behind does not scroll.
   useEffect(() => {
     if (!open) return;
-    const onKey = (e: KeyboardEvent) => e.key === "Escape" && setOpen(false);
+    const onKey = (e: KeyboardEvent) => {
+      if (e.key !== "Escape") return;
+      setOpen(false);
+      menuButton.current?.focus();
+    };
+    const onDown = (e: PointerEvent) => !header.current?.contains(e.target as Node) && setOpen(false);
     window.addEventListener("keydown", onKey);
-    return () => window.removeEventListener("keydown", onKey);
-  }, [open]);
-
-  // Lock body scroll while the mobile sheet is open.
-  useEffect(() => {
-    document.body.style.overflow = open ? "hidden" : "";
+    document.addEventListener("pointerdown", onDown);
+    document.documentElement.style.overflow = "hidden";
     return () => {
-      document.body.style.overflow = "";
+      window.removeEventListener("keydown", onKey);
+      document.removeEventListener("pointerdown", onDown);
+      document.documentElement.style.overflow = "";
     };
   }, [open]);
 
   return (
-    <header className="fixed inset-x-0 top-0 z-50 px-3 pt-3">
+    <header ref={header} className="fixed inset-x-0 top-0 z-50 px-3 pt-3">
       <div className="nav-pill relative mx-auto max-w-[1120px]">
         <nav aria-label="Primary" className="flex h-[56px] items-center pl-5 pr-1.5 md:pl-6">
           <a href="#top" className="title flex min-h-[44px] items-center !text-[18px] text-[var(--ink)]">
@@ -167,6 +175,7 @@ export function Nav() {
               Résumé
             </a>
             <button
+              ref={menuButton}
               type="button"
               onClick={() => setOpen((v) => !v)}
               aria-expanded={open}
