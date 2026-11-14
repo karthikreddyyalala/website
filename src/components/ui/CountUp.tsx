@@ -34,10 +34,19 @@ export function CountUp({ value, duration = 1800 }: { value: string; duration?: 
     if (!el || !p || window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
 
     let raf = 0;
-    el.textContent = format(p, 0);
+    let armed = false;
     const observer = new IntersectionObserver(
       ([entry]) => {
-        if (!entry.isIntersecting) return;
+        if (!armed) {
+          // First report. Already on screen (a reload, or a link straight to this
+          // section): the visitor has seen the figure, so it stays as it is.
+          // Otherwise it drops to zero now, out of sight, and waits.
+          if (entry.isIntersecting) return observer.disconnect();
+          armed = true;
+          el.textContent = format(p, 0);
+          return;
+        }
+        if (entry.intersectionRatio < 0.6) return;
         observer.disconnect();
         if (document.documentElement.dataset.motion === "off") {
           el.textContent = format(p, p.target);
@@ -45,7 +54,7 @@ export function CountUp({ value, duration = 1800 }: { value: string; duration?: 
         }
         const start = performance.now();
         const tick = (now: number) => {
-          const t = Math.min((now - start) / duration, 1);
+          const t = Math.min(Math.max((now - start) / duration, 0), 1); // a frame can be stamped before start
           const eased = 1 - Math.pow(1 - t, 4); // fast start, long settle on the last digits
           const scale = 10 ** p.decimals;
           el.textContent = format(p, t === 1 ? p.target : Math.floor(eased * p.target * scale) / scale);
@@ -55,7 +64,7 @@ export function CountUp({ value, duration = 1800 }: { value: string; duration?: 
         };
         raf = requestAnimationFrame(tick);
       },
-      { threshold: 0.6 }
+      { threshold: [0, 0.6] }
     );
     observer.observe(el);
     return () => {
@@ -67,8 +76,10 @@ export function CountUp({ value, duration = 1800 }: { value: string; duration?: 
 
   return (
     <>
-      <span className="sr-only">{final}</span>
-      <span ref={ref} aria-hidden>
+      {/* Screen readers get the figure as the content states it, e.g. "$1M+". */}
+      <span className="sr-only">{value}</span>
+      {/* As wide as the final figure from the start (the face is monospaced), so nothing beside it moves. */}
+      <span ref={ref} aria-hidden className="inline-block" style={{ minWidth: `${final.length}ch` }}>
         {final}
       </span>
     </>

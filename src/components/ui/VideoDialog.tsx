@@ -47,8 +47,10 @@ export function VideoPreview(video: Video) {
 
   // Browsers only allow sound after the visitor has clicked, tapped or pressed a key
   // somewhere on the page (a hover doesn't count). Until then the preview plays muted.
+  // A preview started by keyboard focus is always silent: sound would talk over a screen reader.
+  const quiet = useRef(false);
   const play = (v: HTMLVideoElement) => {
-    v.muted = navigator.userActivation ? !navigator.userActivation.hasBeenActive : false;
+    v.muted = quiet.current || (navigator.userActivation ? !navigator.userActivation.hasBeenActive : false);
     v.play().catch((e: DOMException) => {
       if (e.name !== "NotAllowedError" || !hovering.current) return; // paused mid-load: fine
       v.muted = true;
@@ -61,8 +63,9 @@ export function VideoPreview(video: Video) {
     if (armed && hovering.current && ref.current) play(ref.current);
   }, [armed]);
 
-  const start = () => {
+  const start = (e: { type: string }) => {
     if (!canPreview()) return;
+    quiet.current = e.type === "focus";
     hovering.current = true;
     if (ref.current) play(ref.current);
     else setArmed(true);
@@ -79,10 +82,10 @@ export function VideoPreview(video: Video) {
   };
 
   return (
-    <div onPointerEnter={start} onPointerLeave={stop} onClickCapture={stop}>
+    <div onPointerEnter={start} onPointerLeave={stop} onFocus={start} onBlur={stop} onClickCapture={stop}>
       <VideoTrigger
         {...video}
-        className="group relative block aspect-video w-full overflow-hidden rounded-[12px] border border-[var(--line)] bg-[var(--surface)] text-left transition-colors duration-300 hover:border-[var(--line-hi)]"
+        className="group relative block aspect-video w-full overflow-hidden rounded-[3px] border border-[var(--rule)] bg-[var(--sheet)] text-left"
       >
         <Image
           src={video.poster}
@@ -114,12 +117,12 @@ export function VideoPreview(video: Video) {
         />
         <span
           aria-hidden
-          className={`absolute left-1/2 top-1/2 flex h-16 w-16 -translate-x-1/2 -translate-y-1/2 items-center justify-center rounded-full transition-[transform,opacity] duration-300 ease-out group-hover:scale-110 group-active:scale-95 md:h-[72px] md:w-[72px] ${
+          className={`absolute left-1/2 top-1/2 flex h-12 w-12 -translate-x-1/2 -translate-y-[62%] sm:h-16 sm:w-16 sm:-translate-y-1/2 items-center justify-center rounded-full transition-[transform,opacity] duration-300 ease-out group-hover:scale-110 group-active:scale-95 md:h-[72px] md:w-[72px] ${
             playing ? "opacity-0" : "opacity-100"
           }`}
           style={{ background: "var(--accent)", color: "var(--on-accent)", boxShadow: "0 8px 30px rgba(0,0,0,0.35)" }}
         >
-          <Play className="ml-1 h-6 w-6" fill="currentColor" strokeWidth={0} />
+          <Play className="ml-0.5 h-5 w-5 sm:ml-1 sm:h-6 sm:w-6" fill="currentColor" strokeWidth={0} />
         </span>
         <span className="absolute inset-x-0 bottom-0 flex items-end justify-between gap-4 p-4 md:p-5">
           <span>
@@ -159,7 +162,7 @@ export function VideoDialog() {
   return (
     <dialog
       ref={ref}
-      data-lenis-prevent
+     
       aria-label={video ? video.title : "Video"}
       onClose={onClose}
       onClick={(e) => e.target === e.currentTarget && ref.current?.close()}
@@ -178,7 +181,7 @@ export function VideoDialog() {
                 onClick={() => ref.current?.close()}
                 aria-label="Close video"
                 autoFocus
-                className="flex h-10 w-10 items-center justify-center rounded-full border border-white/20 text-white transition-colors duration-200 hover:border-[var(--accent)] hover:text-[var(--accent)]"
+                className="flex h-10 w-10 items-center justify-center rounded-full border border-white/20 text-white focus-visible:[outline-offset:-2px] transition-colors duration-200 hover:border-[var(--accent)] hover:text-[var(--accent)]"
               >
                 <X className="h-[18px] w-[18px]" />
               </button>

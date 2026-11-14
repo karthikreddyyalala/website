@@ -1,0 +1,7 @@
+import type { MetadataRoute } from "next";
+import { SITE } from "@/lib/site";
+
+// One page; its sections are anchors, not separate URLs.
+export default function sitemap(): MetadataRoute.Sitemap {
+  return [{ url: SITE, lastModified: new Date(), changeFrequency: "monthly", priority: 1 }];
+}

@@ -22,12 +22,13 @@ export function CommandButton({ className = "" }: { className?: string }) {
     <button
       type="button"
       aria-haspopup="dialog"
-      aria-label="Search and jump"
       onClick={() => window.dispatchEvent(new Event(OPEN_EVENT))}
       className={className}
     >
-      <Search className="h-4 w-4" />
-      <kbd aria-hidden className="mono hidden text-[12.5px] text-[var(--faint)] lg:inline">{keys}</kbd>
+      <Search aria-hidden />
+      <span className="sr-only">Search and jump</span>
+      {/* Fixed width: the shortcut is only known after load and must not move the nav. */}
+      <kbd className="note hidden min-w-[6ch] text-left lg:inline-block">{keys}</kbd>
     </button>
   );
 }
@@ -43,6 +44,8 @@ export function CommandMenu() {
   const [query, setQuery] = useState("");
   const [active, setActive] = useState(0);
   const [copied, setCopied] = useState(false);
+  // The list is not rendered until the menu is first opened: twenty rows nobody can see cost nothing at load.
+  const [used, setUsed] = useState(false);
 
   const items = useMemo<Item[]>(
     () => [
@@ -93,6 +96,7 @@ export function CommandMenu() {
       setActive(0);
       setCopied(false);
       if (dialog.current?.open) return;
+      setUsed(true);
       dialog.current?.showModal();
       play("open");
     };
@@ -136,20 +140,22 @@ export function CommandMenu() {
   return (
     <dialog
       ref={dialog}
-      data-lenis-prevent
+     
       aria-label="Command menu"
       onClose={() => play("close")}
       onClick={(e) => e.target === e.currentTarget && dialog.current?.close()}
       className="command-menu m-auto mt-[14vh] w-[min(620px,calc(100vw-24px))] max-w-none bg-transparent p-0 text-[var(--text)]"
     >
-      <div className="card overflow-hidden !bg-[rgba(16,16,18,0.86)]" onKeyDown={onKeyDown}>
-        <label className="flex items-center gap-3 border-b border-[var(--line)] px-5">
+      {used && (
+      <div className="panel overflow-hidden shadow-[0_30px_80px_-30px_rgba(0,0,0,0.6)]" onKeyDown={onKeyDown}>
+        <label className="flex items-center gap-3 border-b border-[var(--line)] px-5 focus-within:border-[var(--signal)]">
           <Search aria-hidden className="h-5 w-5 flex-none text-[var(--faint)]" />
           <input
             autoFocus
             role="combobox"
             aria-expanded="true"
             aria-controls="command-list"
+            aria-activedescendant={shown.length ? `command-${active}` : undefined}
             aria-label="Search sections, projects and actions"
             placeholder="Jump to a section, project or action"
             value={query}
@@ -168,7 +174,7 @@ export function CommandMenu() {
           {shown.length === 0 && <p className="px-3 py-8 text-center text-[15px] text-[var(--muted)]">Nothing matches that.</p>}
           {shown.map((item, i) => {
             const heading = item.group !== lastGroup ? (lastGroup = item.group) : null;
-            const row = "flex min-h-[46px] w-full items-center gap-3 rounded-[12px] px-3 text-left text-[15px] transition-colors duration-150 aria-selected:bg-white/10";
+            const row = "flex min-h-[46px] w-full items-center gap-3 rounded-[3px] px-3 text-left text-[15px] transition-colors duration-150 aria-selected:bg-[color-mix(in_srgb,var(--ink)_10%,transparent)] aria-selected:shadow-[inset_3px_0_0_var(--signal)]";
             const body = (
               <>
                 <item.Icon aria-hidden className="h-4 w-4 flex-none text-[var(--faint)]" />
@@ -183,6 +189,7 @@ export function CommandMenu() {
                 )}
                 {item.href ? (
                   <a
+                    id={`command-${i}`}
                     role="option"
                     aria-selected={i === active}
                     href={item.href}
@@ -197,6 +204,7 @@ export function CommandMenu() {
                 ) : (
                   <button
                     type="button"
+                    id={`command-${i}`}
                     role="option"
                     aria-selected={i === active}
                     onPointerMove={() => setActive(i)}
@@ -217,6 +225,7 @@ export function CommandMenu() {
           <span>esc close</span>
         </p>
       </div>
+      )}
     </dialog>
   );
 }
