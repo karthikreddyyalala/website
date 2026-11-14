@@ -34,10 +34,19 @@ export function CountUp({ value, duration = 1800 }: { value: string; duration?: 
     if (!el || !p || window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
 
     let raf = 0;
-    el.textContent = format(p, 0);
+    let armed = false;
     const observer = new IntersectionObserver(
       ([entry]) => {
-        if (!entry.isIntersecting) return;
+        if (!armed) {
+          // First report. Already on screen (a reload, or a link straight to this
+          // section): the visitor has seen the figure, so it stays as it is.
+          // Otherwise it drops to zero now, out of sight, and waits.
+          if (entry.isIntersecting) return observer.disconnect();
+          armed = true;
+          el.textContent = format(p, 0);
+          return;
+        }
+        if (entry.intersectionRatio < 0.6) return;
         observer.disconnect();
         if (document.documentElement.dataset.motion === "off") {
           el.textContent = format(p, p.target);
@@ -55,7 +64,7 @@ export function CountUp({ value, duration = 1800 }: { value: string; duration?: 
         };
         raf = requestAnimationFrame(tick);
       },
-      { threshold: 0.6 }
+      { threshold: [0, 0.6] }
     );
     observer.observe(el);
     return () => {

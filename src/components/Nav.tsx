@@ -104,7 +104,12 @@ export function Nav() {
   }, [open]);
 
   return (
-    <header ref={header} className="fixed inset-x-0 top-0 z-50 px-3 pt-3">
+    <header
+      ref={header}
+      // Tabbing past the last item closes the sheet, so focus is never behind it.
+      onBlur={(e) => open && e.relatedTarget && !e.currentTarget.contains(e.relatedTarget) && setOpen(false)}
+      className="fixed inset-x-0 top-0 z-50 px-3 pt-3"
+    >
       <div className="nav-pill relative mx-auto max-w-[1120px]">
         <nav aria-label="Primary" className="flex h-[56px] items-center pl-5 pr-1.5 md:pl-6">
           <a href="#top" className="title flex min-h-[44px] items-center !text-[18px] text-[var(--ink)]">
@@ -198,7 +203,7 @@ export function Nav() {
       </div>
 
       {open && (
-        <div className="panel unfold mt-2 md:hidden">
+        <div className="panel unfold mt-2 max-h-[calc(100svh-88px)] overflow-y-auto overscroll-contain md:hidden">
           <ul className="flex flex-col px-5 py-2">
             {LINKS.map((link) => (
               <li key={link.id}>

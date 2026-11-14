@@ -29,9 +29,9 @@ export function Contact() {
   return (
     <Sheet id="contact" no="07" name="Contact">
       <div className="grid gap-10 lg:grid-cols-12 lg:gap-12">
-        <div className="min-w-0 lg:col-span-5">
+        <div className="min-w-0 lg:col-span-6">
           <Reveal>
-            <h2 className="display-l">
+            <h2 className="display-l lg:!text-[min(3.6vw,3.25rem)]">
               Let&apos;s talk about
                what you&apos;re building.
             </h2>
@@ -47,7 +47,7 @@ export function Contact() {
           )}
         </div>
 
-        <Reveal delay={120} className="min-w-0 lg:col-span-7">
+        <Reveal delay={120} className="min-w-0 lg:col-span-6">
           <div className="panel ticks">
             <ul>
               {CHANNELS.map((c) => (
@@ -58,25 +58,25 @@ export function Contact() {
                     rel={c.href.startsWith("http") ? "noopener noreferrer" : undefined}
                     className="group flex min-h-[64px] items-center gap-3 px-4 py-3 sm:gap-4 sm:px-5 transition-colors duration-200 hover:bg-[color-mix(in_srgb,var(--ink)_5%,transparent)] md:px-6"
                   >
-                    <c.Icon aria-hidden className="h-[18px] w-[18px] flex-none text-[var(--graphite)] transition-transform duration-300 group-hover:-translate-y-0.5 group-hover:text-[var(--signal)]" />
+                    <c.Icon aria-hidden className="h-[18px] w-[18px] flex-none max-[359px]:hidden text-[var(--graphite)] transition-transform duration-300 group-hover:-translate-y-0.5 group-hover:text-[var(--signal)]" />
                     <span className="note flex-none sm:w-[72px]">{c.label}</span>
-                    <span className="ml-auto min-w-0 text-right text-[14.5px] [overflow-wrap:anywhere] font-semibold text-[var(--ink)] sm:text-[17px]">{c.value}</span>
+                    <span className="ml-auto min-w-0 text-right text-[clamp(12.5px,3.9vw,14.5px)] [overflow-wrap:anywhere] font-semibold text-[var(--ink)] sm:text-[17px]">{c.value}</span>
                   </a>
                 </li>
               ))}
             </ul>
 
-            <div className="flex flex-wrap gap-3 p-4 sm:p-5 md:p-6">
-              <a href={`mailto:${contact.email}`} className="btn btn-signal w-full sm:w-auto" style={{ "--shine": "var(--ink)" } as CSSProperties}>
+            <div className="grid gap-3 p-4 sm:grid-cols-2 sm:p-5 md:p-6">
+              <a href={`mailto:${contact.email}`} className="btn btn-signal w-full sm:col-span-2" style={{ "--shine": "var(--ink)" } as CSSProperties}>
                 <span aria-hidden className="shine" />
                 <Mail aria-hidden />
                 Send an email
               </a>
-              <a href={contact.resume} target="_blank" rel="noopener noreferrer" className="btn btn-line w-full sm:w-auto">
+              <a href={contact.resume} target="_blank" rel="noopener noreferrer" className="btn btn-line w-full">
                 <Download aria-hidden />
                 Download résumé
               </a>
-              <CopyButton text={contact.email} label="Copy email" className="btn btn-line w-full sm:w-auto" />
+              <CopyButton text={contact.email} label="Copy email" className="btn btn-line w-full" />
             </div>
           </div>
         </Reveal>

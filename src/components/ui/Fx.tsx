@@ -40,9 +40,13 @@ function ScrollTied() {
       const line = window.innerHeight * 0.78;
       onScreen.forEach((el) => {
         const box = el.getBoundingClientRect();
-        const p = clamp01((line - box.top) / Math.max(box.height, 1));
+        const pipe = el.dataset.tied === "pipe";
+        // From 1024px a pipeline pins 96px from the top and stops moving, so it
+        // has to be complete by then, however short the screen is.
+        const span = pipe && window.innerWidth >= 1024 ? Math.min(box.height, line - 130) : box.height;
+        const p = clamp01((line - box.top) / Math.max(span, 1));
         el.style.setProperty("--p", p.toFixed(3));
-        if (el.dataset.tied === "pipe") {
+        if (pipe) {
           const steps = el.querySelectorAll<HTMLElement>(".pipe-step");
           const active = Math.min(steps.length - 1, Math.floor(p * steps.length - 0.001));
           steps.forEach((step, i) => step.toggleAttribute("data-active", p > 0 && i === active));

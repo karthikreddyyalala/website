@@ -24,7 +24,7 @@ export default function Home() {
 
       <Nav />
 
-      <main id="main">
+      <main id="main" tabIndex={-1} className="outline-none">
         <Hero />
         <CaseStudy />
         <Work />

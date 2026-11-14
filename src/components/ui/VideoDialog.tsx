@@ -47,8 +47,10 @@ export function VideoPreview(video: Video) {
 
   // Browsers only allow sound after the visitor has clicked, tapped or pressed a key
   // somewhere on the page (a hover doesn't count). Until then the preview plays muted.
+  // A preview started by keyboard focus is always silent: sound would talk over a screen reader.
+  const quiet = useRef(false);
   const play = (v: HTMLVideoElement) => {
-    v.muted = navigator.userActivation ? !navigator.userActivation.hasBeenActive : false;
+    v.muted = quiet.current || (navigator.userActivation ? !navigator.userActivation.hasBeenActive : false);
     v.play().catch((e: DOMException) => {
       if (e.name !== "NotAllowedError" || !hovering.current) return; // paused mid-load: fine
       v.muted = true;
@@ -61,8 +63,9 @@ export function VideoPreview(video: Video) {
     if (armed && hovering.current && ref.current) play(ref.current);
   }, [armed]);
 
-  const start = () => {
+  const start = (e: { type: string }) => {
     if (!canPreview()) return;
+    quiet.current = e.type === "focus";
     hovering.current = true;
     if (ref.current) play(ref.current);
     else setArmed(true);

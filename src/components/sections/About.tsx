@@ -55,7 +55,7 @@ export function About() {
           <Reveal delay={300}>
             <div className="panel mt-10 p-5 md:p-6">
               <h3 className="flex items-baseline gap-3 text-[17px] font-bold text-[var(--ink)]">
-                Currently
+                Currently{" "}
                 <span className="note font-normal">{profile.currently.updated}</span>
               </h3>
               <p className="prose-body mt-3 text-[16px]">{profile.currently.text}</p>

@@ -15,7 +15,7 @@ function Frame({ children }: { children: ReactNode }) {
   );
 }
 
-const label = { fontFamily: "var(--font-code), monospace", fontSize: 13, fill: "var(--ink)" } as const;
+const label = { fontFamily: "var(--font-code), monospace", fontSize: 17, fill: "var(--ink)" } as const;
 const line = { fill: "none", stroke: "var(--ink)", strokeWidth: 1.3 } as const;
 
 /** Deep Research Agent Team: "A planner, executor, and validator loop". */
@@ -31,7 +31,7 @@ export function LoopPoster() {
         ].map((n, i) => (
           <g key={n.name}>
             <rect x={n.x} y={96} width={120} height={46} rx={3} {...line} stroke={i === 2 ? "var(--signal)" : "var(--ink)"} />
-            <text x={n.x + 60} y={124} textAnchor="middle" {...label} fill={i === 2 ? "var(--signal)" : "var(--ink)"}>
+            <text x={n.x + 60} y={125} textAnchor="middle" {...label} fill={i === 2 ? "var(--signal)" : "var(--ink)"}>
               {n.name}
             </text>
           </g>
@@ -62,14 +62,14 @@ export function DeskPoster() {
         {agents.map((a) => (
           <g key={a.name}>
             <path d={`M${a.x} ${a.y}L240 135`} {...line} strokeDasharray="4 5" />
-            <rect x={a.x - 62} y={a.y - 21} width={124} height={42} rx={3} fill="var(--sheet)" stroke="var(--ink)" strokeWidth={1.3} />
-            <text x={a.x} y={a.y + 5} textAnchor="middle" {...label}>
+            <rect x={a.x - 74} y={a.y - 23} width={148} height={46} rx={3} fill="var(--sheet)" stroke="var(--ink)" strokeWidth={1.3} />
+            <text x={a.x} y={a.y + 6} textAnchor="middle" {...label}>
               {a.name}
             </text>
           </g>
         ))}
-        <circle cx="240" cy="135" r="34" fill="var(--sheet)" stroke="var(--signal)" strokeWidth={1.3} />
-        <text x="240" y="140" textAnchor="middle" {...label} fill="var(--signal)">
+        <circle cx="240" cy="135" r="50" fill="var(--sheet)" stroke="var(--signal)" strokeWidth={1.3} />
+        <text x="240" y="141" textAnchor="middle" {...label} fill="var(--signal)">
           decision
         </text>
       </svg>

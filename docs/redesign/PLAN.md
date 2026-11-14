@@ -566,3 +566,18 @@ Each change was made for a measured reason during the build.
 21. **Command button.** Its name is the visually hidden text "Search and
     jump" followed by the visible shortcut, so the visible text is part of the
     accessible name.
+22. **Pipeline branch notes for screen readers** are the content strings as
+    written (for example "blocked → rephrase"), kept whole as visually hidden
+    text. The old site read the arrow as a hidden "leads to"; that phrase was
+    dropped so the content string could stay verbatim in the page. For the owner
+    to decide.
+23. **Keyboard focus on a video poster** starts the silent preview. Sound in a
+    preview needs a pointer hover after the visitor has interacted with the
+    page, as before.
+24. **A figure already on screen when the page loads** (a reload or a link
+    straight to the Avis section) stays at its final value and does not count.
+25. **Contact** is an even 6/6 split from 1024px with the heading sized to its
+    column, and the three actions sit in a two-column block: "Send an email"
+    across the top, "Download résumé" and "Copy email" beneath it.
+26. **Mobile menu** scrolls inside itself when the screen is shorter than the
+    menu, and closes when keyboard focus leaves it.

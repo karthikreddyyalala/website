@@ -174,7 +174,7 @@ export function CommandMenu() {
           {shown.length === 0 && <p className="px-3 py-8 text-center text-[15px] text-[var(--muted)]">Nothing matches that.</p>}
           {shown.map((item, i) => {
             const heading = item.group !== lastGroup ? (lastGroup = item.group) : null;
-            const row = "flex min-h-[46px] w-full items-center gap-3 rounded-[3px] px-3 text-left text-[15px] transition-colors duration-150 aria-selected:bg-[color-mix(in_srgb,var(--ink)_9%,transparent)]";
+            const row = "flex min-h-[46px] w-full items-center gap-3 rounded-[3px] px-3 text-left text-[15px] transition-colors duration-150 aria-selected:bg-[color-mix(in_srgb,var(--ink)_10%,transparent)] aria-selected:shadow-[inset_3px_0_0_var(--signal)]";
             const body = (
               <>
                 <item.Icon aria-hidden className="h-4 w-4 flex-none text-[var(--faint)]" />
