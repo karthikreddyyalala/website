@@ -14,7 +14,7 @@ default I will follow unless you say otherwise.
 
 | # | Finding | My default | Say this to change it |
 |---|---|---|---|
-| D1 | **21st is unreachable from here.** No 21st MCP is connected, `API_KEY_21ST` is not set, and the network policy blocks `21st.dev`, `magicui.design`, `ui.aceternity.com` and Fontshare. GitHub, npm and Google Fonts work. | Use the open-source originals on GitHub where they exist (Magic UI) and build the rest myself. Zero 21st retrievals. I have sent you one card asking for a 21st API key (saving it also allows the `21st.dev` host). If you save one, I will use the two retrievals listed in section 5. | Save a key on the card, or dismiss it. |
+| D1 | **21st: no MCP, but the CLI now works.** No 21st MCP is connected. After you saved a key on the card, the 21st CLI can search and retrieve. `21st usage` reports the free tier with **2 of 2 retrievals left today**. Search is free and I have spent no retrievals. `magicui.design`, `ui.aceternity.com` and Fontshare are still blocked by the network policy; GitHub, npm and Google Fonts work. | Spend the two retrievals on the two components that exist only on 21st (section 5). Take Magic UI components from their open-source repository on GitHub. Build the rest myself. | Name different components for the two retrievals. |
 | D2 | **Cabinet Grotesk and Satoshi come from Fontshare**, which is blocked here, and their licence does not allow redistributing the font files, which committing them to a public repo would do. | **Archivo** (variable, width and weight axes, open licence) through `next/font/google`. In the specimen it is the most confident of the five I rendered. | "Use Cabinet Grotesk" and send me the files, or pick another row from the specimen. |
 | D3 | **`deep-research-team.webp` is an AI-generated picture**, not a screenshot. It has garbled labels ("SYNTVESTZER", "SWC MAE3YER") and an image-generator watermark in the corner. Your brief also says "do not invent screenshots". A developer jury will spot it. | Give Deep Research a diagram poster (planner, executors, validator loop) like the other two media-less projects, and leave the image unused. | "Use the image". |
 | D4 | **Goals 2 and 5f pull against each other.** The signature moment is the pipelines drawing on scroll, but 5f puts pipelines behind disclosure. | Initiative 01 is open by default and carries the scroll-drawn pipeline. Initiatives 02 to 04 start as summary rows and open on click; their pipelines draw when opened. | "All four open" or "all four closed". |
@@ -307,22 +307,23 @@ Same entries, same actions, same keys. Restyled as a matte sheet with rules.
 
 ## 5. Component map
 
-Routes: **21st** = retrieved through 21st, **OSS** = taken from the open-source
-original, **Custom** = built here. Because of D1, nothing is planned as a 21st
-retrieval. Everything is restyled to the tokens above; nothing ships as pasted.
+Routes: **21st** = retrieved through the 21st CLI, **OSS** = taken from the
+open-source original, **Custom** = built here. Two components are 21st
+retrievals (D1). Everything is restyled to the tokens above; nothing ships as
+pasted.
 
 | Section | Shortlist pick | What I will build | Route | Why |
 |---|---|---|---|---|
-| Nav | Tubelight Navbar (ayushmxxn) | Floating pill; a short lit "lamp" bar slides to the active section with a spring | Custom, adapting the existing sliding pill | Only on 21st, which is blocked |
-| Theme toggle | Theme Toggle (ayushmxxn) | Sun/moon button that rotates and swaps; the page changes with a circular wipe from the button (View Transitions), instant where unsupported | Custom | Blocked; small |
+| Nav | Tubelight Navbar (ayushmxxn, 21st id 1432) | Floating pill; a short lit "lamp" bar slides to the active section with a spring. Merged into the existing nav so the command menu, hand control and mobile sheet keep working | **21st retrieval 1**, then restyled | Exists only on 21st; the most specific interaction on the shortlist |
+| Theme toggle | Theme Toggle (ayushmxxn) | Sun/moon button that rotates and swaps; the page changes with a circular wipe from the button (View Transitions), instant where unsupported | Custom | Small enough to build; saves a retrieval |
 | Hero focal piece | Shader Animation / Paper shader / Animated Shader Background | "Signal field": a fragment shader drawing routed schematic lines (a Truchet tiling) with packets moving along them, in Ink and Signal | Custom, raw WebGL, no library | three.js would add a large library for one effect, against a first-load budget of 143 kB; a small hand-written shader adds no dependency |
 | Hero text | Blur Fade (Magic UI) | Staged line reveal with covers that slide off | Custom CSS | Blur Fade animates `filter: blur`, which the brief's "transform and opacity only" rule excludes |
 | Labels, command menu | Hyper Text (Magic UI) | Scramble that settles on the exact string, on hover or focus only | OSS: `magicuidesign/magicui` on GitHub (MIT), rewritten without its Motion dependency | Reachable |
 | Avis pipeline | Custom + Shine Border (Magic UI) | SVG pipeline drawn by scroll with `stroke-dashoffset`; a rotating highlight ring on the active step only | Custom; ring idea from Magic UI, rebuilt with a rotating transform | Magic UI's version animates `background-position` |
 | Decision blocks | Layout transitions | Opening content fades in; the blocks below slide with FLIP transforms | Motion (already installed), loaded only when an expander is first touched | Keeps it out of first-load JS |
-| Selected work | Bento (kinfe123), 3D Card / Glowing Effect (Aceternity) | Asymmetric 7/5 grid, even anatomy; hover lifts the card 3px and a hairline highlight follows the pointer. No tilt | Custom | Blocked; tilt was dropped in an earlier round |
-| Stack | Interactive Tech Stack Bento (themeocean) | Six-tile bento; glyphs colour in on hover or focus | Custom | Only on 21st |
-| Path | Timeline (Aceternity) | Timeline with a line that fills on scroll | Custom, restyling the existing one | Blocked |
+| Selected work | Bento (kinfe123), 3D Card / Glowing Effect (Aceternity) | Asymmetric 7/5 grid, even anatomy; hover lifts the card 3px and a hairline highlight follows the pointer. No tilt | Custom | No retrieval left; Aceternity's registry is blocked; tilt was dropped in an earlier round |
+| Stack | Interactive Tech Stack Bento Grid (themeocean, 21st id 43096) | Six-tile bento; glyphs colour in on hover or focus | **21st retrieval 2**, then restyled to my six groups | Exists only on 21st |
+| Path | Timeline (Aceternity) | Timeline with a line that fills on scroll | Custom, restyling the existing one | Aceternity's registry is blocked |
 | About | Text Gradient Scroll (bundui) | Words darken with scroll; full paragraph kept as one accessible string | Custom, restyling the existing one | Only on 21st |
 | Contact | Contact Card (efferd), Shine Border | Rule-based contact sheet; highlight ring on "Send an email"; "Copy email" morphs to a drawn check | Custom | Only on 21st |
 | Footer | Motion Footer (jahed) | Wordmark rises once; Pause motion, Sound and Theme controls | Custom | Only on 21st |
@@ -330,13 +331,19 @@ retrieval. Everything is restyled to the tokens above; nothing ships as pasted.
 | Icons | none | lucide icons with small CSS transforms on hover and focus | Custom | As the brief says |
 | Not used | Text Rotate, Floating Dock, Liquid Glass Button, Spline, cursor effects | | | D10; the dock duplicates the contact rows; liquid glass contradicts "matte" |
 
-**If you unlock 21st (D1), retrieval order:** 1. Tubelight Navbar, 2. Interactive
-Tech Stack Bento Grid. Those two exist only on 21st and are the most specific
-interactions. I would check `21st usage` first and spend nothing on browsing.
+**Retrieval order (2 of 2 available today, none spent yet):**
+1. Tubelight Navbar, `ayushmxxn/tubelight-navbar`, id 1432.
+2. Interactive Tech Stack Bento Grid with Hover Effects, `themeocean`, id 43096.
 
-No `components.json` is needed on the planned routes. If a registry install
-becomes possible I will add it with the `@/*` alias that already exists, without
-touching `globals.css`.
+I will run `21st usage` again right before each one, read the component's
+dependency list first, and add no dependency the repo does not already have.
+If a third component turns out to need its original code, it comes from GitHub
+(Magic UI) or I build it.
+
+I will take the code with `21st get <id>` and place it by hand, so the shadcn
+installer never rewrites `globals.css`. If an install through `npx shadcn add`
+turns out to be cleaner, I will first add a `components.json` that points at the
+`@/*` alias the repo already has and leaves `globals.css` and the tokens alone.
 
 ---
 
