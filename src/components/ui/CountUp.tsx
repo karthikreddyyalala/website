@@ -67,7 +67,8 @@ export function CountUp({ value, duration = 1800 }: { value: string; duration?: 
 
   return (
     <>
-      <span className="sr-only">{final}</span>
+      {/* Screen readers get the figure as the content states it, e.g. "$1M+". */}
+      <span className="sr-only">{value}</span>
       <span ref={ref} aria-hidden>
         {final}
       </span>

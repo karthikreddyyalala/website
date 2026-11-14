@@ -101,17 +101,21 @@ const ICONS: Record<string, SimpleIcon> = {
 function visible(hex: string) {
   const v = parseInt(hex, 16);
   const luma = 0.2126 * (v >> 16) + 0.7152 * ((v >> 8) & 255) + 0.0722 * (v & 255);
-  return luma < 70 ? "var(--text)" : `#${hex}`;
+  return luma < 70 ? "var(--ink)" : `#${hex}`;
 }
 
-/** A tag for a tool or skill, with the tool's real mark when it has one. */
-export function TechTag({ name, className = "" }: { name: string; className?: string }) {
-  const icon = ICONS[name];
+/**
+ * A tag for a tool or skill. With `icon`, it carries the tool's real mark,
+ * drawn in the text colour until its group is hovered or focused, when it
+ * takes the brand colour (see .tile in globals.css).
+ */
+export function TechTag({ name, icon = false, className = "" }: { name: string; icon?: boolean; className?: string }) {
+  const mark = icon ? ICONS[name] : undefined;
   return (
-    <li className={`tag inline-flex items-center gap-1.5 ${className}`}>
-      {icon && (
-        <svg aria-hidden viewBox="0 0 24 24" className="h-[1.05em] w-[1.05em] flex-none" fill={visible(icon.hex)}>
-          <path d={icon.path} />
+    <li className={`tag ${className}`}>
+      {mark && (
+        <svg aria-hidden viewBox="0 0 24 24" className="glyph h-[1.05em] w-[1.05em] flex-none" style={{ "--brand": visible(mark.hex) } as React.CSSProperties}>
+          <path d={mark.path} />
         </svg>
       )}
       {name}

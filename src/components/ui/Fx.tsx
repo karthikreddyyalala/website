@@ -308,47 +308,48 @@ export function CopyButton({ text, label, className = "" }: { text: string; labe
   );
 }
 
-/** A disclosure: a button and the region it opens. Content stays in the DOM when closed. */
-export function Fold({
+/**
+ * A disclosure built on the native <details> element, so it works without
+ * JavaScript, opens itself when find-in-page hits something inside it, and is
+ * announced correctly. With JavaScript, the content below slides to its new
+ * place instead of jumping (see flipAfter); the opened content fades in.
+ * Collapsed content stays in the DOM.
+ */
+export function Details({
   summary,
   children,
   defaultOpen = false,
-  buttonClassName = "",
   className = "",
+  summaryClassName = "",
   tied = false,
 }: {
-  /** The button's content. Receives whether the region is open. */
-  summary: (open: boolean) => ReactNode;
+  summary: ReactNode;
   children: ReactNode;
   defaultOpen?: boolean;
-  buttonClassName?: string;
   className?: string;
-  /** Set when the region contains scroll-tied elements, so they are picked up on first open. */
+  summaryClassName?: string;
+  /** Set when the content holds scroll-tied elements, so they are picked up when it opens. */
   tied?: boolean;
 }) {
-  const [open, setOpen] = useState(defaultOpen);
-  const button = useRef<HTMLButtonElement>(null);
-  const region = useRef<HTMLDivElement>(null);
+  const ref = useRef<HTMLDetailsElement>(null);
 
-  const toggle = () => {
-    const el = region.current;
-    if (!el || !button.current) return;
+  const toggle = (e: React.MouseEvent) => {
+    const el = ref.current;
+    if (!el) return;
+    e.preventDefault();
     flipAfter(el, () => {
-      el.hidden = open; // applied at once, so the positions measured next are the final ones
+      el.open = !el.open;
     });
-    setOpen(!open);
-    if (tied && !open) requestAnimationFrame(() => window.dispatchEvent(new Event("tied:added")));
+    if (tied && el.open) window.dispatchEvent(new Event("tied:added"));
   };
 
   return (
-    <div className={className}>
-      <button ref={button} type="button" aria-expanded={open} onClick={toggle} className={buttonClassName}>
-        {summary(open)}
-      </button>
-      <div ref={region} hidden={!open} className={open ? "unfold" : undefined}>
-        {children}
-      </div>
-    </div>
+    <details ref={ref} open={defaultOpen || undefined} className={className}>
+      <summary onClick={toggle} className={`cursor-pointer list-none [&::-webkit-details-marker]:hidden ${summaryClassName}`}>
+        {summary}
+      </summary>
+      {children}
+    </details>
   );
 }
 

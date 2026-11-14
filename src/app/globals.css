@@ -246,9 +246,9 @@ summary,
 /* Instrument readout for the big figures. */
 .readout {
   font-weight: 600;
-  font-size: clamp(2.25rem, 4.4vw, 3.75rem);
+  font-size: clamp(2.25rem, 4vw, 3.5rem);
   line-height: 1;
-  letter-spacing: -0.04em;
+  letter-spacing: -0.05em;
   white-space: nowrap;
 }
 
@@ -525,7 +525,7 @@ li {
   background: conic-gradient(from 0deg, transparent 0 62%, var(--signal) 82%, transparent 100%);
 }
 
-[data-active] > .shine,
+.pipe-step[data-active] .shine,
 .btn:hover > .shine,
 .btn:focus-visible > .shine {
   opacity: 1;
@@ -646,6 +646,16 @@ li {
   stroke-dashoffset: calc(1 - var(--s));
 }
 
+/* A node draws in the first half of its step's progress, the line to the
+   next node in the second half, and a branch spur with the line. */
+.pipe-node {
+  stroke-dashoffset: calc(1 - min(1, var(--s) * 2));
+}
+
+.pipe-late {
+  stroke-dashoffset: calc(1 - clamp(0, calc(var(--s) * 2 - 1), 1));
+}
+
 .pipe-draw.is-branch {
   stroke: var(--signal);
 }
@@ -689,8 +699,29 @@ li {
   transform: none;
 }
 
-/* Content that opens under a disclosure button. */
-.unfold {
+/* Labels and the plus sign inside a disclosure's own summary. Scoped with
+   the child combinator, so a disclosure nested in an open one is unaffected. */
+summary .when-open,
+details[open] > summary .when-closed {
+  display: none;
+}
+
+details[open] > summary .when-open {
+  display: inline;
+}
+
+summary .plus {
+  transition: transform 0.35s var(--ease);
+  transition-timing-function: var(--spring);
+}
+
+details[open] > summary .plus {
+  transform: rotate(45deg);
+}
+
+/* Content that opens under a disclosure. */
+.unfold,
+details[open] > :not(summary) {
   animation: unfold 0.4s var(--ease) both;
 }
 

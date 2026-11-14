@@ -53,8 +53,8 @@ export function Sheet({ id, no, name, title, lede, children, className = "" }: S
         </div>
         <div className="min-w-0 lg:pl-8">
           {title && (
-            <Reveal>
-              <h2 className="display-l max-w-[18ch] border-b border-[var(--rule)] pb-6">{title}</h2>
+            <Reveal className="border-b border-[var(--rule)] pb-6">
+              <h2 className="display-l max-w-[18ch]">{title}</h2>
             </Reveal>
           )}
           {lede && (
