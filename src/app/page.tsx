@@ -1,4 +1,3 @@
-import type { CSSProperties } from "react";
 import { Nav } from "@/components/Nav";
 import { Hero } from "@/components/sections/Hero";
 import { CaseStudy } from "@/components/sections/CaseStudy";
@@ -11,7 +10,7 @@ import { VideoDialog } from "@/components/ui/VideoDialog";
 import { SoundFx } from "@/components/ui/Sound";
 import { CommandMenu } from "@/components/CommandMenu";
 import { Footer } from "@/components/Footer";
-import { Aurora, GlassLight, Magnetic, ScrollFx, SmoothScroll } from "@/components/ui/Fx";
+import { ScrollTied } from "@/components/ui/Fx";
 
 export default function Home() {
   return (
@@ -20,30 +19,7 @@ export default function Home() {
         Skip to main content
       </a>
 
-      {/* Opening curtain. Pure CSS: it is in the first paint and lifts on its own. */}
-      <div aria-hidden className="intro-curtain">
-        <div>
-          <p className="intro-mark h-display">
-            {["K", "R", "Y"].map((letter, k) => (
-              <span key={letter}>
-                <span style={{ "--k": k } as CSSProperties}>{letter}</span>
-              </span>
-            ))}
-            <span>
-              <span className="text-[var(--signal)]" style={{ "--k": 3 } as CSSProperties}>
-                .
-              </span>
-            </span>
-          </p>
-          <span className="intro-rule" />
-        </div>
-      </div>
-
-      <Aurora />
-      <GlassLight />
-      <SmoothScroll />
-      <ScrollFx />
-      <Magnetic />
+      <ScrollTied />
       <SoundFx />
 
       <Nav />

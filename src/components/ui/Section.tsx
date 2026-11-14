@@ -1,58 +1,82 @@
 import type { ReactNode } from "react";
 import { Reveal } from "./Reveal";
 
-/** Section heading: the title at display scale over a rule. The heading speaks for itself, with no label beside it. */
-export function SectionHead({ children }: { children: ReactNode }) {
-  return (
-    <div className="border-b border-[var(--line-hi)] pb-6 text-[clamp(2rem,4.6vw,3.4rem)]">{children}</div>
-  );
-}
-
 /**
  * A run of short facts. Content writes them joined by a middle dot
- * ("AI Engineer · SDE"); they are set apart by hairlines instead.
+ * ("AI Engineer · SDE"); they are drawn apart by hairlines instead. Screen
+ * readers get the original string, whole.
  */
 export function Meta({ text, className = "" }: { text: string; className?: string }) {
+  const parts = text.split(" · ");
+  if (parts.length === 1) return <span className={className}>{text}</span>;
   return (
     <span className={className}>
-      {text.split(" · ").map((part, i) => (
-        // Inline, so a long run wraps like ordinary text instead of dropping each fact to its own line.
-        <span key={part} className={i ? "ml-3 border-l border-[var(--line-hi)] pl-3" : undefined}>
-          {i > 0 && <span className="sr-only">, </span>}
-          {part}
-        </span>
-      ))}
+      <span className="sr-only">{text}</span>
+      <span aria-hidden>
+        {parts.map((part, i) => (
+          // Inline, so a long run wraps like ordinary text.
+          <span key={part} className={i ? "ml-3 border-l border-[var(--edge)] pl-3" : undefined}>
+            {part}
+          </span>
+        ))}
+      </span>
     </span>
   );
 }
 
-type SectionProps = {
+type SheetProps = {
   id: string;
-  title: string;
+  /** Sheet number shown in the margin rail, e.g. "03". */
+  no: string;
+  /** The section's nav name, shown under the number. */
+  name: string;
+  title?: string;
   lede?: string;
   children: ReactNode;
   className?: string;
 };
 
-/** Section shell. Server component: the only client code is the Reveal leaf. */
-export function Section({ id, title, lede, children, className = "" }: SectionProps) {
+/**
+ * A section, laid out as one sheet of a drawing set. From 1024px up a margin
+ * rail on the left carries the sheet number and the section's nav name; the
+ * heading itself stands alone, with a rule under it.
+ */
+export function Sheet({ id, no, name, title, lede, children, className = "" }: SheetProps) {
   return (
-    <section id={id} className={`relative py-24 md:py-32 ${className}`}>
-      <div className="shell">
-        <Reveal>
-          <SectionHead>
-            <h2 className="h-section">{title}</h2>
-          </SectionHead>
-        </Reveal>
-
-        {lede ? (
-          <Reveal delay={90}>
-            <p className="prose-body mt-6 text-[17px]">{lede}</p>
-          </Reveal>
-        ) : null}
-
-        <div className="mt-12 md:mt-16">{children}</div>
+    <section id={id} className={`sheet ${className}`}>
+      <div className="shell sheet-grid">
+        <div aria-hidden className="rail">
+          <div>
+            <span className="note text-[var(--ink)]">{no}</span>
+            <span className="note">{name}</span>
+          </div>
+        </div>
+        <div className="min-w-0 lg:pl-8">
+          {title && (
+            <Reveal>
+              <h2 className="display-l max-w-[18ch] border-b border-[var(--rule)] pb-6">{title}</h2>
+            </Reveal>
+          )}
+          {lede && (
+            <Reveal delay={60}>
+              <p className="lead mt-6 max-w-[58ch] text-[var(--graphite)]">{lede}</p>
+            </Reveal>
+          )}
+          {children}
+        </div>
       </div>
     </section>
+  );
+}
+
+/* Temporary: sections not yet rebuilt still import these. Removed in the clean-up step. */
+export function SectionHead({ children }: { children: ReactNode }) {
+  return <div className="border-b border-[var(--rule)] pb-6">{children}</div>;
+}
+export function Section({ id, title, lede, children }: { id: string; title: string; lede?: string; children: ReactNode }) {
+  return (
+    <Sheet id={id} no="" name="" title={title} lede={lede}>
+      <div className="mt-12">{children}</div>
+    </Sheet>
   );
 }
