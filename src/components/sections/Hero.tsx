@@ -1,145 +1,118 @@
 import Image from "next/image";
 import type { CSSProperties } from "react";
-import { Building2, Clock, FileText, GraduationCap, Rocket, type LucideIcon } from "lucide-react";
-import { Parallax } from "../ui/Fx";
+import { FileText } from "lucide-react";
+import { FieldSlot } from "../ui/FieldSlot";
 import { Meta } from "../ui/Section";
 import { profile } from "@/content/profile";
 
-// One icon and one position per proof point, in the order they appear in profile.proof.
-// `from` is the side each chip slides in from: -1 left, 1 right.
-const PROOF: { Icon: LucideIcon; place: string; depth: number; from: number }[] = [
-  { Icon: Building2, place: "sm:left-0 sm:top-[5%]", depth: 38, from: -1 },
-  { Icon: Rocket, place: "sm:right-0 sm:top-[44%]", depth: 52, from: 1 },
-  { Icon: Clock, place: "sm:left-0 sm:bottom-[27%]", depth: 30, from: -1 },
-  { Icon: GraduationCap, place: "sm:right-[3%] sm:bottom-[17%]", depth: 44, from: 1 },
-];
+const k = (n: number) => ({ "--k": n }) as CSSProperties;
 
 /**
- * First screen: the name at display scale, what he does, and two actions. A
- * portrait in glass has the proof points floating around it at different
- * depths, so the group shifts like layered glass as the pointer moves.
+ * Sheet 01. The name at display scale, what he does, and two actions; beside
+ * it a plate that holds the signal field (the page's one WebGL piece), the
+ * portrait, and a title block with the four proof facts, the way the corner
+ * block of a drawing holds its facts.
  *
- * Everything here enters in sequence as the opening curtain lifts (see the
- * "Opening" block in globals.css): the name rises line by line, the portrait
- * slides in and wipes open, and the chips slide in from their own side.
- *
- * Scrolling away plays a second scene ("Hero scroll scene" in globals.css):
- * the name lines slide apart, the copy lifts, the portrait hangs back and the
- * chips drift outward, each at its own depth.
+ * The headline is in the first paint and is the LCP element. The page-load
+ * sequence uncovers it and raises the rest behind it (see "Page-load
+ * sequence" in globals.css).
  */
 export function Hero() {
+  const [first, ...rest] = profile.name.split(" ");
+
   return (
-    <section id="top" className="relative overflow-hidden pt-28 lg:pt-36">
-      <div data-scroll="hero">
-      <Parallax className="shell relative">
-        <div className="relative lg:max-w-[56%]">
+    <section id="top" className="relative flex min-h-[100svh] flex-col justify-center pb-10 pt-28 lg:pt-32">
+      <div className="shell sheet-grid">
+        <div aria-hidden className="rail">
           <div>
-            <h1 className="h-display hero-title" aria-label="Karthik Reddy Yalala">
-              <span className="line-rise">
-                <span>Karthik</span>
-              </span>
-              <span className="line-rise" style={{ "--rise-delay": "90ms" } as CSSProperties}>
-                <span>Reddy</span>
-              </span>
-              <span className="line-rise" style={{ "--rise-delay": "180ms" } as CSSProperties}>
-                <span>Yalala</span>
+            <span className="note text-[var(--ink)]">01</span>
+          </div>
+        </div>
+
+        <div className="grid min-w-0 items-center gap-10 lg:grid-cols-12 lg:gap-10 lg:pl-8">
+          <div className="min-w-0 lg:col-span-7">
+            <h1 className="display-xl">
+              <span className="sr-only">{profile.name}</span>
+              <span aria-hidden>
+                {[first, ...rest].map((word, i) => (
+                  <span key={word} className="intro-line" style={k(i)}>
+                    {word}
+                  </span>
+                ))}
               </span>
             </h1>
-          </div>
 
-          <div className="intro-up" style={{ "--d": "380ms" } as CSSProperties}>
-            <p className="mt-7 flex flex-wrap items-center gap-x-4 gap-y-2.5 text-[16.5px] font-medium text-[var(--ice)]">
+            <p className="intro-rise mt-7 text-[17px] font-semibold text-[var(--ink)]" style={k(0)}>
               <Meta text={`${profile.role} · ${profile.location}`} />
-              {profile.availability.active && (
-                <span className="tag inline-flex items-center gap-2 text-[14.5px] font-normal !text-[var(--text)]">
+            </p>
+            {profile.availability.active && (
+              <p className="intro-rise mt-3" style={k(1)}>
+                <span className="tag !text-[13px] !text-[var(--ink)]">
+                  {/* A live state, not decoration: it is only here while he is available. */}
                   <span aria-hidden className="h-2 w-2 flex-none rounded-full bg-[var(--signal)]" />
                   <Meta text={profile.availability.status} />
                 </span>
-              )}
-            </p>
-            <p className="mt-4 max-w-[52ch] text-[18px] leading-[1.6] text-[var(--text)]">{profile.claim}</p>
-          </div>
+              </p>
+            )}
 
-          <div className="intro-up" style={{ "--d": "500ms" } as CSSProperties}>
-            <div className="mt-8 flex flex-wrap items-center gap-3">
-              <a href="#work-avis" data-magnetic className="btn btn-signal w-full justify-center sm:w-auto">
+            <p className="lead intro-rise mt-6 max-w-[54ch] text-[var(--graphite)]" style={k(2)}>
+              {profile.claim}
+            </p>
+
+            <div className="intro-rise mt-8 flex flex-wrap gap-3" style={k(3)}>
+              <a href="#work-avis" className="btn btn-signal w-full sm:w-auto">
                 See the production work
               </a>
-              <a href={profile.contact.resume} target="_blank" rel="noopener noreferrer" data-magnetic className="btn btn-glass w-full justify-center sm:w-auto">
-                <FileText className="h-4 w-4" strokeWidth={2.25} />
+              <a href={profile.contact.resume} target="_blank" rel="noopener noreferrer" className="btn btn-line w-full sm:w-auto">
+                <FileText aria-hidden />
                 Résumé
               </a>
             </div>
           </div>
-        </div>
 
-        {/* Portrait in glass, with the proof points floating at their own depths. */}
-        <div
-          className="relative mt-12 grid grid-cols-2 gap-3 sm:mx-auto sm:block sm:h-[500px] sm:max-w-[470px] lg:absolute lg:right-10 lg:top-0 lg:mt-0 lg:h-[560px] lg:w-[40%] lg:max-w-none"
-        >
-          <figure
-            data-depth="16"
-            className="intro-portrait card col-span-2 p-2.5 sm:absolute sm:inset-x-[17%] sm:top-[7%]"
-          >
-            <div className="intro-wipe overflow-hidden rounded-[18px]">
-            <Image
-              src="/images/profile.webp"
-              alt="Karthik Reddy Yalala"
-              width={1000}
-              height={1000}
-              priority
-              sizes="(min-width: 640px) 300px, 90vw"
-              className="aspect-[4/5] w-full object-cover object-top"
-            />
-            </div>
-            {/* A band of light that crosses the glass once the portrait has arrived, and again on hover. */}
-            <span aria-hidden className="sheen" />
-          </figure>
-
-          {profile.proof.map((p, i) => {
-            const { Icon, place, depth, from } = PROOF[i];
-            return (
-              <div
-                key={p.label}
-                data-depth={depth}
-                className={`intro-chip card card-smoke group flex items-center gap-3 !rounded-[20px] p-3 pr-4 sm:absolute sm:max-w-[215px] ${place}`}
-                style={{ "--from": `${from * 64}px`, "--d": `${650 + i * 120}ms`, "--lift": `${-depth}px` } as CSSProperties}
-              >
-                <span aria-hidden className="glass">
-                  <Icon />
-                </span>
-                <p className="text-[14.5px] leading-snug text-[var(--muted)]">
-                  <span className="h-section block text-[19px] text-[var(--text)]">{p.value}</span>
-                  <Meta text={p.label} />
-                </p>
+          {/* The plate: signal field, portrait, title block. */}
+          <div className="intro-rise min-w-0 lg:col-span-5" style={k(4)}>
+            <div className="panel ticks">
+              <div className="relative overflow-hidden rounded-t-[3px]">
+                <div aria-hidden className="field-poster" />
+                <FieldSlot />
+                <figure className="relative ml-auto w-[58%] max-w-[270px] p-4 md:p-5">
+                  <div className="border border-[var(--edge)] bg-[var(--sheet)] p-1.5">
+                    <Image
+                      src="/images/profile.webp"
+                      alt="Karthik Reddy Yalala"
+                      width={1000}
+                      height={1000}
+                      loading="eager"
+                      sizes="(min-width: 1024px) 240px, 50vw"
+                      className="aspect-[4/5] w-full object-cover object-top"
+                    />
+                  </div>
+                </figure>
               </div>
-            );
-          })}
+
+              <dl className="grid grid-cols-2 border-t border-[var(--rule)]">
+                {profile.proof.map((p, i) => (
+                  <div
+                    key={p.label}
+                    className={`flex flex-col-reverse justify-end gap-1 p-4 ${i % 2 ? "border-l border-[var(--rule)]" : ""} ${
+                      i > 1 ? "border-t border-[var(--rule)]" : ""
+                    }`}
+                  >
+                    <dt className="text-[13.5px] leading-snug text-[var(--graphite)]">
+                      <Meta text={p.label} />
+                    </dt>
+                    <dd className="title !text-[1.35rem] text-[var(--ink)]">{p.value}</dd>
+                  </div>
+                ))}
+              </dl>
+            </div>
+          </div>
         </div>
-      </Parallax>
       </div>
 
-      <div
-        aria-hidden
-        style={{ "--d": "900ms" } as CSSProperties}
-        className="intro-up ticker mt-16 border-y border-[var(--line)] py-4 text-[15px] font-medium text-[var(--muted)] lg:mt-24"
-      >
-        <div data-scroll="slide">
-        <div>
-          {[0, 1].map((k) => (
-            <span key={k}>
-              {profile.proof.map((p) => (
-                <span key={p.label}>
-                  {p.value} <Meta text={p.label} />
-                  <span className="mx-7 text-[var(--signal)]">/</span>
-                </span>
-              ))}
-              <Meta text={profile.availability.status} />
-              <span className="mx-7 text-[var(--signal)]">/</span>
-            </span>
-          ))}
-        </div>
-        </div>
+      <div aria-hidden className="shell mt-12 lg:mt-16">
+        <div className="intro-rule h-px bg-[var(--edge)]" />
       </div>
     </section>
   );

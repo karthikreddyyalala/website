@@ -188,15 +188,18 @@ summary,
 
 .display-xl {
   font-stretch: 118%;
-  font-size: clamp(3.5rem, 11.5vw, 10.5rem);
+  font-size: clamp(3.5rem, 11.5vw, 8.5rem);
   line-height: 0.86;
   letter-spacing: -0.035em;
+  overflow-wrap: normal;
+  white-space: nowrap;
 }
 
-/* A wide, short laptop screen: keep the hero's actions on the first screen. */
-@media (min-width: 1024px) and (max-height: 860px) {
+/* Beside the plate, the name has seven of twelve columns. On a short laptop
+   screen it also yields height, so the actions stay on the first screen. */
+@media (min-width: 1024px) {
   .display-xl {
-    font-size: clamp(3.5rem, 13.5vh, 7.4rem);
+    font-size: min(clamp(3.5rem, 9.4vw, 8.75rem), 15.5svh);
   }
 }
 
@@ -570,6 +573,40 @@ li {
   pointer-events: none;
   transition: transform 0.45s var(--ease);
   transition-timing-function: var(--spring);
+}
+
+/* ---------- Hero plate ----------
+   The static poster behind the hero's signal field: the same routed lines,
+   drawn once as a mask so they take the theme's ink colour. It is all there
+   is below 768px, with reduced motion, with Save-Data or without WebGL. */
+.field-poster {
+  position: absolute;
+  inset: 0;
+  background:
+    radial-gradient(60% 70% at 18% 12%, color-mix(in srgb, var(--signal) 16%, transparent), transparent 70%),
+    var(--sheet);
+}
+
+.field-poster::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: color-mix(in srgb, var(--ink) 26%, transparent);
+  -webkit-mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='224' height='224' fill='none' stroke='black' stroke-width='1.2'%3E%3Cpath d='M28 0V14L42 28H56 M28 56V42L14 28H0 M84 0V14L98 28H112 M84 56V42L70 28H56 M140 0V14L126 28H112 M140 56V42L154 28H168 M196 0V14L210 28H224 M196 56V42L182 28H168 M28 56V70L14 84H0 M28 112V98L42 84H56 M84 56V70L98 84H112 M84 112V98L70 84H56 M140 56V70L154 84H168 M140 112V98L126 84H112 M196 56V70L182 84H168 M196 112V98L210 84H224 M28 112V126L42 140H56 M28 168V154L14 140H0 M84 112V126L98 140H112 M84 168V154L70 140H56 M140 112V126L154 140H168 M140 168V154L126 140H112 M196 112V126L210 140H224 M196 168V154L182 140H168 M28 168V182L42 196H56 M28 224V210L14 196H0 M84 168V182L70 196H56 M84 224V210L98 196H112 M140 168V182L154 196H168 M140 224V210L126 196H112 M196 168V182L210 196H224 M196 224V210L182 196H168'/%3E%3C/svg%3E") 0 0 / 224px 224px;
+  mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='224' height='224' fill='none' stroke='black' stroke-width='1.2'%3E%3Cpath d='M28 0V14L42 28H56 M28 56V42L14 28H0 M84 0V14L98 28H112 M84 56V42L70 28H56 M140 0V14L126 28H112 M140 56V42L154 28H168 M196 0V14L210 28H224 M196 56V42L182 28H168 M28 56V70L14 84H0 M28 112V98L42 84H56 M84 56V70L98 84H112 M84 112V98L70 84H56 M140 56V70L154 84H168 M140 112V98L126 84H112 M196 56V70L182 84H168 M196 112V98L210 84H224 M28 112V126L42 140H56 M28 168V154L14 140H0 M84 112V126L98 140H112 M84 168V154L70 140H56 M140 112V126L154 140H168 M140 168V154L126 140H112 M196 112V126L210 140H224 M196 168V154L182 140H168 M28 168V182L42 196H56 M28 224V210L14 196H0 M84 168V182L70 196H56 M84 224V210L98 196H112 M140 168V182L154 196H168 M140 224V210L126 196H112 M196 168V182L210 196H224 M196 224V210L182 196H168'/%3E%3C/svg%3E") 0 0 / 224px 224px;
+}
+
+.field-canvas {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  opacity: 0;
+  transition: opacity 0.8s ease-out;
+}
+
+.field-canvas[data-ready] {
+  opacity: 1;
 }
 
 /* ---------- Dialogs ---------- */
