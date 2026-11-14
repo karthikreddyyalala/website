@@ -745,8 +745,10 @@ li {
   vector-effect: non-scaling-stroke;
 }
 
+/* A step's text is never dimmer than 0.86: even its muted detail line still
+   passes AA contrast before the drawing reaches it. */
 .pipe-fade {
-  opacity: clamp(0.28, calc(var(--s) * 1.6), 1);
+  opacity: clamp(0.86, calc(var(--s) * 1.6), 1);
   transform: translate3d(calc((1 - min(1, var(--s) * 1.6)) * 10px), 0, 0);
 }
 
@@ -757,8 +759,9 @@ li {
 }
 
 .read-along > span {
-  /* Each word darkens as the eye-line passes it. */
-  opacity: clamp(0.3, calc((var(--p, 1) * var(--n) - var(--i)) * 0.6 + 0.3), 1);
+  /* Each word darkens as the eye-line passes it. The floor of 0.65 keeps a
+     word that has not been reached yet above AA contrast in both themes. */
+  opacity: clamp(0.65, calc((var(--p, 1) * var(--n) - var(--i)) * 0.35 + 0.65), 1);
 }
 
 /* ---------- Motion ----------
