@@ -68,3 +68,46 @@ export function Sheet({ id, no, name, title, lede, children, className = "" }: S
     </section>
   );
 }
+
+/**
+ * A disclosure built on the native <details> element, so it works without
+ * JavaScript, opens itself when find-in-page hits something inside it, and is
+ * announced correctly. With JavaScript, PageFx slides the content below to its
+ * new place instead of letting it jump. Collapsed content stays in the DOM.
+ */
+export function Details({
+  summary,
+  children,
+  defaultOpen = false,
+  className = "",
+  summaryClassName = "",
+}: {
+  summary: ReactNode;
+  children: ReactNode;
+  defaultOpen?: boolean;
+  className?: string;
+  summaryClassName?: string;
+}) {
+  return (
+    <details data-flip open={defaultOpen || undefined} className={className}>
+      <summary className={`cursor-pointer list-none [&::-webkit-details-marker]:hidden ${summaryClassName}`}>{summary}</summary>
+      {children}
+    </details>
+  );
+}
+
+/**
+ * Text whose letters shuffle briefly and settle on the exact string when its
+ * link or button is hovered or focused (PageFx runs it). Screen readers get
+ * the string once, as one phrase; the moving copy is hidden from them.
+ */
+export function ScrambleText({ text }: { text: string }) {
+  return (
+    <span data-scramble={text}>
+      <span className="sr-only">{text}</span>
+      <span aria-hidden className="inline-block">
+        {text}
+      </span>
+    </span>
+  );
+}

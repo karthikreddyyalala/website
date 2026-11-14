@@ -3,8 +3,7 @@ import { Reveal } from "../ui/Reveal";
 import { CountUp } from "../ui/CountUp";
 import { Pipeline } from "../ui/Pipeline";
 import { Aside } from "../ui/Aside";
-import { Meta, Sheet } from "../ui/Section";
-import { Details } from "../ui/Fx";
+import { Details, Meta, Sheet } from "../ui/Section";
 import { TechTag } from "../ui/TechTag";
 import { caseStudy } from "@/content/casestudy";
 
@@ -48,7 +47,6 @@ export function CaseStudy() {
           <Reveal key={init.id}>
             <article id={`avis-${init.id}`} className="border-t border-[var(--edge)]">
               <Details
-                tied
                 defaultOpen={idx === 0}
                 summaryClassName="flex min-h-[72px] items-center gap-4 py-4 md:gap-6"
                 summary={

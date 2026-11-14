@@ -102,7 +102,10 @@ export default function RootLayout({
       <head>
         <script dangerouslySetInnerHTML={{ __html: BOOT }} />
       </head>
-      <body className={`${sans.variable} ${code.variable}`}>
+      <body
+        className={`${sans.variable} ${code.variable}`}
+        style={{ "--font-wide": `${sans.style.fontFamily.split(",")[0]}, "Archivo Wide Fallback"` } as React.CSSProperties}
+      >
         {/* Reveal starts hidden and is shown by JS; without JS, show everything. */}
         <noscript>
           <style>{".reveal{opacity:1;transform:none}"}</style>

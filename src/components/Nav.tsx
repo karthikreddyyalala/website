@@ -6,7 +6,8 @@ import { Hand } from "lucide-react";
 import { profile } from "@/content/profile";
 import { CommandButton } from "./CommandMenu";
 import { SoundToggle } from "./ui/Sound";
-import { Scramble, ThemeToggle } from "./ui/Fx";
+import { ThemeToggle } from "./ui/Fx";
+import { ScrambleText } from "./ui/Section";
 
 // MediaPipe only downloads once a visitor turns hands-free on.
 const HandScroll = dynamic(() => import("./HandScroll").then((m) => m.HandScroll), {
@@ -127,7 +128,7 @@ export function Nav() {
                   onFocus={() => setHovered(link.id)}
                   className="relative flex h-full items-center px-3.5 text-[15px] font-medium text-[var(--graphite)] transition-colors duration-200 hover:text-[var(--ink)] aria-[current]:text-[var(--ink)] lg:px-4"
                 >
-                  <Scramble text={link.label} />
+                  <ScrambleText text={link.label} />
                 </a>
               </li>
             ))}

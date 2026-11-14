@@ -1,5 +1,5 @@
 import Image from "next/image";
-import type { CSSProperties } from "react";
+import { Fragment, type CSSProperties } from "react";
 import { FileText } from "lucide-react";
 import { FieldSlot } from "../ui/FieldSlot";
 import { Meta } from "../ui/Section";
@@ -18,7 +18,9 @@ const k = (n: number) => ({ "--k": n }) as CSSProperties;
  * sequence" in globals.css).
  */
 export function Hero() {
-  const [first, ...rest] = profile.name.split(" ");
+  const words = profile.name.split(" ");
+  // Split after each full stop; joined with spaces this is the original string.
+  const sentences = profile.claim.split(/(?<=\.)\s+/);
 
   return (
     <section id="top" className="relative flex min-h-[100svh] flex-col justify-center pb-10 pt-28 lg:pt-32">
@@ -31,15 +33,24 @@ export function Hero() {
 
         <div className="grid min-w-0 items-center gap-10 lg:grid-cols-12 lg:gap-10 lg:pl-8">
           <div className="min-w-0 lg:col-span-7">
-            <h1 className="display-xl">
-              <span className="sr-only">{profile.name}</span>
-              <span aria-hidden>
-                {[first, ...rest].map((word, i) => (
-                  <span key={word} className="intro-line" style={k(i)}>
-                    {word}
-                  </span>
-                ))}
-              </span>
+            {/* One block of text, so the browser treats the whole name as the largest
+                thing on screen (the LCP element) from the first paint. The covers
+                that slide off each line are separate, decorative boxes. */}
+            <h1 className="display-xl relative">
+              {words.map((word, i) => (
+                <Fragment key={word}>
+                  {word}
+                  {i < words.length - 1 && (
+                    <>
+                      {" "}
+                      <br />
+                    </>
+                  )}
+                </Fragment>
+              ))}
+              {words.map((word, i) => (
+                <span key={word} aria-hidden className="intro-cover" style={{ "--k": i, "--of": words.length } as CSSProperties} />
+              ))}
             </h1>
 
             <p className="intro-rise mt-7 text-[17px] font-semibold text-[var(--ink)]" style={k(0)}>
@@ -55,8 +66,14 @@ export function Hero() {
               </p>
             )}
 
+            {/* Each sentence is its own line block. Read aloud or copied, it is still the one paragraph. */}
             <p className="lead intro-rise mt-6 max-w-[54ch] text-[var(--graphite)]" style={k(2)}>
-              {profile.claim}
+              {sentences.map((sentence, i) => (
+                <span key={i} className="block">
+                  {sentence}
+                  {i < sentences.length - 1 && " "}
+                </span>
+              ))}
             </p>
 
             <div className="intro-rise mt-8 flex flex-wrap gap-3" style={k(3)}>

@@ -49,7 +49,7 @@ import {
  * and vendors that don't allow their mark in open icon sets (AWS, OpenAI)
  * stay as plain text tags.
  */
-const ICONS: Record<string, SimpleIcon> = {
+export const ICONS: Record<string, SimpleIcon> = {
   Claude: siClaude,
   "Claude Sonnet": siClaude,
   LangGraph: siLanggraph,
@@ -107,7 +107,9 @@ function visible(hex: string) {
 /**
  * A tag for a tool or skill. With `icon`, it carries the tool's real mark,
  * drawn in the text colour until its group is hovered or focused, when it
- * takes the brand colour (see .tile in globals.css).
+ * takes the brand colour (see .tile in globals.css). The mark's outline is
+ * not inlined: it is referenced from one cached sprite, /stack-icons.svg,
+ * which keeps about sixty brand paths out of the HTML.
  */
 export function TechTag({ name, icon = false, className = "" }: { name: string; icon?: boolean; className?: string }) {
   const mark = icon ? ICONS[name] : undefined;
@@ -115,7 +117,7 @@ export function TechTag({ name, icon = false, className = "" }: { name: string; 
     <li className={`tag ${className}`}>
       {mark && (
         <svg aria-hidden viewBox="0 0 24 24" className="glyph h-[1.05em] w-[1.05em] flex-none" style={{ "--brand": visible(mark.hex) } as React.CSSProperties}>
-          <path d={mark.path} />
+          <use href={`/stack-icons.svg#${mark.slug}`} />
         </svg>
       )}
       {name}

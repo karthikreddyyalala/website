@@ -43,6 +43,8 @@ export function CommandMenu() {
   const [query, setQuery] = useState("");
   const [active, setActive] = useState(0);
   const [copied, setCopied] = useState(false);
+  // The list is not rendered until the menu is first opened: twenty rows nobody can see cost nothing at load.
+  const [used, setUsed] = useState(false);
 
   const items = useMemo<Item[]>(
     () => [
@@ -93,6 +95,7 @@ export function CommandMenu() {
       setActive(0);
       setCopied(false);
       if (dialog.current?.open) return;
+      setUsed(true);
       dialog.current?.showModal();
       play("open");
     };
@@ -142,6 +145,7 @@ export function CommandMenu() {
       onClick={(e) => e.target === e.currentTarget && dialog.current?.close()}
       className="command-menu m-auto mt-[14vh] w-[min(620px,calc(100vw-24px))] max-w-none bg-transparent p-0 text-[var(--text)]"
     >
+      {used && (
       <div className="panel overflow-hidden shadow-[0_30px_80px_-30px_rgba(0,0,0,0.6)]" onKeyDown={onKeyDown}>
         <label className="flex items-center gap-3 border-b border-[var(--line)] px-5">
           <Search aria-hidden className="h-5 w-5 flex-none text-[var(--faint)]" />
@@ -217,6 +221,7 @@ export function CommandMenu() {
           <span>esc close</span>
         </p>
       </div>
+      )}
     </dialog>
   );
 }

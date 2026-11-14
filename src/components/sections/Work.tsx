@@ -1,8 +1,7 @@
 import Image from "next/image";
 import { Github, Globe, Play, Plus } from "lucide-react";
-import { Sheet } from "../ui/Section";
+import { Details, Sheet } from "../ui/Section";
 import { Reveal } from "../ui/Reveal";
-import { Details } from "../ui/Fx";
 import { TechTag } from "../ui/TechTag";
 import { VideoPreview, VideoTrigger } from "../ui/VideoDialog";
 import { DeskPoster, FigurePoster, LoopPoster } from "../ui/Posters";

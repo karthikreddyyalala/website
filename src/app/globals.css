@@ -186,9 +186,21 @@ summary,
   min-width: 0;
 }
 
+/* Stand-in for the wide display cut while Archivo loads: a bold system face
+   scaled to be a hair wider than the real thing. Because the swap makes the
+   headline slightly smaller, never larger, the browser keeps the first paint
+   as the LCP time, and nothing around it moves (the line height is fixed). */
+@font-face {
+  font-family: "Archivo Wide Fallback";
+  src: local("Arial Bold"), local("Arial-BoldMT"), local("Liberation Sans Bold"), local("Roboto Bold"), local("Arial"), local("Roboto");
+  font-weight: 100 900;
+  size-adjust: 127%;
+}
+
 .display-xl {
+  font-family: var(--font-wide, var(--font-body)), sans-serif;
   font-stretch: 118%;
-  font-size: clamp(3.5rem, 11.5vw, 8.5rem);
+  font-size: clamp(4.1rem, 20.5vw, 8.5rem);
   line-height: 0.86;
   letter-spacing: -0.035em;
   overflow-wrap: normal;
@@ -199,7 +211,7 @@ summary,
    screen it also yields height, so the actions stay on the first screen. */
 @media (min-width: 1024px) {
   .display-xl {
-    font-size: min(clamp(3.5rem, 9.4vw, 8.75rem), 15.5svh);
+    font-size: min(clamp(3.5rem, 9.4vw, 8.75rem), 14.2svh);
   }
 }
 
@@ -281,6 +293,11 @@ li {
 .sheet {
   position: relative;
   padding-block: clamp(72px, 11vw, 148px);
+  /* Sections far from the screen are not laid out or painted until they come
+     near it. The size is a placeholder until then; afterwards the browser
+     remembers the real one. */
+  content-visibility: auto;
+  contain-intrinsic-size: auto 1400px;
 }
 
 .sheet-grid {
@@ -797,19 +814,20 @@ details[open] > :not(summary) {
    element); each line is uncovered by a paper-coloured cover sliding off.
    Everything else rises in behind it, staggered. Any input ends it at once
    (the inline script adds .intro-done). */
-.intro-line {
-  position: relative;
-  display: block;
+.intro-cover {
+  position: absolute;
+  left: -2%;
+  right: -2%;
+  top: calc(var(--k, 0) * 100% / var(--of, 3));
+  height: calc(100% / var(--of, 3) + 3px);
+  background: var(--paper);
+  transform: scaleX(0);
+  transform-origin: right;
+  pointer-events: none;
 }
 
 @media (prefers-reduced-motion: no-preference) {
-  .intro-line::after {
-    content: "";
-    position: absolute;
-    inset: -4% -2%;
-    background: var(--paper);
-    transform: scaleX(0);
-    transform-origin: right;
+  .intro-cover {
     animation: intro-cover 0.62s cubic-bezier(0.7, 0, 0.2, 1) calc(var(--k, 0) * 70ms) backwards;
   }
 
@@ -822,7 +840,7 @@ details[open] > :not(summary) {
     animation: intro-rule 0.7s var(--ease) 120ms backwards;
   }
 
-  .intro-done .intro-line::after,
+  .intro-done .intro-cover,
   .intro-done .intro-rise,
   .intro-done .intro-rule {
     animation: none;

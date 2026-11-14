@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useRef, useState, type ReactNode } from "react";
+import { useEffect, useState } from "react";
 import { Copy, Moon, Sun } from "lucide-react";
 import { play } from "./Sound";
 
@@ -29,7 +29,7 @@ const clamp01 = (v: number) => Math.min(1, Math.max(0, v));
  * Without it, or under reduced motion, --p keeps its default of 1: everything
  * is fully drawn.
  */
-export function ScrollTied() {
+function ScrollTied() {
   useEffect(() => {
     if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
     const onScreen = new Set<HTMLElement>();
@@ -62,17 +62,14 @@ export function ScrollTied() {
       },
       { rootMargin: "10% 0px" }
     );
-    // Tied elements can be added later (an initiative opened by the reader).
-    const adopt = () => document.querySelectorAll<HTMLElement>("[data-tied]").forEach((el) => watch.observe(el));
-    adopt();
-    window.addEventListener("tied:added", adopt);
+    // Elements inside a closed disclosure are observed too; they report in when it opens.
+    document.querySelectorAll<HTMLElement>("[data-tied]").forEach((el) => watch.observe(el));
     window.addEventListener("scroll", queue, { passive: true });
     window.addEventListener("resize", queue);
 
     return () => {
       cancelAnimationFrame(raf);
       watch.disconnect();
-      window.removeEventListener("tied:added", adopt);
       window.removeEventListener("scroll", queue);
       window.removeEventListener("resize", queue);
     };
@@ -90,7 +87,7 @@ export function ScrollTied() {
  * (.glow-edge in globals.css) can follow. One listener for the page, at most
  * one write a frame, mouse only.
  */
-export function EdgeLight() {
+function EdgeLight() {
   useEffect(() => {
     if (!window.matchMedia("(hover: hover) and (pointer: fine)").matches) return;
     let raf = 0;
@@ -156,63 +153,92 @@ export function flipAfter(anchor: HTMLElement, change: () => void) {
 }
 
 /* ------------------------------------------------------------------ */
-/* Text scramble                                                      */
+/* Page-wide behaviours                                               */
 /* ------------------------------------------------------------------ */
 
 const GLYPHS = "abcdefghijklmnopqrstuvwxyz";
 
-/**
- * On hover or focus the letters shuffle briefly and settle, left to right, on
- * the exact text. Screen readers get the text once, as one phrase: a hidden
- * copy holds it and the moving letters are hidden from them. After an
- * idea in Magic UI's Hyper Text (MIT), rewritten without a motion library.
- */
-export function Scramble({ text, className = "" }: { text: string; className?: string }) {
-  const ref = useRef<HTMLSpanElement>(null);
-
-  useEffect(() => {
-    const el = ref.current;
-    const host = el?.closest<HTMLElement>("a, button") ?? el;
-    if (!el || !host) return;
-    let raf = 0;
-
-    const run = () => {
-      if (!motionOK() || raf) return;
-      const start = performance.now();
-      el.style.minWidth = `${el.offsetWidth}px`; // hold the width so neighbours do not shift
-      const tick = (now: number) => {
-        const done = Math.floor(((now - start) / 280) * text.length);
-        if (done >= text.length) {
-          el.textContent = text;
-          el.style.minWidth = "";
-          raf = 0;
-          return;
-        }
-        el.textContent = [...text]
-          .map((ch, i) => (i < done || ch === " " ? ch : GLYPHS[Math.floor(Math.random() * GLYPHS.length)]))
-          .join("");
-        raf = requestAnimationFrame(tick);
-      };
-      raf = requestAnimationFrame(tick);
-    };
-
-    host.addEventListener("pointerenter", run);
-    host.addEventListener("focus", run);
-    return () => {
-      host.removeEventListener("pointerenter", run);
-      host.removeEventListener("focus", run);
-      cancelAnimationFrame(raf);
+/** Shuffles a [data-scramble] label for a moment and settles it, left to right, on its exact text. */
+function scramble(label: HTMLElement) {
+  const text = label.dataset.scramble ?? "";
+  const el = label.querySelector<HTMLElement>("[aria-hidden]");
+  if (!el || label.dataset.busy || !motionOK()) return;
+  label.dataset.busy = "";
+  el.style.minWidth = `${el.offsetWidth}px`; // hold the width so neighbours do not shift
+  const start = performance.now();
+  const tick = (now: number) => {
+    const done = Math.floor(((now - start) / 280) * text.length);
+    if (done >= text.length) {
       el.textContent = text;
+      el.style.minWidth = "";
+      delete label.dataset.busy;
+      return;
+    }
+    el.textContent = [...text].map((ch, i) => (i < done || ch === " " ? ch : GLYPHS[Math.floor(Math.random() * GLYPHS.length)])).join("");
+    requestAnimationFrame(tick);
+  };
+  requestAnimationFrame(tick);
+}
+
+/**
+ * Mount once. The behaviours every section shares, each as a single listener
+ * or observer for the whole page instead of one per element:
+ *  - reveals: a block marked .reveal rises in the first time it is on screen;
+ *  - disclosures: opening or closing a <details data-flip> slides the content
+ *    below into place (flipAfter) instead of letting it jump;
+ *  - scramble: a [data-scramble] label shuffles when its link or button is
+ *    hovered or focused (after an idea in Magic UI's Hyper Text, MIT).
+ * All of it is progressive: without this script reveals are visible (see the
+ * <noscript> rule in layout.tsx) and <details> still open and close.
+ */
+export function PageFx() {
+  useEffect(() => {
+    const reveals = new IntersectionObserver(
+      (entries) =>
+        entries.forEach((entry) => {
+          if (!entry.isIntersecting) return;
+          entry.target.classList.add("is-in");
+          reveals.unobserve(entry.target);
+        }),
+      { threshold: 0.12, rootMargin: "0px 0px -60px 0px" }
+    );
+    document.querySelectorAll(".reveal").forEach((el) => reveals.observe(el));
+
+    const click = (e: MouseEvent) => {
+      const summary = (e.target as Element).closest?.("summary");
+      const details = summary?.parentElement;
+      if (!(details instanceof HTMLDetailsElement) || !details.hasAttribute("data-flip")) return;
+      e.preventDefault();
+      flipAfter(details, () => {
+        details.open = !details.open;
+      });
     };
-  }, [text]);
+
+    const hostOf = (target: EventTarget | null) => (target as Element | null)?.closest?.<HTMLElement>("a, button") ?? null;
+    const over = (e: PointerEvent) => {
+      const host = hostOf(e.target);
+      // Only when the pointer arrives from outside the link, not while it moves within it.
+      if (!host || host.contains(e.relatedTarget as Node | null)) return;
+      host.querySelectorAll<HTMLElement>("[data-scramble]").forEach(scramble);
+    };
+    const focus = (e: FocusEvent) => hostOf(e.target)?.querySelectorAll<HTMLElement>("[data-scramble]").forEach(scramble);
+
+    document.addEventListener("click", click);
+    document.addEventListener("pointerover", over, { passive: true });
+    document.addEventListener("focusin", focus);
+    return () => {
+      reveals.disconnect();
+      document.removeEventListener("click", click);
+      document.removeEventListener("pointerover", over);
+      document.removeEventListener("focusin", focus);
+    };
+  }, []);
 
   return (
-    <span className={className}>
-      <span className="sr-only">{text}</span>
-      <span ref={ref} aria-hidden className="inline-block">
-        {text}
-      </span>
-    </span>
+    <>
+      <ScrollTied />
+      <EdgeLight />
+    </>
   );
 }
 
@@ -341,50 +367,5 @@ export function CopyButton({ text, label, className = "" }: { text: string; labe
       )}
       <span aria-live="polite">{copied ? "Copied" : label}</span>
     </button>
-  );
-}
-
-/**
- * A disclosure built on the native <details> element, so it works without
- * JavaScript, opens itself when find-in-page hits something inside it, and is
- * announced correctly. With JavaScript, the content below slides to its new
- * place instead of jumping (see flipAfter); the opened content fades in.
- * Collapsed content stays in the DOM.
- */
-export function Details({
-  summary,
-  children,
-  defaultOpen = false,
-  className = "",
-  summaryClassName = "",
-  tied = false,
-}: {
-  summary: ReactNode;
-  children: ReactNode;
-  defaultOpen?: boolean;
-  className?: string;
-  summaryClassName?: string;
-  /** Set when the content holds scroll-tied elements, so they are picked up when it opens. */
-  tied?: boolean;
-}) {
-  const ref = useRef<HTMLDetailsElement>(null);
-
-  const toggle = (e: React.MouseEvent) => {
-    const el = ref.current;
-    if (!el) return;
-    e.preventDefault();
-    flipAfter(el, () => {
-      el.open = !el.open;
-    });
-    if (tied && el.open) window.dispatchEvent(new Event("tied:added"));
-  };
-
-  return (
-    <details ref={ref} open={defaultOpen || undefined} className={className}>
-      <summary onClick={toggle} className={`cursor-pointer list-none [&::-webkit-details-marker]:hidden ${summaryClassName}`}>
-        {summary}
-      </summary>
-      {children}
-    </details>
   );
 }
